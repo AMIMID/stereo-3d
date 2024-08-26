@@ -32,10 +32,11 @@ sig.plot;
 
 (
 {
-var signal1,signal2,env1,env2,pl=0,m=1,fund=55;
+var signal1,signal2,env1,env2,pl=1,m=1,fund=55;
 var pos1,pos2,phase1,phase2,ph1,ph2;
 
 360.do{
+
 		pos1=~pos1L.[pl];
 		pos2=~pos1R.[pl];
 		phase1=~phase1.[pl];
@@ -51,8 +52,8 @@ var pos1,pos2,phase1,phase2,ph1,ph2;
 		signal2=LPF.ar(Osc.ar(~b,fund*m,ph2,SinOsc.ar(~magR.[pl],mul:m.reciprocal)),8000);
 
 	m=m+1;
-		pl=pl+1;
 
+pl=pl+1;
 		Out.ar(0,Pan2.ar(signal1,pos1));
 		Out.ar(0,Pan2.ar(signal2,pos2));
 
@@ -64,17 +65,17 @@ var pos1,pos2,phase1,phase2,ph1,ph2;
 (
 var phase,angle=0,phase1,angle1=90;
 
-~phase1=360.collect{
+~phase1=365.collect{
 
 	phase=exp(Complex(0,1)*angle.degrad).theta;
 	angle=(angle+(360-(360/1.6180339887499))).wrap(0,360);
-	phase
+	phase.round(0.00001)
 };
-~phase2=360.collect{
+~phase2=365.collect{
 
 	phase1=exp(Complex(0,1)*angle1.degrad).theta;
 	angle1=(angle1+(360-(360/1.6180339887499))).wrap(0,360);
-	phase1
+	phase1.round(0.00001)
 };
 
 )
@@ -82,18 +83,18 @@ var phase,angle=0,phase1,angle1=90;
 (
 var phase1,phase2,angle1=0,angle2=0;
 
-~pos1L=360.collect{
+~pos1L=365.collect{
 
 	phase1=exp(Complex(0,1)*angle1.degrad);
 	angle1=(angle1+(360-(360/1.6180339887499))).wrap(0,360);
-	phase1=Complex(cos((phase1.theta.round(0.00001)*3)),0).rho;
+	phase1=Complex(cos((phase1.theta.round(0.00001)*3)),0).rho.round(0.00001);
 };
 
-~pos1R=360.collect{
+~pos1R=365.collect{
 
 	phase2=exp(Complex(0,1)*angle2.degrad);
 	angle2=(angle2+(360-(360/1.6180339887499))).wrap(0,360);
-	phase2=Complex(0,cos((phase2.theta.round(0.00001)*3))).rho.neg;
+	phase2=Complex(0,cos((phase2.theta.round(0.00001)*3))).rho.neg.round(0.00001);
 };
 
 )
@@ -101,18 +102,18 @@ var phase1,phase2,angle1=0,angle2=0;
 (
 var phase,angle=0,mag,phase1,angle1=0,mag1;
 
-~magL = 360.collect{
+~magL = 365.collect{
 
 	phase=exp(Complex(0,1)*angle.degrad);
 	angle=(angle+(360-(360/1.6180339887499))).wrap(0,360);
-	mag=Complex(cos((phase.theta.round(0.00001)*3)),0).rho;
+	mag=Complex(cos((phase.theta.round(0.00001)*3)),0).rho.round(0.00001);
 	};
 
-~magR = 360.collect{
+~magR = 365.collect{
 
 	phase1=exp(Complex(0,1)*angle1.degrad);
 	angle1=(angle1+(360-(360/1.6180339887499))).wrap(0,360);
-	mag1=Complex(0,sin((phase1.theta.round(0.00001)*3))).rho;
+	mag1=Complex(0,sin((phase1.theta.round(0.00001)*3))).rho.round(0.00001);
 
 	};
 )
