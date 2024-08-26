@@ -42,20 +42,20 @@ var pos1,pos2,phase1,phase2,ph1,ph2;
 		phase1=~phase1.[pl];
 		phase2=~phase2.[pl];
 
-		ph1=SinOsc.ar(~magL.[pl],phase1);
-		ph2=SinOsc.ar(~magR.[pl],phase2);
+		ph1=SinOsc.ar(1/3,phase1);
+		ph2=SinOsc.ar(1/3,phase2);
 
 		//env1=EnvGen.ar(Env([1],[20]),doneAction:2,levelScale:m.reciprocal);
 		//env2=EnvGen.ar(Env([1],[20]),doneAction:2,levelScale:m.reciprocal);
 
-		signal1=LPF.ar(Osc.ar(~b,fund*m,ph1,SinOsc.ar(~magL.[pl],mul:m.reciprocal)),8000);
-		signal2=LPF.ar(Osc.ar(~b,fund*m,ph2,SinOsc.ar(~magR.[pl],mul:m.reciprocal)),8000);
+		signal1=LPF.ar(Osc.ar(~b,fund*m,ph1,SinOsc.ar(1/3,phase1,mul:~magL.[pl])),8000);
+		signal2=LPF.ar(Osc.ar(~b,fund*m,ph2,SinOsc.ar(1/3,phase2,mul:~magL.[pl])),8000);
 
 	m=m+1;
 
 pl=pl+1;
-		Out.ar(0,Pan2.ar(signal1,pos1));
-		Out.ar(0,Pan2.ar(signal2,pos2));
+		Out.ar(0,Pan2.ar(signal1*m.reciprocal,pos1));
+		Out.ar(0,Pan2.ar(signal2*m.reciprocal,pos2));
 
 }
 }.play
@@ -116,5 +116,4 @@ var phase,angle=0,mag,phase1,angle1=0,mag1;
 	mag1=Complex(0,sin((phase1.theta.round(0.00001)*3))).rho.round(0.00001);
 
 	};
-)
 )
