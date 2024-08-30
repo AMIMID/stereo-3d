@@ -28,40 +28,8 @@ wt = sig.asWavetable;
 ~b.loadCollection(wt);
 sig.plot;
 )
-////////////////////osc
 
-(
-{
-var signal1,signal2,env1,env2,pl=1,m=1,fund=55;
-var pos1,pos2,phase1,phase2,ph1,ph2;
-
-360.do{
-
-		pos1=~pos1L.[pl];
-		pos2=~pos1R.[pl];
-		phase1=~phase1.[pl];
-		phase2=~phase2.[pl];
-
-		ph1=SinOsc.ar(~magL.[pl].reciprocal,phase1);
-		ph2=SinOsc.ar(~magR.[pl].reciprocal,phase2);
-
-		env1=EnvGen.ar(Env([1/10,1/10],[200]),doneAction:2,levelScale:m.reciprocal);
-		env2=EnvGen.ar(Env([1/10,1/10],[200]),doneAction:2,levelScale:m.reciprocal);
-
-		signal1=LPF.ar(Osc.ar(~b,fund*m,ph1,SinOsc.ar(~magL.[pl].reciprocal,phase1,mul:~magL.[pl],add:1)),3000);
-		signal2=LPF.ar(Osc.ar(~b,fund*m,ph2,SinOsc.ar(~magR.[pl].reciprocal,phase2,mul:~magR.[pl],add:1)),3000);
-
-	m=m+1;
-
-pl=pl+1;
-		Out.ar(0,Pan2.ar(signal1*env1,pos1));
-		Out.ar(0,Pan2.ar(signal2*env2,pos2));
-
-}
-}.play
-)
-
-
+////////arrays
 (
 var phase,angle=0,phase1,angle1=90;
 
@@ -123,3 +91,37 @@ var phase,angle=0,mag,phase1,angle1=0,mag1;
 	mag1=mag1/(2.sqrt);
 	};
 )
+
+////////////////////osc
+
+(
+{
+var signal1,signal2,env1,env2,pl=1,m=1,fund=55;
+var pos1,pos2,phase1,phase2,ph1,ph2;
+
+360.do{
+
+		pos1=~pos1L.[pl];
+		pos2=~pos1R.[pl];
+		phase1=~phase1.[pl];
+		phase2=~phase2.[pl];
+
+		ph1=SinOsc.ar(~magL.[pl].reciprocal,phase1);
+		ph2=SinOsc.ar(~magR.[pl].reciprocal,phase2);
+
+		env1=EnvGen.ar(Env([1/10,1/10],[200]),doneAction:2,levelScale:m.reciprocal);
+		env2=EnvGen.ar(Env([1/10,1/10],[200]),doneAction:2,levelScale:m.reciprocal);
+
+		signal1=LPF.ar(Osc.ar(~b,fund*m,ph1,SinOsc.ar(~magL.[pl].reciprocal,phase1,mul:~magL.[pl],add:1)),3000);
+		signal2=LPF.ar(Osc.ar(~b,fund*m,ph2,SinOsc.ar(~magR.[pl].reciprocal,phase2,mul:~magR.[pl],add:1)),3000);
+
+	m=m+1;
+
+pl=pl+1;
+		Out.ar(0,Pan2.ar(signal1*env1,pos1));
+		Out.ar(0,Pan2.ar(signal2*env2,pos2));
+
+}
+}.play
+)
+

@@ -15,48 +15,6 @@ Buffer.freeAll
 ~l = Buffer.readChannel(s,"/Users/petrostatsiopoulos/Desktop/00.wav",channels:0 );
 ~r = Buffer.readChannel(s,"/Users/petrostatsiopoulos/Desktop/00.wav",channels:1 );
 
-//////////////synth
-(
-{
-var signal1,signal2,env1,env2,pl=1;
-var pos1,pos2,phase1,phase2,ph1,ph2;
-var in1,in2, chainx,chainy,b=0;
-var chainxx,chainyy,mag1,mag2;
-
-	 in1 = PlayBuf.ar(1, ~l.bufnum, BufRateScale.kr(~l), loop: 0, doneAction:2);
-	 in2 = PlayBuf.ar(1, ~r.bufnum, BufRateScale.kr(~r), loop: 0, doneAction:2);
-
-	chainx = FFT(LocalBuf(1024), in1);
-	chainy = FFT(LocalBuf(1024), in2);
-
-360.do{
-
-		pos1=~posL.[pl];
-		pos2=~posR.[pl];
-		phase1=~phase1.[pl];
-		phase2=~phase2.[pl];
-		mag1=~magL.[pl];
-		mag2=~magL.[pl];
-
-
-		env1=EnvGen.ar(Env([mag1,mag1],[360]),doneAction:2);
-		env2=EnvGen.ar(Env([mag2,mag2],[360]),doneAction:2);
-
-   chainxx = chainx.pvcollect(1024, {|mag, phase, index| [mag, phase]; }, frombin: b, tobin: b, zeroothers: 1);
-   chainyy = chainy.pvcollect(1024, {|mag, phase, index| [mag, phase]; }, frombin: b, tobin: b, zeroothers: 1);
-
-
-		signal1=Pan2.ar(IFFT(PV_PhaseShift(chainxx,0.degrad)),pos1,env1);
-		signal2=Pan2.ar(IFFT(PV_PhaseShift(chainyy,90.degrad)),pos2,env2);
-b=b+1;
-pl=pl+1;
-		Out.ar(0,signal1);
-		Out.ar(0,signal2);
-
-}
-}.play
-)
-
 /////////arrays
 (
 var phase,angle=0,phase1,angle1=90;
@@ -119,3 +77,47 @@ var phase,angle=0,mag,phase1,angle1=0,mag1;
 	mag1=mag1/(2.sqrt);
 	};
 )
+
+
+//////////////synth
+(
+{
+var signal1,signal2,env1,env2,pl=1;
+var pos1,pos2,phase1,phase2,ph1,ph2;
+var in1,in2, chainx,chainy,b=0;
+var chainxx,chainyy,mag1,mag2;
+
+	 in1 = PlayBuf.ar(1, ~l.bufnum, BufRateScale.kr(~l), loop: 0, doneAction:2);
+	 in2 = PlayBuf.ar(1, ~r.bufnum, BufRateScale.kr(~r), loop: 0, doneAction:2);
+
+	chainx = FFT(LocalBuf(1024), in1);
+	chainy = FFT(LocalBuf(1024), in2);
+
+360.do{
+
+		pos1=~posL.[pl];
+		pos2=~posR.[pl];
+		phase1=~phase1.[pl];
+		phase2=~phase2.[pl];
+		mag1=~magL.[pl];
+		mag2=~magL.[pl];
+
+
+		env1=EnvGen.ar(Env([1,1],[360]),doneAction:2);
+		env2=EnvGen.ar(Env([1,1],[360]),doneAction:2);
+
+   chainxx = chainx.pvcollect(1024, {|mag, phase, index| [mag*mag1, phase]; }, frombin: b, tobin: b, zeroothers: 1);
+   chainyy = chainy.pvcollect(1024, {|mag, phase, index| [mag*mag2, phase]; }, frombin: b, tobin: b, zeroothers: 1);
+
+
+		signal1=Pan2.ar(IFFT(PV_PhaseShift(chainxx,0.degrad)),pos1,env1);
+		signal2=Pan2.ar(IFFT(PV_PhaseShift(chainyy,90.degrad)),pos2,env2);
+b=b+1;
+pl=pl+1;
+		Out.ar(0,signal1);
+		Out.ar(0,signal2);
+
+}
+}.play
+)
+
