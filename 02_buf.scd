@@ -18,9 +18,9 @@ Buffer.freeAll
 //////////////synth
 (
 {
-var signal1,signal2,env1,env2,pl=1,m=1,fund=55;
+var signal1,signal2,env1,env2,pl=1;
 var pos1,pos2,phase1,phase2,ph1,ph2;
-var in1,in2, chainx,chainy,b=0,az1=0,az2=0,el1=0,el2=0;
+var in1,in2, chainx,chainy,b=0;
 var chainxx,chainyy;
 
 	 in1 = PlayBuf.ar(1, ~l.bufnum, BufRateScale.kr(~l), loop: 0, doneAction:2);
@@ -33,17 +33,20 @@ var chainxx,chainyy;
 
 		pos1=~pos1L.[pl];
 		pos2=~pos1R.[pl];
+		phase1=~phase1.[pl];
+		phase2=~phase2.[pl];
 
-		env1=EnvGen.ar(Env([1/1,1/1],[200]),doneAction:2,levelScale:~magL.[pl]);
-		env2=EnvGen.ar(Env([1/1,1/1],[200]),doneAction:2,levelScale:~magR.[pl]);
+
+		env1=EnvGen.ar(Env([1/1,1/1],[360]),doneAction:2,levelScale:~magL.[pl]);
+		env2=EnvGen.ar(Env([1/1,1/1],[360]),doneAction:2,levelScale:~magL.[pl]);
 
    chainxx = chainx.pvcollect(1024, {|mag, phase, index| [mag, phase]; }, frombin: b, tobin: b, zeroothers: 1);
    chainyy = chainy.pvcollect(1024, {|mag, phase, index| [mag, phase]; }, frombin: b, tobin: b, zeroothers: 1);
 
-		signal1=Pan2.ar(IFFT(chainxx),pos1,env1);
-		signal2=Pan2.ar(IFFT(chainyy),pos2,env2);
+
+		signal1=Pan2.ar(IFFT(PV_PhaseShift(chainxx,phase1)),pos1,env1);
+		signal2=Pan2.ar(IFFT(PV_PhaseShift(chainyy,phase2)),pos2,env2);
 b=b+1;
-m=m+1;
 pl=pl+1;
 		Out.ar(0,signal1);
 		Out.ar(0,signal2);
@@ -79,7 +82,7 @@ var phase1,phase2,angle1=0,angle2=0;
 	phase1=exp(Complex(0,1)*angle1.degrad).theta;
 	angle1=(angle1+(360-(360/1.6180339887499))).wrap(0,360);
 	//phase1=(Complex(cos(phase1.round(0.00001)*1),0).rho*(Complex(cos(phase1.round(0.00001)*3),1).rho)).round(0.00001);
-	phase1=Complex(cos(phase1.round(0.00001)*1),0).rho.round(0.00001);
+	phase1=Complex(cos(phase1.round(0.00001)*3),0).rho.round(0.00001);
 	phase1=phase1/(2.sqrt);
 
 };
@@ -88,7 +91,7 @@ var phase1,phase2,angle1=0,angle2=0;
 
 	phase2=exp(Complex(0,1)*angle2.degrad).theta;
 	angle2=(angle2+(360-(360/1.6180339887499))).wrap(0,360);
-	phase2=Complex(0,cos(phase2.round(0.00001)*1)).rho.neg.round(0.00001);
+	phase2=Complex(0,cos(phase2.round(0.00001)*3)).rho.neg.round(0.00001);
 	phase2=phase2/(2.sqrt);
 };
 
@@ -102,7 +105,7 @@ var phase,angle=0,mag,phase1,angle1=0,mag1;
 	phase=exp(Complex(0,1)*angle.degrad).theta;
 	angle=(angle+(360-(360/1.6180339887499))).wrap(0,360);
 	//mag=(Complex(cos(phase.round(0.00001)*3),0).rho*Complex(cos(phase.round(0.00001)*0),0).rho).round(0.00001);
-	mag=Complex(cos(phase.round(0.00001)*1),0).rho.round(0.00001);
+	mag=Complex(cos(phase.round(0.00001)*3),0).rho.round(0.00001);
 	mag=mag/(2.sqrt);
 	};
 
@@ -110,7 +113,7 @@ var phase,angle=0,mag,phase1,angle1=0,mag1;
 
 	phase1=exp(Complex(0,1)*angle1.degrad).theta;
 	angle1=(angle1+(360-(360/1.6180339887499))).wrap(0,360);
-	mag1=Complex(0,sin(phase1.round(0.00001)*1)).rho.round(0.00001);
+	mag1=Complex(0,sin(phase1.round(0.00001)*3)).rho.round(0.00001);
 	mag1=mag1/(2.sqrt);
 	};
 )
