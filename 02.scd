@@ -31,6 +31,7 @@ sig.plot;
 
 ////////arrays
 (
+(
 var phase,angle=0,phase1,angle1=90;
 
 ~phase1=365.collect{
@@ -51,22 +52,20 @@ var phase,angle=0,phase1,angle1=90;
 (
 var phase1,phase2,angle1=0,angle2=0;
 
-~pos1L=365.collect{
+~posL=365.collect{
 
 	phase1=exp(Complex(0,1)*angle1.degrad).theta;
 	angle1=(angle1+(360-(360/1.6180339887499))).wrap(0,360);
 	//phase1=(Complex(cos(phase1.round(0.000000001)*1),0).rho*(Complex(cos(phase1.round(0.000000001)*3),1).rho)).round(0.000000001);
-	phase1=Complex(cos(phase1.round(0.000000001)*1),0).rho.round(0.000000001);
-	phase1=phase1/(2.sqrt);
+	phase1=Complex(sin(phase1.round(0.000000001)*1),sin(phase1.round(0.000000001)*1)).rho.round(0.000000001);
 
 };
 
-~pos1R=365.collect{
+~posR=365.collect{
 
 	phase2=exp(Complex(0,1)*angle2.degrad).theta;
 	angle2=(angle2+(360-(360/1.6180339887499))).wrap(0,360);
-	phase2=Complex(0,cos(phase2.round(0.000000001)*1)).rho.neg.round(0.000000001);
-	phase2=phase2/(2.sqrt);
+	phase2=Complex(sin(phase2.round(0.000000001)*1),sin(phase2.round(0.000000001)*1)).rho.neg.round(0.000000001);
 };
 
 )
@@ -79,41 +78,42 @@ var phase,angle=0,mag,phase1,angle1=0,mag1;
 	phase=exp(Complex(0,1)*angle.degrad).theta;
 	angle=(angle+(360-(360/1.6180339887499))).wrap(0,360);
 	//mag=(Complex(cos(phase.round(0.000000001)*3),0).rho*Complex(cos(phase.round(0.000000001)*0),0).rho).round(0.000000001);
-	mag=Complex(cos(phase.round(0.000000001)*1),0).rho.round(0.000000001);
-	mag=mag/(2.sqrt);
+	mag=Complex(cos(phase.round(0.000000001)*1),cos(phase.round(0.000000001)*1)).rho.round(0.000000001);
 	};
 
 ~magR = 365.collect{
 
 	phase1=exp(Complex(0,1)*angle1.degrad).theta;
 	angle1=(angle1+(360-(360/1.6180339887499))).wrap(0,360);
-	mag1=Complex(0,sin(phase1.round(0.000000001)*1)).rho.round(0.000000001);
-	mag1=mag1/(2.sqrt);
+	mag1=Complex(sin(phase1.round(0.000000001)*1),sin(phase1.round(0.000000001)*1)).rho.round(0.000000001);
 	};
+)
 )
 
 ////////////////////osc
 
 (
 {
-var signal1,signal2,env1,env2,pl=1,m=1,fund=55;
-var pos1,pos2,phase1,phase2,ph1,ph2;
+var signal1,signal2,env1,env2,pl=0,m=1,fund=55;
+var pos1,pos2,phase1,phase2,ph1,ph2,mag1,mag2;
 
 360.do{
 
-		pos1=~pos1L.[pl];
-		pos2=~pos1R.[pl];
+		pos1=~pos1L.[pl]/(2.sqrt);
+		pos2=~pos1R.[pl]/(2.sqrt);
 		phase1=~phase1.[pl];
 		phase2=~phase2.[pl];
+		mag1=~magL.[pl]/(2.sqrt);
+		mag2=~magR.[pl]/(2.sqrt);
 
 		ph1=SinOsc.ar(~magL.[pl].reciprocal,phase1);
-		ph2=SinOsc.ar(~magR.[pl].reciprocal,phase2);
+		ph2=SinOsc.ar(~magL.[pl].reciprocal,phase2);
 
 		env1=EnvGen.ar(Env([1/10,1/10],[200]),doneAction:2,levelScale:m.reciprocal);
 		env2=EnvGen.ar(Env([1/10,1/10],[200]),doneAction:2,levelScale:m.reciprocal);
 
-		signal1=LPF.ar(Osc.ar(~b,fund*m,ph1,SinOsc.ar(~magL.[pl].reciprocal,phase1,mul:~magL.[pl],add:1)),3000);
-		signal2=LPF.ar(Osc.ar(~b,fund*m,ph2,SinOsc.ar(~magR.[pl].reciprocal,phase2,mul:~magR.[pl],add:1)),3000);
+		signal1=LPF.ar(Osc.ar(~b,fund*m,ph1,SinOsc.ar(mag1.reciprocal,phase1,mul:mag1,add:1)),3000);
+		signal2=LPF.ar(Osc.ar(~b,fund*m,ph2,SinOsc.ar(mag2.reciprocal,phase2,mul:mag2,add:1)),3000);
 
 	m=m+1;
 

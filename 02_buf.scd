@@ -17,6 +17,7 @@ Buffer.freeAll
 
 /////////arrays
 (
+(
 var phase,angle=0,phase1,angle1=90;
 
 ~phase1=365.collect{
@@ -42,8 +43,7 @@ var phase1,phase2,angle1=0,angle2=0;
 	phase1=exp(Complex(0,1)*angle1.degrad).theta;
 	angle1=(angle1+(360-(360/1.6180339887499))).wrap(0,360);
 	//phase1=(Complex(cos(phase1.round(0.000000001)*1),0).rho*(Complex(cos(phase1.round(0.000000001)*3),1).rho)).round(0.000000001);
-	phase1=Complex(cos(phase1.round(0.000000001)*3),0).rho.round(0.000000001);
-	phase1=phase1/(2.sqrt);
+	phase1=Complex(sin(phase1.round(0.000000001)*1),sin(phase1.round(0.000000001)*1)).rho.round(0.000000001);
 
 };
 
@@ -51,8 +51,7 @@ var phase1,phase2,angle1=0,angle2=0;
 
 	phase2=exp(Complex(0,1)*angle2.degrad).theta;
 	angle2=(angle2+(360-(360/1.6180339887499))).wrap(0,360);
-	phase2=Complex(0,cos(phase2.round(0.000000001)*3)).rho.neg.round(0.000000001);
-	phase2=phase2/(2.sqrt);
+	phase2=Complex(sin(phase2.round(0.000000001)*1),sin(phase2.round(0.000000001)*1)).rho.neg.round(0.000000001);
 };
 
 )
@@ -65,24 +64,23 @@ var phase,angle=0,mag,phase1,angle1=0,mag1;
 	phase=exp(Complex(0,1)*angle.degrad).theta;
 	angle=(angle+(360-(360/1.6180339887499))).wrap(0,360);
 	//mag=(Complex(cos(phase.round(0.000000001)*3),0).rho*Complex(cos(phase.round(0.000000001)*0),0).rho).round(0.000000001);
-	mag=Complex(cos(phase.round(0.000000001)*3),0).rho.round(0.000000001);
-	mag=mag/(2.sqrt);
+	mag=Complex(cos(phase.round(0.000000001)*1),cos(phase.round(0.000000001)*1)).rho.round(0.000000001);
 	};
 
 ~magR = 365.collect{
 
 	phase1=exp(Complex(0,1)*angle1.degrad).theta;
 	angle1=(angle1+(360-(360/1.6180339887499))).wrap(0,360);
-	mag1=Complex(0,sin(phase1.round(0.000000001)*3)).rho.round(0.000000001);
-	mag1=mag1/(2.sqrt);
+	mag1=Complex(sin(phase1.round(0.000000001)*1),sin(phase1.round(0.000000001)*1)).rho.round(0.000000001);
 	};
+)
 )
 
 
 //////////////synth
 (
 {
-var signal1,signal2,env1,env2,pl=1;
+var signal1,signal2,env1,env2,pl=0;
 var pos1,pos2,phase1,phase2,ph1,ph2;
 var in1,in2, chainx,chainy,b=0;
 var chainxx,chainyy,mag1,mag2;
@@ -95,12 +93,12 @@ var chainxx,chainyy,mag1,mag2;
 
 360.do{
 
-		pos1=~posL.[pl];
-		pos2=~posR.[pl];
+		pos1=~posL.[pl]/(2.sqrt);
+		pos2=~posR.[pl]/(2.sqrt);
 		phase1=~phase1.[pl];
 		phase2=~phase2.[pl];
-		mag1=~magL.[pl];
-		mag2=~magL.[pl];
+		mag1=~magL.[pl]/(2.sqrt);
+		mag2=~magL.[pl]/(2.sqrt);
 
 
 		env1=EnvGen.ar(Env([1,1],[360]),doneAction:2);
