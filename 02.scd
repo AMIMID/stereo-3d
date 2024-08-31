@@ -50,14 +50,14 @@ var phase,angle=0,phase1,angle1=90;
 )
 
 (
-var phase1,phase2,angle1=0,angle2=0;
+var phase1,phase2,angle1=0,angle2=0,m1=1,m2=1;
 
 ~posL=365.collect{
 
 	phase1=exp(Complex(0,1)*angle1.degrad).theta;
 	angle1=(angle1+(360-(360/1.6180339887499))).wrap(0,360);
 	//phase1=(Complex(cos(phase1.round(0.000000001)*1),0).rho*(Complex(cos(phase1.round(0.000000001)*3),1).rho)).round(0.000000001);
-	phase1=Complex(sin(phase1.round(0.000000001)*1),sin(phase1.round(0.000000001)*1)).rho.round(0.000000001);
+	phase1=Complex(sin(phase1.round(0.000000001)*m1),sin(phase1.round(0.000000001)*m1)).rho.round(0.000000001)*Complex(cos(phase1.round(0.000000001)*m1),cos(phase1.round(0.000000001)*m1)).rho.round(0.000000001);
 
 };
 
@@ -65,27 +65,27 @@ var phase1,phase2,angle1=0,angle2=0;
 
 	phase2=exp(Complex(0,1)*angle2.degrad).theta;
 	angle2=(angle2+(360-(360/1.6180339887499))).wrap(0,360);
-	phase2=Complex(sin(phase2.round(0.000000001)*1),sin(phase2.round(0.000000001)*1)).rho.neg.round(0.000000001);
+	phase2=Complex(sin(phase2.round(0.000000001)*m2),sin(phase2.round(0.000000001)*m2)).rho.neg.round(0.000000001)*Complex(sin(phase2.round(0.000000001)*m2),sin(phase2.round(0.000000001)*m2)).rho.neg.round(0.000000001);
 };
 
 )
 
 (
-var phase,angle=0,mag,phase1,angle1=0,mag1;
+var phase,angle=0,mag,phase1,angle1=0,mag1,m1=1,m2=1;
 
 ~magL = 365.collect{
 
 	phase=exp(Complex(0,1)*angle.degrad).theta;
 	angle=(angle+(360-(360/1.6180339887499))).wrap(0,360);
 	//mag=(Complex(cos(phase.round(0.000000001)*3),0).rho*Complex(cos(phase.round(0.000000001)*0),0).rho).round(0.000000001);
-	mag=Complex(cos(phase.round(0.000000001)*1),cos(phase.round(0.000000001)*1)).rho.round(0.000000001);
+	mag=Complex(cos(phase.round(0.000000001)*m1),cos(phase.round(0.000000001)*m1)).rho.round(0.000000001)*Complex(sin(phase.round(0.000000001)*m1),sin(phase.round(0.000000001)*m1)).rho.round(0.000000001);
 	};
 
 ~magR = 365.collect{
 
 	phase1=exp(Complex(0,1)*angle1.degrad).theta;
 	angle1=(angle1+(360-(360/1.6180339887499))).wrap(0,360);
-	mag1=Complex(sin(phase1.round(0.000000001)*1),sin(phase1.round(0.000000001)*1)).rho.round(0.000000001);
+	mag1=Complex(sin(phase1.round(0.000000001)*m2),sin(phase1.round(0.000000001)*m2)).rho.round(0.000000001)*Complex(cos(phase1.round(0.000000001)*m2),cos(phase1.round(0.000000001)*m2)).rho.round(0.000000001);
 	};
 )
 )
