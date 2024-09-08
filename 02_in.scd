@@ -84,8 +84,8 @@ var pos1,pos2,phase1,phase2,ph1,ph2;
 var in1,in2, chainx,chainy,b=0;
 var chainxx,chainyy,mag1,mag2;
 
-	in1 = SoundIn(0);
-	 in2 =  SoundIn(0);
+	in1 = SoundIn.ar(0);
+	 in2 =  SoundIn.ar(0);
 
 	chainx = FFT(LocalBuf(1024), in1);
 	chainy = FFT(LocalBuf(1024), in2);
