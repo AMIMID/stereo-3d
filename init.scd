@@ -19,15 +19,15 @@ s.waitForBoot{
 (
 {
 var signal1,signal2,env1,env2,pl=0,angle1=0,angle2=0,angle3=0,angle4=0,angle5=0,angle6=90;
-var pos1,pos2,phase1,phase2,phase3,phase4,phase5,phase6,maga,magb,m1=2,m2=2;
+var pos1,pos2,phase1,phase2,phase3,phase4,phase5,phase6,maga,magb,m1=3,m2=3;
 var in1,in2, chainx,chainy,b=0,phasea,phaseb;
 var chainxx,chainyy,mag1,mag2;
 
 	in1 = SoundIn.ar(0);
 	 in2 =  SoundIn.ar(0);
 
-	chainx = FFT(LocalBuf(1024), in1);
-	chainy = FFT(LocalBuf(1024), in2);
+	chainx = FFT(LocalBuf(1024*2), in1);
+	chainy = FFT(LocalBuf(1024*2), in2);
 
 
 ~posL=365.collect{
@@ -61,7 +61,7 @@ var chainxx,chainyy,mag1,mag2;
 	};
 
 
-360.do{
+180.do{
 
 		pos1=~posL.[pl]/(2.sqrt);
 		pos2=~posR.[pl]/(2.sqrt);
