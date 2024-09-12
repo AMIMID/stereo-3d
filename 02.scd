@@ -94,7 +94,7 @@ var phase,angle=0,mag,phase1,angle1=0,mag1,m1=2,m2=2;
 (
 {
 var signal1,signal2,env1,env2,pl=0,m=1,fund=55;
-var pos1,pos2,phase1,phase2,ph1,ph2,mag1,mag2;
+var pos1,pos2,phase1,phase2,ph1,ph2,mag;
 
 360.do{
 
@@ -102,23 +102,22 @@ var pos1,pos2,phase1,phase2,ph1,ph2,mag1,mag2;
 		pos2=~pos1R.[pl]/(2.sqrt);
 		phase1=~phase1.[pl];
 		phase2=~phase2.[pl];
-		mag1=~magL.[pl]/(2.sqrt);
-		mag2=~magR.[pl]/(2.sqrt);
+			mag=Complex(~magL.[pl]/(2.sqrt),~magR.[pl]/(2.sqrt)).rho/(2.sqrt);
 
-		ph1=SinOsc.ar(~magL.[pl].reciprocal,phase1);
-		ph2=SinOsc.ar(~magL.[pl].reciprocal,phase2);
+		ph1=SinOsc.ar(mag,phase1);
+		ph2=SinOsc.ar(mag,phase2);
 
 		env1=EnvGen.ar(Env([1/10,1/10],[200]),doneAction:2,levelScale:m.reciprocal);
 		env2=EnvGen.ar(Env([1/10,1/10],[200]),doneAction:2,levelScale:m.reciprocal);
 
-		signal1=LPF.ar(Osc.ar(~b,fund*m,ph1,SinOsc.ar(mag1.reciprocal,phase1,mul:mag1,add:1)),3000);
-		signal2=LPF.ar(Osc.ar(~b,fund*m,ph2,SinOsc.ar(mag2.reciprocal,phase2,mul:mag2,add:1)),3000);
+		signal1=LPF.ar(Osc.ar(~b,fund*m,ph1,m.reciprocal),3000);
+		signal2=LPF.ar(Osc.ar(~b,fund*m,ph2,m.reciprocal),3000);
 
 	m=m+1;
 
 pl=pl+1;
-		Out.ar(0,Pan2.ar(signal1*env1,pos1));
-		Out.ar(0,Pan2.ar(signal2*env2,pos2));
+		Out.ar(0,Pan2.ar(signal1*env1,pos1,mag));
+		Out.ar(0,Pan2.ar(signal2*env2,pos2,mag));
 
 }
 }.play
