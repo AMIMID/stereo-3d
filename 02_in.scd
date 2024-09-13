@@ -10,10 +10,6 @@ s.waitForBoot
 )
 
 Server.killAll
-Buffer.freeAll
-////////////////////buffers
-~l = Buffer.readChannel(s,"/Users/petrostatsiopoulos/Desktop/00.wav",channels:0 );
-~r = Buffer.readChannel(s,"/Users/petrostatsiopoulos/Desktop/00.wav",channels:1 );
 
 /////////arrays
 (
@@ -36,7 +32,7 @@ var phase,angle=0,phase1,angle1=90;
 )
 
 (
-var phase1,phase2,angle1=0,angle2=0,m1=2,m2=2;
+var phase1,phase2,angle1=0,angle2=0,m1=4,m2=4;
 
 ~posL=365.collect{
 
@@ -56,7 +52,7 @@ var phase1,phase2,angle1=0,angle2=0,m1=2,m2=2;
 )
 
 (
-var phase,angle=0,mag,phase1,angle1=0,mag1,m1=2,m2=2;
+var phase,angle=0,mag,phase1,angle1=0,mag1,m1=4,m2=4;
 
 ~magL = 365.collect{
 
@@ -83,12 +79,13 @@ var signal1,signal2,env1,env2,pl=0;
 var pos1,pos2,phase1,phase2,ph1,ph2;
 var in1,in2, chainx,chainy,b=0;
 var chainxx,chainyy,mag;
+var frames= 2048
 
 	in1 = SoundIn.ar(0);
 	 in2 =  SoundIn.ar(0);
 
-	chainx = FFT(LocalBuf(1024), in1);
-	chainy = FFT(LocalBuf(1024), in2);
+	chainx = FFT(LocalBuf(frames), in1);
+	chainy = FFT(LocalBuf(frames), in2);
 
 360.do{
 
@@ -99,15 +96,15 @@ var chainxx,chainyy,mag;
 		mag=Complex(~magL.[pl]/(2.sqrt),~magR.[pl]/(2.sqrt)).rho/(2.sqrt);
 
 
-		env1=EnvGen.ar(Env([1,1],[360]),doneAction:2);
-		env2=EnvGen.ar(Env([1,1],[360]),doneAction:2);
+	//	env1=EnvGen.ar(Env([1,1],[360]),doneAction:2);
+		//env2=EnvGen.ar(Env([1,1],[360]),doneAction:2);
 
-   chainxx = chainx.pvcollect(1024, {|mag, phase, index| [mag*mag, phase]; }, frombin: b, tobin: b, zeroothers: 1);
-   chainyy = chainy.pvcollect(1024, {|mag, phase, index| [mag*mag, phase]; }, frombin: b, tobin: b, zeroothers: 1);
+   chainxx = chainx.pvcollect(frames, {|mag, phase, index| [mag, phase]; }, frombin: b, tobin: b, zeroothers: 1);
+   chainyy = chainy.pvcollect(frames, {|mag, phase, index| [mag, phase]; }, frombin: b, tobin: b, zeroothers: 1);
 
 
-		signal1=Pan2.ar(IFFT(PV_PhaseShift(chainxx,0.degrad)),pos1,env1);
-		signal2=Pan2.ar(IFFT(PV_PhaseShift(chainyy,90.degrad)),pos2,env2);
+		signal1=Pan2.ar(IFFT(PV_PhaseShift(chainxx,0.degrad)),pos1,mag);
+		signal2=Pan2.ar(IFFT(PV_PhaseShift(chainyy,90.degrad)),pos2,mag);
 b=b+1;
 pl=pl+1;
 		Out.ar(0,signal1);
