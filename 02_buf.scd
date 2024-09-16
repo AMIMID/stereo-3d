@@ -13,8 +13,8 @@ s.waitForBoot
 Buffer.freeAll
 ////////////////////buffers
 (
-~l = Buffer.readChannel(s,"/Users/petrostatsiopoulos/Desktop/Intermission - Piece Of My Heart   (Heart Mix).mp3",channels:0 );
-~r = Buffer.readChannel(s,"/Users/petrostatsiopoulos/Desktop/Intermission - Piece Of My Heart   (Heart Mix).mp3",channels:1 );
+~l = Buffer.readChannel(s,"/Users/petrostatsiopoulos/Desktop/backups/1/New FROM US.mp3",channels:0 );
+~r = Buffer.readChannel(s,"/Users/petrostatsiopoulos/Desktop/backups/1/New FROM US.mp3",channels:1 );
 )
 /////////arrays
 (
@@ -37,7 +37,7 @@ var phase,angle=0,phase1,angle1=90;
 )
 
 (
-var phase1,phase2,angle1=0,angle2=0,m=2;
+var phase1,phase2,angle1=0,angle2=0,m=3;
 
 ~posL=365.collect{
 
@@ -57,7 +57,7 @@ var phase1,phase2,angle1=0,angle2=0,m=2;
 )
 
 (
-var phase,angle=0,mag,phase1,angle1=0,mag1,m1=2,m2=3;
+var phase,angle=0,mag,phase1,angle1=0,mag1,m1=3,m2=3;
 
 ~magL = 365.collect{
 
@@ -100,15 +100,15 @@ var frames=(1024*2);
 		mg=Complex(~magL.[pl]/(2.sqrt),~magR.[pl]/(2.sqrt)).rho/(2.sqrt);
 
 
-		env1=EnvGen.ar(Env([1,1],[360]),doneAction:2);
-		env2=EnvGen.ar(Env([1,1],[360]),doneAction:2);
+		//env1=EnvGen.ar(Env([1,1],[360]),doneAction:2);
+		//env2=EnvGen.ar(Env([1,1],[360]),doneAction:2);
 
-   chainxx = chainx.pvcollect(frames, {|mag, phase, index| [mag*mg, phase]; }, frombin: b, tobin: b, zeroothers: 1);
-   chainyy = chainy.pvcollect(frames, {|mag, phase, index| [mag*mg, phase]; }, frombin: b, tobin: b, zeroothers: 1);
+   chainxx = chainx.pvcollect(frames, {|mag, phase, index| [mag, phase]; }, frombin: b, tobin: b, zeroothers: 1);
+   chainyy = chainy.pvcollect(frames, {|mag, phase, index| [mag, phase]; }, frombin: b, tobin: b, zeroothers: 1);
 
 
-		signal1=Pan2.ar(IFFT(PV_PhaseShift(chainxx,0.degrad)),pos1,env1);
-		signal2=Pan2.ar(IFFT(PV_PhaseShift(chainyy,90.degrad)),pos2,env2);
+		signal1=Pan2.ar(IFFT(PV_PhaseShift(chainxx,0.degrad)),pos1,mg);
+		signal2=Pan2.ar(IFFT(PV_PhaseShift(chainyy,90.degrad)),pos2,mg);
 b=b+1;
 pl=pl+1;
 		Out.ar(0,signal1);

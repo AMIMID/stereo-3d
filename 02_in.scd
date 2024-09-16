@@ -79,7 +79,7 @@ var signal1,signal2,env1,env2,pl=0;
 var pos1,pos2,phase1,phase2,ph1,ph2;
 var in1,in2, chainx,chainy,b=0;
 var chainxx,chainyy,mag;
-var frames= 2048
+var frames= 2048;
 
 	in1 = SoundIn.ar(0);
 	 in2 =  SoundIn.ar(0);
@@ -114,7 +114,7 @@ pl=pl+1;
 }.play
 )
 
-.//////////////////////vis
+//////////////////////vis
 
 (
 var  sph1,sph2,sph3,sph4,sph5,m_x=9,m_y=8,m_z=6;
@@ -154,7 +154,7 @@ data = (360).collect{
 	az=~az.[pl];
 	el=~el.[pl];
 	//mag=~magz.[pl];
-	mag=Complex(~magR.[pl]/(2.sqrt)*600,~magR.[pl]/(2.sqrt)*600).rho/(2.sqrt);
+	mag=Complex(~magR.[pl]/(2.sqrt)*600,~magL.[pl]/(2.sqrt)*600).rho/(2.sqrt);
 	pl=pl+1;
 
 	sph=Spherical(mag,az,el).asCartesian.asArray;

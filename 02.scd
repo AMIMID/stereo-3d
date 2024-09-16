@@ -20,7 +20,7 @@ var env,sig,wt,angle=0,level,levels;
 
 	level=exp(Complex(0,1)*angle).imag;
 		angle=angle+1.degrad;
-	levels=level.rrand(exp(Complex(0,1)*angle+(0.12/1.6180339887499)).imag);
+	levels=level.rrand(exp(Complex(0,1)*angle+(0.6/1.6180339887499)).imag);
 };
 env = Env(~levels,[1]);
 sig=env.asSignal(1024);
@@ -98,8 +98,8 @@ var pos1,pos2,phase1,phase2,ph1,ph2,mag;
 
 360.do{
 
-		pos1=~pos1L.[pl]/(2.sqrt);
-		pos2=~pos1R.[pl]/(2.sqrt);
+		pos1=~posL.[pl]/(2.sqrt);
+		pos2=~posR.[pl]/(2.sqrt);
 		phase1=~phase1.[pl];
 		phase2=~phase2.[pl];
 			mag=Complex(~magL.[pl]/(2.sqrt),~magR.[pl]/(2.sqrt)).rho/(2.sqrt);
@@ -107,17 +107,17 @@ var pos1,pos2,phase1,phase2,ph1,ph2,mag;
 		ph1=SinOsc.ar(mag,phase1);
 		ph2=SinOsc.ar(mag,phase2);
 
-		env1=EnvGen.ar(Env([1/10,1/10],[200]),doneAction:2,levelScale:m.reciprocal);
-		env2=EnvGen.ar(Env([1/10,1/10],[200]),doneAction:2,levelScale:m.reciprocal);
+		env1=EnvGen.ar(Env([1,1],[240]),doneAction:2,levelScale:m.reciprocal);
+		env2=EnvGen.ar(Env([1,1],[240]),doneAction:2,levelScale:m.reciprocal);
 
-		signal1=LPF.ar(Osc.ar(~b,fund*m,ph1,m.reciprocal),3000);
-		signal2=LPF.ar(Osc.ar(~b,fund*m,ph2,m.reciprocal),3000);
+		signal1=LPF.ar(Osc.ar(~b.bufnum,fund*m,ph1,m.reciprocal),3000,env1);
+		signal2=LPF.ar(Osc.ar(~b.bufnum,fund*m,ph2,m.reciprocal),3000,env2);
 
 	m=m+1;
 
 pl=pl+1;
-		Out.ar(0,Pan2.ar(signal1*env1,pos1,mag));
-		Out.ar(0,Pan2.ar(signal2*env2,pos2,mag));
+		Out.ar(0,Pan2.ar(signal1,pos1,mag));
+		Out.ar(0,Pan2.ar(signal2,pos2,mag));
 
 }
 }.play
