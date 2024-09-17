@@ -17,84 +17,87 @@ s.waitForBoot{
 
 (
 SynthDef.new(\synhtone,{
-arg n=1,cutt=3000;
-var signal1,signal2,env1,env2,pl=0,m=1,fund=55;
-var pos1,pos2,phase1,phase2,ph1,ph2,mag;
+arg n=1,cutt=1200;
+var signal1,signal2,env1,env2,pl=0,m=1,fund=55,pitch;
+var pos1,pos2,ph1,ph2,mag;
 var phase1,angle1=0,phase2,angle2=90;
-var phase3,phase4,angle3=0,angle4=0,m1=3,m2=2;
+var phase3,phase4,angle3=0,angle4=0,m1=3,m2=3;
 var phase5,angle5=0,mag1,phase6,angle6=0,mag2;
 var env,sig,wt,ang=0,level,levels;
 
-(~levels=360.collect{
-level=exp(Complex(0,1)*angle).imag;
+~levels=360.collect{
+level=exp(Complex(0,1)*ang).imag;
 ang=ang+1.degrad;
-levels=level.rrand(exp(Complex(0,1)*ang+(0.6/1.6180339887499)).imag);};
+levels=level.rrand(exp(Complex(0,1)*ang+((1/4)/1.6180339887499)).imag);};
 env = Env(~levels,[1]);sig=env.asSignal(1024);wt = sig.asWavetable;
 ~b.loadCollection(wt);
-sig.plot;)
+//sig.plot;
 
-(~phase1=365.collect{
+~phase1=365.collect{
 phase1=exp(Complex(0,1)*angle1.degrad).theta;
 angle1=(angle1+(360-(360/1.6180339887499))).wrap(0,360);
-phase.round(0.000000001)};
+phase1.round(0.000000001)};
 ~phase2=365.collect{
 phase2=exp(Complex(0,1)*angle2.degrad).theta;
 angle2=(angle2+(360-(360/1.6180339887499))).wrap(0,360);
-phase2.round(0.000000001)};);
+phase2.round(0.000000001)};
 
-(~posL=365.collect{
+~posL=365.collect{
 phase3=exp(Complex(0,1)*angle3.degrad).theta;
 angle3=(angle3+(360-(360/1.6180339887499))).wrap(0,360);							phase3=(Complex(sin(phase3.round(0.000000001)*m1),sin(phase3.round(0.000000001)*m1)).rho.round(0.000000001)*Complex(cos(phase3.round(0.000000001)*m1),cos(phase3.round(0.000000001)*m1)).rho).round(0.000000001);};
 ~posR=365.collect{
 phase4=exp(Complex(0,1)*angle4.degrad).theta;
-angle4=(angle4+(360-(360/1.6180339887499))).wrap(0,360);						phase4=(Complex(sin(phase4.round(0.000000001)*m2),sin(phase4.round(0.000000001)*m2)).rho.round(0.000000001)*Complex(cos(phase4.round(0.000000001)*m2),cos(phase4.round(0.000000001)*m2)).rho).neg.round(0.000000001);};);
+angle4=(angle4+(360-(360/1.6180339887499))).wrap(0,360);						phase4=(Complex(sin(phase4.round(0.000000001)*m2),sin(phase4.round(0.000000001)*m2)).rho.round(0.000000001)*Complex(cos(phase4.round(0.000000001)*m2),cos(phase4.round(0.000000001)*m2)).rho).neg.round(0.000000001);};
 
-(~magL = 365.collect{
+~magL = 365.collect{
 	phase5=exp(Complex(0,1)*angle5.degrad).theta;
-	angle5=(angle5+(360-(360/1.6180339887499))).wrap(0,360);	mag1=Complex(cos(phase5.round(0.000000001)*m1),cos(phase5.round(0.000000001)*m1)).rho.round(0.000000001)*Complex(sin(phase5.round(0.000000001)*m1),sin(phase5.round(0.000000001)*m1)).rho.round(0.000000001);
-	};
+	angle5=(angle5+(360-(360/1.6180339887499))).wrap(0,360);	mag1=Complex(cos(phase5.round(0.000000001)*m1),cos(phase5.round(0.000000001)*m1)).rho.round(0.000000001)*Complex(sin(phase5.round(0.000000001)*m1),sin(phase5.round(0.000000001)*m1)).rho.round(0.000000001);};
 ~magR = 365.collect{
 	phase6=exp(Complex(0,1)*angle6.degrad).theta;
-	angle6=(angle6+(360-(360/1.6180339887499))).wrap(0,360);	mag2=Complex(sin(phase6.round(0.000000001)*m2),sin(phase6.round(0.000000001)*m2)).rho.round(0.000000001)*Complex(cos(phase6.round(0.000000001)*m2),cos(phase6.round(0.000000001)*m2)).rho.round(0.000000001);};)
+	angle6=(angle6+(360-(360/1.6180339887499))).wrap(0,360);	mag2=Complex(sin(phase6.round(0.000000001)*m2),sin(phase6.round(0.000000001)*m2)).rho.round(0.000000001)*Complex(cos(phase6.round(0.000000001)*m2),cos(phase6.round(0.000000001)*m2)).rho.round(0.000000001);};
 
-			pitch=fund*2.pow(n/12);
-360.do{
+pitch=fund*2.pow(n/12);
+90.do{
 
 		pos1=~posL.[pl]/(2.sqrt);pos2=~posR.[pl]/(2.sqrt);
-		mag=Complex(~magL.[pl]/(2.sqrt),~magR.[pl]/(2.sqrt)).rho/(2.sqrt);
 
-		ph1=SinOsc.ar(mag,~phase1.[pl]);ph2=SinOsc.ar(mag,~phase2.[pl]);
+		mag=(Complex(~magL.[pl]/(2.sqrt),~magR.[pl]/(2.sqrt)).rho/(2.sqrt));
 
-		env1=EnvGen.ar(Env([1,1],[240]),doneAction:2,levelScale:pitch.reciprocal);
-		env2=EnvGen.ar(Env([1,1],[240]),doneAction:2,levelScale:pitch.reciprocal);
+		ph1=SinOsc.ar(mag.reciprocal,~phase1.[pl]);
+		ph2=SinOsc.ar(mag.reciprocal,~phase2.[pl]);
 
-		signal1=LPF.ar(Osc.ar(~b.bufnum,pitch*m,ph1,m.reciprocal),cutt,mag);
-		signal2=LPF.ar(Osc.ar(~b.bufnum,pitch*m,ph2,m.reciprocal),cutt,mag);
+		env1=EnvGen.ar(Env.perc(0.02,2),doneAction:2,levelScale:mag);
+		env2=EnvGen.ar(Env.perc(0.02,2),doneAction:2,levelScale:mag);
+
+		signal1=LPF.ar(Osc.ar(~b.bufnum,pitch*m,ph1,m.reciprocal),cutt,pitch.reciprocal);
+		signal2=LPF.ar(Osc.ar(~b.bufnum,pitch*m,ph2,m.reciprocal),cutt,pitch.reciprocal);
 m=m+1;
 pl=pl+1;
-		Out.ar(0,Pan2.ar(signal1,pos1,env1));Out.ar(0,Pan2.ar(signal2,pos2,env1));
-};}).add;
+		Out.ar(0,Pan2.ar(signal1*16,pos1,env1));Out.ar(0,Pan2.ar(signal2*16,pos2,env2))
+};
+}).add;
 );
 
 (
 MIDIClient.init;
 MIDIIn.connectAll;
 
-/////
-
-// MIDIdef.cc(\dataentry,{|val,chan,src|[val,chan,src].postln; ~a.set(\cutt,val.linlin(1,127,110,880))},7);
-// ~a=Synth.new(\oa);
-// ~a.set(\cutt,220)
-
-MIDIdef.noteOn(\synhtone, { |val, num, chan, src|
+MIDIdef.noteOn(\note, { |val, num, chan, src|
 	[val, num, chan, src].postln;
 	if(num < 49) {
 		num = num - 1
 	};
-	Synth(\oa, [n1: num - 48,cutt:1200]);
+	~a=Synth(\synhtone, [n: num - 48,cutt:1200]);
 
-}, noteNum: (36..96))
+}, noteNum: (36..96));
+
+~cuttoff= 8192;
+
+MIDIdef.bend(\lowpass,{ |val, num, chan, src|
+	[val, num, chan, src].postln;
+			~cuttoff=val.linlin(0,16383,55,14080);
+			~a.set(\cutt,~cuttoff);
+	});
 );
-};
+}
 )
-
