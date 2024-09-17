@@ -79,7 +79,7 @@ var phase,angle=0,mag,phase1,angle1=0,mag1,m1=3,m2=3;
 //////////////synth
 (
 {
-var signal1,signal2,env1,env2,pl=0;
+var signal1,signal2,env1,env2,pl=1;
 var pos1,pos2,phase1,phase2,ph1,ph2;
 var in1,in2, chainx,chainy,b=0;
 var chainxx,chainyy,mg;

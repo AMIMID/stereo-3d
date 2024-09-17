@@ -17,8 +17,8 @@ s.waitForBoot{
 
 (
 SynthDef.new(\synhtone,{
-arg n=1,cutt=1200;
-var signal1,signal2,env1,env2,pl=0,m=1,fund=55,pitch;
+arg n=1,cutt=1760;
+var signal1,signal2,env1,env2,pl=1,m=1,fund=55,pitch;
 var pos1,pos2,ph1,ph2,mag;
 var phase1,angle1=0,phase2,angle2=90;
 var phase3,phase4,angle3=0,angle4=0,m1=3,m2=3;
@@ -57,7 +57,7 @@ angle4=(angle4+(360-(360/1.6180339887499))).wrap(0,360);						phase4=(Complex(si
 	angle6=(angle6+(360-(360/1.6180339887499))).wrap(0,360);	mag2=Complex(sin(phase6.round(0.000000001)*m2),sin(phase6.round(0.000000001)*m2)).rho.round(0.000000001)*Complex(cos(phase6.round(0.000000001)*m2),cos(phase6.round(0.000000001)*m2)).rho.round(0.000000001);};
 
 pitch=fund*2.pow(n/12);
-90.do{
+45.do{
 
 		pos1=~posL.[pl]/(2.sqrt);pos2=~posR.[pl]/(2.sqrt);
 
@@ -66,8 +66,8 @@ pitch=fund*2.pow(n/12);
 		ph1=SinOsc.ar(mag.reciprocal,~phase1.[pl]);
 		ph2=SinOsc.ar(mag.reciprocal,~phase2.[pl]);
 
-		env1=EnvGen.ar(Env.perc(0.02,2),doneAction:2,levelScale:mag);
-		env2=EnvGen.ar(Env.perc(0.02,2),doneAction:2,levelScale:mag);
+		env1=EnvGen.ar(Env.perc(0.01,3),doneAction:2,levelScale:mag);
+		env2=EnvGen.ar(Env.perc(0.01,3),doneAction:2,levelScale:mag);
 
 		signal1=LPF.ar(Osc.ar(~b.bufnum,pitch*m,ph1,m.reciprocal),cutt,pitch.reciprocal);
 		signal2=LPF.ar(Osc.ar(~b.bufnum,pitch*m,ph2,m.reciprocal),cutt,pitch.reciprocal);
@@ -95,8 +95,8 @@ MIDIdef.noteOn(\note, { |val, num, chan, src|
 
 MIDIdef.bend(\lowpass,{ |val, num, chan, src|
 	[val, num, chan, src].postln;
-			~cuttoff=val.linlin(0,16383,55,14080);
-			~a.set(\cutt,~cuttoff);
+			~cuttoff=val;
+			~a.set(\cutt,~cuttoff.linlin(0,16383,55,14080));
 	});
 );
 }

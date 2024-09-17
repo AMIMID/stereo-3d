@@ -93,7 +93,7 @@ var phase,angle=0,mag,phase1,angle1=0,mag1,m1=2,m2=2;
 
 (
 {
-var signal1,signal2,env1,env2,pl=0,m=1,fund=55;
+var signal1,signal2,env1,env2,pl=1,m=1,fund=55;
 var pos1,pos2,phase1,phase2,ph1,ph2,mag;
 
 360.do{
