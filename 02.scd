@@ -20,7 +20,7 @@ var env,sig,wt,angle=0,level,levels;
 
 	level=exp(Complex(0,1)*angle).imag;
 		angle=angle+1.degrad;
-	levels=level.rrand(exp(Complex(0,1)*angle+(0.6/1.6180339887499)).imag);
+	levels=level.rrand(exp(Complex(0,1)*angle+((1/6)/1.6180339887499)).imag);
 };
 env = Env(~levels,[1]);
 sig=env.asSignal(1024);
@@ -97,7 +97,7 @@ var signal1,signal2,env1,env2,pl=89,m=1,fund=55;
 var pos1,pos2,phase1,phase2,ph1,ph2,mag;
 var chainx,chainy;
 
-360.do{
+90.do{
 
 		pos1=~posL.[pl]/(2.sqrt);
 		pos2=~posR.[pl]/(2.sqrt);
