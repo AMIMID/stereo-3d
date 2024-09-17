@@ -13,21 +13,21 @@ s.waitForBoot
 Buffer.freeAll
 ////////////////////buffers
 (
-~l = Buffer.readChannel(s,"/Users/petrostatsiopoulos/Desktop/backups/1/New FROM US.mp3",channels:0 );
-~r = Buffer.readChannel(s,"/Users/petrostatsiopoulos/Desktop/backups/1/New FROM US.mp3",channels:1 );
+~l = Buffer.readChannel(s,"/Users/petrostatsiopoulos/Dokuments/EXTERNAL/music/piece of my heart.wav",channels:0 );
+~r = Buffer.readChannel(s,"/Users/petrostatsiopoulos/Dokuments/EXTERNAL/music/piece of my heart.wav",channels:1 );
 )
 /////////arrays
 (
 (
 var phase,angle=0,phase1,angle1=90;
 
-~phase1=365.collect{
+~phase1=720.collect{
 
 	phase=exp(Complex(0,1)*angle.degrad).theta;
 	angle=(angle+(360-(360/1.6180339887499))).wrap(0,360);
 	phase.round(0.000000001)
 };
-~phase2=365.collect{
+~phase2=720.collect{
 
 	phase1=exp(Complex(0,1)*angle1.degrad).theta;
 	angle1=(angle1+(360-(360/1.6180339887499))).wrap(0,360);
@@ -39,7 +39,7 @@ var phase,angle=0,phase1,angle1=90;
 (
 var phase1,phase2,angle1=0,angle2=0,m=3;
 
-~posL=365.collect{
+~posL=720.collect{
 
 	phase1=exp(Complex(0,1)*angle1.degrad).theta;
 	angle1=(angle1+(360-(360/1.6180339887499))).wrap(0,360);
@@ -47,7 +47,7 @@ var phase1,phase2,angle1=0,angle2=0,m=3;
 
 };
 
-~posR=365.collect{
+~posR=720.collect{
 
 	phase2=exp(Complex(0,1)*angle2.degrad).theta;
 	angle2=(angle2+(360-(360/1.6180339887499))).wrap(0,360);
@@ -59,14 +59,14 @@ var phase1,phase2,angle1=0,angle2=0,m=3;
 (
 var phase,angle=0,mag,phase1,angle1=0,mag1,m1=3,m2=3;
 
-~magL = 365.collect{
+~magL = 720.collect{
 
 	phase=exp(Complex(0,1)*angle.degrad).theta;
 	angle=(angle+(360-(360/1.6180339887499))).wrap(0,360);
 	mag=Complex(cos(phase.round(0.000000001)*m1),cos(phase.round(0.000000001)*m1)).rho.round(0.000000001)*Complex(sin(phase.round(0.000000001)*m1),sin(phase.round(0.000000001)*m1)).rho.round(0.000000001);
 	};
 
-~magR = 365.collect{
+~magR = 720.collect{
 
 	phase1=exp(Complex(0,1)*angle1.degrad).theta;
 	angle1=(angle1+(360-(360/1.6180339887499))).wrap(0,360);
@@ -79,7 +79,7 @@ var phase,angle=0,mag,phase1,angle1=0,mag1,m1=3,m2=3;
 //////////////synth
 (
 {
-var signal1,signal2,env1,env2,pl=1;
+var signal1,signal2,env1,env2,pl=89;
 var pos1,pos2,phase1,phase2,ph1,ph2;
 var in1,in2, chainx,chainy,b=0;
 var chainxx,chainyy,mg;
@@ -99,16 +99,15 @@ var frames=(1024*2);
 		phase2=~phase2.[pl];
 		mg=Complex(~magL.[pl]/(2.sqrt),~magR.[pl]/(2.sqrt)).rho/(2.sqrt);
 
-
 		//env1=EnvGen.ar(Env([1,1],[360]),doneAction:2);
 		//env2=EnvGen.ar(Env([1,1],[360]),doneAction:2);
 
-   chainxx = chainx.pvcollect(frames, {|mag, phase, index| [mag, phase]; }, frombin: b, tobin: b, zeroothers: 1);
-   chainyy = chainy.pvcollect(frames, {|mag, phase, index| [mag, phase]; }, frombin: b, tobin: b, zeroothers: 1);
+		chainxx = chainx.pvcollect(frames, {|mag, phase, index| [mag*mg, exp(Complex(0,1)*(phase+phase1)).theta]; }, frombin: b, tobin: b, zeroothers: 1);
+   chainyy = chainy.pvcollect(frames, {|mag, phase, index| [mag*mg, exp(Complex(0,1)*(phase+phase2)).theta]; }, frombin: b, tobin: b, zeroothers: 1);
 
 
-		signal1=Pan2.ar(IFFT(PV_PhaseShift(chainxx,0.degrad)),pos1,mg);
-		signal2=Pan2.ar(IFFT(PV_PhaseShift(chainyy,90.degrad)),pos2,mg);
+		signal1=Pan2.ar(IFFT(PV_PhaseShift(chainxx,0.degrad)),pos1);
+		signal2=Pan2.ar(IFFT(PV_PhaseShift(chainyy,90.degrad)),pos2);
 b=b+1;
 pl=pl+1;
 		Out.ar(0,signal1);
