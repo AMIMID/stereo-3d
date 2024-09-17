@@ -21,7 +21,7 @@ s.waitForBoot{
 var signal1,signal2,env1,env2,pl=89,angle1=0,angle2=0,angle3=0,angle4=0,angle5=0,angle6=90;
 var pos1,pos2,phase1,phase2,phase3,phase4,phase5,phase6,maga,magb,m1=3,m2=3;
 var in1,in2, chainx,chainy,b=0,phasea,phaseb,p1,p2;
-var chainxx,chainyy,mag1,mag2,maag,ph1,ph2,ang1=0,ang2=0;
+var chainxx,chainyy,mag1,mag2,maag,ph1,ph2,ang1=0,ang2=90;
 
 	in1 = SoundIn.ar(0);
 	 in2 =  SoundIn.ar(0);
@@ -94,7 +94,7 @@ chainyy = chainy.pvcollect(1024, {|mag, phase, index| [mag*maag, exp(Complex(0,1
 
 
 		signal1=Pan2.ar(IFFT(PV_PhaseShift(chainxx,0.degrad)),pos1);
-		signal2=Pan2.ar(IFFT(PV_PhaseShift(chainyy,90.degrad)),pos2);
+		signal2=Pan2.ar(IFFT(PV_PhaseShift(chainyy,0.degrad)),pos2);
 b=b+1;
 pl=pl+1;
 		Out.ar(0,signal1);
