@@ -13,13 +13,15 @@ s.waitForBoot
 Buffer.freeAll
 ////////////////////buffers
 (
-~l = Buffer.readChannel(s,"/Users/petrostatsiopoulos/Dokuments/EXTERNAL/music/piece of my heart.wav",channels:0 );
-~r = Buffer.readChannel(s,"/Users/petrostatsiopoulos/Dokuments/EXTERNAL/music/piece of my heart.wav",channels:1 );
+~l = Buffer.readChannel(s,"/Users/petrostatsiopoulos/Dokuments/EXTERNAL/music/Nisi Dominus - Cum Dederit de Antonio Vivaldi. Andreas Scholl.wav"
+	,channels:0 );
+~r = Buffer.readChannel(s,"/Users/petrostatsiopoulos/Dokuments/EXTERNAL/music/Nisi Dominus - Cum Dederit de Antonio Vivaldi. Andreas Scholl.wav"
+	,channels:1 );
 )
 /////////arrays
 (
 (
-var phase,angle=0,phase1,angle1=0;
+var phase,angle=0,phase1,angle1=90;
 
 ~phase1=1440.collect{
 
@@ -37,7 +39,7 @@ var phase,angle=0,phase1,angle1=0;
 )
 
 (
-var phase1,phase2,angle1=0,angle2=0,m=3;
+var phase1,phase2,angle1=0,angle2=0,m=2;
 
 ~posL=1440.collect{
 
@@ -57,7 +59,7 @@ var phase1,phase2,angle1=0,angle2=0,m=3;
 )
 
 (
-var phase,angle=0,mag,phase1,angle1=0,mag1,m1=3,m2=3;
+var phase,angle=0,mag,phase1,angle1=0,mag1,m1=2,m2=2;
 
 ~magL = 1440.collect{
 
@@ -107,7 +109,7 @@ var frames=(1024*2);
 
 
 		signal1=Pan2.ar(IFFT(PV_PhaseShift(chainxx,0.degrad)),pos1);
-		signal2=Pan2.ar(IFFT(PV_PhaseShift(chainyy,90.degrad)),pos2);
+		signal2=Pan2.ar(IFFT(PV_PhaseShift(chainyy,0.degrad)),pos2);
 b=b+1;
 pl=pl+1;
 		Out.ar(0,signal1);
