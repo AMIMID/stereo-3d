@@ -20,10 +20,11 @@ SynthDef.new(\synhtone,{
 arg n=1,cutt=1760*10;
 var signal1,signal2,env1,env2,pl=89,m=1,fund=55,pitch;
 var pos1,pos2,ph1,ph2,mag;
-var phase1,angle1=0,phase2,angle2=90;
+var phase1,angle1=0,phase2,angle2=0;
 var phase3,phase4,angle3=0,angle4=0,m1=3,m2=3;
 var phase5,angle5=0,mag1,phase6,angle6=0,mag2;
 var env,sig,wt,ang=0,level,levels;
+var chainx,chainy;
 
 ~levels=720.collect{
 level=exp(Complex(0,1)*ang).imag;
@@ -40,7 +41,7 @@ phase1.round(0.000000001)};
 ~phase2=720.collect{
 phase2=exp(Complex(0,1)*angle2.degrad).theta;
 angle2=(angle2+(360-(360/1.6180339887499))).wrap(0,360);
-phase2.round(0.000000001)};
+phase2.round(0.000000001).neg};
 
 ~posL=720.collect{
 phase3=exp(Complex(0,1)*angle3.degrad).theta;
@@ -73,7 +74,12 @@ pitch=fund*2.pow(n/12);
 		signal2=LPF.ar(Osc.ar(~b.bufnum,pitch*m,ph2,m.reciprocal),cutt,pitch.reciprocal);
 m=m+1;
 pl=pl+1;
-		Out.ar(0,Pan2.ar(signal1*16,pos1,env1));Out.ar(0,Pan2.ar(signal2*16,pos2,env2))
+
+		chainx=FFT(LocalBuf(2048),signal1);
+		chainy=FFT(LocalBuf(2048),signal2);
+
+Out.ar(0,Pan2.ar(IFFT(PV_PhaseShift(chainx,0.degrad))*16,pos1,env1));
+Out.ar(0,Pan2.ar(IFFT(PV_PhaseShift(chainy,90.degrad))*16,pos2,env2))
 };
 }).add;
 );

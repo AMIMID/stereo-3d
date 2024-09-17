@@ -32,7 +32,7 @@ sig.plot;
 ////////arrays
 (
 (
-var phase,angle=0,phase1,angle1=90;
+var phase,angle=0,phase1,angle1=0;
 
 ~phase1=720.collect{
 
@@ -44,7 +44,7 @@ var phase,angle=0,phase1,angle1=90;
 
 	phase1=exp(Complex(0,1)*angle1.degrad).theta;
 	angle1=(angle1+(360-(360/1.6180339887499))).wrap(0,360);
-	phase1.round(0.000000001)
+	phase1.round(0.000000001).neg
 };
 
 )
@@ -95,6 +95,7 @@ var phase,angle=0,mag,phase1,angle1=0,mag1,m1=2,m2=2;
 {
 var signal1,signal2,env1,env2,pl=89,m=1,fund=55;
 var pos1,pos2,phase1,phase2,ph1,ph2,mag;
+var chainx,chainy;
 
 360.do{
 
@@ -116,8 +117,11 @@ var pos1,pos2,phase1,phase2,ph1,ph2,mag;
 	m=m+1;
 
 pl=pl+1;
-		Out.ar(0,Pan2.ar(signal1,pos1,mag));
-		Out.ar(0,Pan2.ar(signal2,pos2,mag));
+		chainx=FFT(LocalBuf(2048),signal1);
+		chainy=FFT(LocalBuf(2048),signal2);
+
+		Out.ar(0,Pan2.ar(IFFT(PV_PhaseShift(chainx,0.degrad)),pos1,mag));
+		Out.ar(0,Pan2.ar(IFFT(PV_PhaseShift(chainy,90.degrad)),pos2,mag));
 
 }
 }.play
