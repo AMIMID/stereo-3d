@@ -5,7 +5,7 @@ Server.default = s = Server.local;
 s.options.numWireBufs = 1024*2;
 s.options.numOutputBusChannels=2;
 s.options.numInputBusChannels=1;
-s.options.memSize = 8192*4;
+s.options.memSize = 8192*8;
 s.options.maxNodes = 1024 * 1;
 );
 
@@ -17,7 +17,7 @@ s.waitForBoot{
 
 (
 SynthDef.new(\synhtone,{
-arg n=1,cutt=1760*10;
+arg n=1,cutt=1760*2;
 var signal1,signal2,env1,env2,pl=89,m=1,fund=55,pitch;
 var pos1,pos2,ph1,ph2,mag;
 var phase1,angle1=0,phase2,angle2=0;
@@ -96,14 +96,6 @@ MIDIdef.noteOn(\note, { |val, num, chan, src|
 	~a=Synth(\synhtone, [n: num - 48,cutt:1760*10]);
 
 }, noteNum: (36..96));
-
-~cuttoff= 8192;
-
-MIDIdef.bend(\lowpass,{ |val, num, chan, src|
-	[val, num, chan, src].postln;
-			~cuttoff=val;
-			~a.set(\cutt,~cuttoff.linlin(0,16383,55,14080));
-	});
 );
 }
 )
