@@ -96,11 +96,12 @@ var frames= 2048;
 		mag=Complex(~magL.[pl]/(2.sqrt),~magR.[pl]/(2.sqrt)).rho/(2.sqrt);
 
 
-	//	env1=EnvGen.ar(Env([1,1],[360]),doneAction:2);
-		//env2=EnvGen.ar(Env([1,1],[360]),doneAction:2);
+	//env1=EnvGen.ar(Env([1,1],[360]),doneAction:2);
+	//env2=EnvGen.ar(Env([1,1],[360]),doneAction:2);
 
-   chainxx = chainx.pvcollect(frames, {|mag, phase, index| [mag, exp(Complex(0,1)*(phase+phase1)).theta]; }, frombin: b, tobin: b, zeroothers: 1);
-   chainyy = chainy.pvcollect(frames, {|mag, phase, index| [mag, exp(Complex(0,1)*(phase+phase2)).theta]; }, frombin: b, tobin: b, zeroothers: 1);
+chainxx = chainx.pvcollect(frames, {|mag, phase, index| [mag*mg, exp(Complex(0,1)*(phase+SinOsc.ar(mg,phase1))).theta]; }, frombin: b, tobin: b, zeroothers: 1);
+chainyy = chainy.pvcollect(frames, {|mag, phase, index| [mag*mg, exp(Complex(0,1)*(phase+SinOsc.ar(mg,phase2))).theta]; }, frombin: b, tobin: b, zeroothers: 1);
+
 
 
 		signal1=Pan2.ar(IFFT(PV_PhaseShift(chainxx,0.degrad)),pos1,mag);
