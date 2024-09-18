@@ -89,8 +89,8 @@ var chainxx,chainyy,mag1,mag2,maag,ph1,ph2,ang1=0,ang2=90;
 
 
 
-chainxx = chainx.pvcollect(frames, {|mag, phase, index| [mag*mg, exp(Complex(0,1)*(phase+SinOsc.ar(mg,p1))).theta]; }, frombin: b, tobin: b, zeroothers: 1);
-chainyy = chainy.pvcollect(frames, {|mag, phase, index| [mag*mg, exp(Complex(0,1)*(phase+SinOsc.ar(mg,p2))).theta]; }, frombin: b, tobin: b, zeroothers: 1);
+chainxx = chainx.pvcollect(1024, {|mag, phase, index| [mag*maag, exp(Complex(0,1)*(phase+SinOsc.ar(maag,p1))).theta]; }, frombin: b, tobin: b, zeroothers: 1);
+chainyy = chainy.pvcollect(1024, {|mag, phase, index| [mag*maag, exp(Complex(0,1)*(phase+SinOsc.ar(maag,p2))).theta]; }, frombin: b, tobin: b, zeroothers: 1);
 
 
 
