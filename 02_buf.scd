@@ -13,9 +13,9 @@ s.waitForBoot
 Buffer.freeAll
 ////////////////////buffers
 (
-~l = Buffer.readChannel(s,"/Users/petrostatsiopoulos/Dokuments/EXTERNAL/music/Nisi Dominus - Cum Dederit de Antonio Vivaldi. Andreas Scholl.wav"
+~l = Buffer.readChannel(s,"/Users/petrostatsiopoulos/Downloads/KIMERA - SANTA TECHO - MOTOROLA.mp3"
 	,channels:0 );
-~r = Buffer.readChannel(s,"/Users/petrostatsiopoulos/Dokuments/EXTERNAL/music/Nisi Dominus - Cum Dederit de Antonio Vivaldi. Andreas Scholl.wav"
+~r = Buffer.readChannel(s,"/Users/petrostatsiopoulos/Downloads/KIMERA - SANTA TECHO - MOTOROLA.mp3"
 	,channels:1 );
 )
 /////////arrays
@@ -39,7 +39,7 @@ var phase,angle=0,phase1,angle1=90;
 )
 
 (
-var phase1,phase2,angle1=0,angle2=0,m=1;
+var phase1,phase2,angle1=0,angle2=0,m=2;
 
 ~posL=1440.collect{
 
@@ -59,7 +59,7 @@ var phase1,phase2,angle1=0,angle2=0,m=1;
 )
 
 (
-var phase,angle=0,mag,phase1,angle1=0,mag1,m1=1,m2=1;
+var phase,angle=0,mag,phase1,angle1=0,mag1,m1=2,m2=2;
 
 ~magL = 1440.collect{
 
