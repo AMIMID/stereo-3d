@@ -84,7 +84,7 @@ var phase,angle=0,mag,phase1,angle1=0,mag1,m1=2,m2=2;
 var signal1,signal2,env1,env2,pl=89;
 var pos1,pos2,phase1,phase2,ph1,ph2;
 var in1,in2, chainx,chainy,b=0;
-var chainxx,chainyy,mg;
+var chainxx,chainyy,mg,pie=2pi;
 var frames=(1024*2);
 
 	 in1 = PlayBuf.ar(1, ~l.bufnum, BufRateScale.kr(~l), loop: 0, doneAction:2);
@@ -104,8 +104,8 @@ var frames=(1024*2);
 		//env1=EnvGen.ar(Env([1,1],[360]),doneAction:2);
 		//env2=EnvGen.ar(Env([1,1],[360]),doneAction:2);
 
-		chainxx = chainx.pvcollect(frames, {|mag, phase, index| [mag*mg, exp(Complex(0,1)*(phase+SinOsc.ar(mg,phase1,2pi))).theta]; }, frombin: b, tobin: b, zeroothers: 1);
-chainyy = chainy.pvcollect(frames, {|mag, phase, index| [mag*mg, exp(Complex(0,1)*(phase+SinOsc.ar(mg,phase2,2pi))).theta]; }, frombin: b, tobin: b, zeroothers: 1);
+		chainxx = chainx.pvcollect(frames, {|mag, phase, index| [mag*mg, exp(Complex(0,1)*(phase+SinOsc.ar(mg,phase1))).theta]; }, frombin: b, tobin: b, zeroothers: 1);
+chainyy = chainy.pvcollect(frames, {|mag, phase, index| [mag*mg, exp(Complex(0,1)*(phase+SinOsc.ar(mg,phase2))).theta]; }, frombin: b, tobin: b, zeroothers: 1);
 
 
 		signal1=Pan2.ar(IFFT(PV_PhaseShift(chainxx,0.degrad)),pos1);
