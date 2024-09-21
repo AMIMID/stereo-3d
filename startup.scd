@@ -34,7 +34,7 @@ var chainxx,chainyy,mag1,mag2,maag,ph1,ph2,ang1=0,ang2=90;
 
 	ph1=exp(Complex(0,1)*ang1.degrad).theta;
 	ang1=(ang1+(360-(360/1.6180339887499))).wrap(0,360);
-					ph1.round(0.000000001);
+					ph1.round(0.0001);
 
 };
 
@@ -42,7 +42,7 @@ var chainxx,chainyy,mag1,mag2,maag,ph1,ph2,ang1=0,ang2=90;
 
 	ph2=exp(Complex(0,1)*ang2.degrad).theta;
 	angle2=(ang2+(360-(360/1.6180339887499))).wrap(0,360);
-					ph2.round(0.000000001).neg;
+					ph2.round(0.0001).neg;
 };
 
 
@@ -50,7 +50,7 @@ var chainxx,chainyy,mag1,mag2,maag,ph1,ph2,ang1=0,ang2=90;
 
 	phase1=exp(Complex(0,1)*angle1.degrad).theta;
 	angle1=(angle1+(360-(360/1.6180339887499))).wrap(0,360);
-	phase1=(Complex(sin(phase1.round(0.000000001)*m1),sin(phase1.round(0.000000001)*m1)).rho.round(0.000000001)*Complex(cos(phase1.round(0.000000001)*m1),cos(phase1.round(0.000000001)*m1)).rho).round(0.000000001);
+	phase1=(Complex(sin(phase1.round(0.0001)*m1),sin(phase1.round(0.0001)*m1)).rho.round(0.0001)*Complex(cos(phase1.round(0.0001)*m1),cos(phase1.round(0.0001)*m1)).rho).round(0.0001);
 
 };
 
@@ -58,7 +58,7 @@ var chainxx,chainyy,mag1,mag2,maag,ph1,ph2,ang1=0,ang2=90;
 
 	phase2=exp(Complex(0,1)*angle2.degrad).theta;
 	angle2=(angle2+(360-(360/1.6180339887499))).wrap(0,360);
-	phase2=(Complex(sin(phase2.round(0.000000001)*m2),sin(phase2.round(0.000000001)*m2)).rho.round(0.000000001)*Complex(cos(phase2.round(0.000000001)*m2),cos(phase2.round(0.000000001)*m2)).rho).neg.round(0.000000001);
+	phase2=(Complex(sin(phase2.round(0.0001)*m2),sin(phase2.round(0.0001)*m2)).rho.round(0.0001)*Complex(cos(phase2.round(0.0001)*m2),cos(phase2.round(0.0001)*m2)).rho).neg.round(0.0001);
 };
 
 
@@ -66,14 +66,14 @@ var chainxx,chainyy,mag1,mag2,maag,ph1,ph2,ang1=0,ang2=90;
 
 	phase3=exp(Complex(0,1)*angle3.degrad).theta;
 	angle3=(angle3+(360-(360/1.6180339887499))).wrap(0,360);
-	maga=Complex(cos(phase3.round(0.000000001)*m1),cos(phase3.round(0.000000001)*m1)).rho.round(0.000000001)*Complex(sin(phase3.round(0.000000001)*m1),sin(phase3.round(0.000000001)*m1)).rho.round(0.000000001);
+	maga=Complex(cos(phase3.round(0.0001)*m1),cos(phase3.round(0.0001)*m1)).rho.round(0.0001)*Complex(cos(phase3.round(0.0001)*m1),cos(phase3.round(0.0001)*m1)).rho.round(0.0001);
 	};
 
 ~magR = 720.collect{
 
 	phase4=exp(Complex(0,1)*angle4.degrad).theta;
 	angle4=(angle4+(360-(360/1.6180339887499))).wrap(0,360);
-	magb=Complex(sin(phase4.round(0.000000001)*m2),sin(phase4.round(0.000000001)*m2)).rho.round(0.000000001)*Complex(cos(phase4.round(0.000000001)*m2),cos(phase4.round(0.000000001)*m2)).rho.round(0.000000001);
+	magb=Complex(sin(phase4.round(0.0001)*m2),sin(phase4.round(0.0001)*m2)).rho.round(0.0001)*Complex(cos(phase4.round(0.0001)*m2),cos(phase4.round(0.0001)*m2)).rho.round(0.0001);
 	};
 
 90.do{

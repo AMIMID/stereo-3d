@@ -4,7 +4,7 @@ Server.default = s = Server.local;
 (
 s.options.numWireBufs = 1024*2;
 s.options.numOutputBusChannels=2;
-s.options.numInputBusChannels=1;
+s.options.numInputBusChannels=0;
 s.options.memSize = 8192*8;
 s.options.maxNodes = 1024 * 1;
 );
@@ -37,25 +37,25 @@ env = Env(~levels,[1]);sig=env.asSignal(1024);wt = sig.asWavetable;
 ~phase1=720.collect{
 phase1=exp(Complex(0,1)*angle1.degrad).theta;
 angle1=(angle1+(360-(360/1.6180339887499))).wrap(0,360);
-phase1.round(0.000000001)};
+phase1.round(0.0001)};
 ~phase2=720.collect{
 phase2=exp(Complex(0,1)*angle2.degrad).theta;
 angle2=(angle2+(360-(360/1.6180339887499))).wrap(0,360);
-phase2.round(0.000000001).neg};
+phase2.round(0.0001).neg};
 
 ~posL=720.collect{
 phase3=exp(Complex(0,1)*angle3.degrad).theta;
-angle3=(angle3+(360-(360/1.6180339887499))).wrap(0,360);							phase3=(Complex(sin(phase3.round(0.000000001)*m1),sin(phase3.round(0.000000001)*m1)).rho.round(0.000000001)*Complex(cos(phase3.round(0.000000001)*m1),cos(phase3.round(0.000000001)*m1)).rho).round(0.000000001);};
+angle3=(angle3+(360-(360/1.6180339887499))).wrap(0,360);							phase3=(Complex(sin(phase3.round(0.0001)*m1),sin(phase3.round(0.0001)*m1)).rho.round(0.0001)*Complex(cos(phase3.round(0.0001)*m1),cos(phase3.round(0.0001)*m1)).rho).round(0.0001);};
 ~posR=720.collect{
 phase4=exp(Complex(0,1)*angle4.degrad).theta;
-angle4=(angle4+(360-(360/1.6180339887499))).wrap(0,360);						phase4=(Complex(sin(phase4.round(0.000000001)*m2),sin(phase4.round(0.000000001)*m2)).rho.round(0.000000001)*Complex(cos(phase4.round(0.000000001)*m2),cos(phase4.round(0.000000001)*m2)).rho).neg.round(0.000000001);};
+angle4=(angle4+(360-(360/1.6180339887499))).wrap(0,360);						phase4=(Complex(sin(phase4.round(0.0001)*m2),sin(phase4.round(0.0001)*m2)).rho.round(0.0001)*Complex(cos(phase4.round(0.0001)*m2),cos(phase4.round(0.0001)*m2)).rho).neg.round(0.0001);};
 
 ~magL = 720.collect{
 	phase5=exp(Complex(0,1)*angle5.degrad).theta;
-	angle5=(angle5+(360-(360/1.6180339887499))).wrap(0,360);	mag1=Complex(cos(phase5.round(0.000000001)*m1),cos(phase5.round(0.000000001)*m1)).rho.round(0.000000001)*Complex(sin(phase5.round(0.000000001)*m1),sin(phase5.round(0.000000001)*m1)).rho.round(0.000000001);};
+	angle5=(angle5+(360-(360/1.6180339887499))).wrap(0,360);	mag1=Complex(cos(phase5.round(0.0001)*m1),cos(phase5.round(0.0001)*m1)).rho.round(0.0001)*Complex(cos(phase5.round(0.0001)*m1),cos(phase5.round(0.0001)*m1)).rho.round(0.0001);};
 ~magR = 720.collect{
 	phase6=exp(Complex(0,1)*angle6.degrad).theta;
-	angle6=(angle6+(360-(360/1.6180339887499))).wrap(0,360);	mag2=Complex(sin(phase6.round(0.000000001)*m2),sin(phase6.round(0.000000001)*m2)).rho.round(0.000000001)*Complex(cos(phase6.round(0.000000001)*m2),cos(phase6.round(0.000000001)*m2)).rho.round(0.000000001);};
+	angle6=(angle6+(360-(360/1.6180339887499))).wrap(0,360);	mag2=Complex(sin(phase6.round(0.0001)*m2),sin(phase6.round(0.0001)*m2)).rho.round(0.0001)*Complex(cos(phase6.round(0.0001)*m2),cos(phase6.round(0.0001)*m2)).rho.round(0.0001);};
 
 pitch=fund*2.pow(n/12);
 45.do{
