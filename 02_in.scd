@@ -103,8 +103,8 @@ chainyy = chainy.pvcollect(frames, {|mag, phase, index| [mag*mg, exp(Complex(0,1
 
 
 
-		signal1=Pan2.ar(IFFT(PV_PhaseShift(chainxx,0.degrad)),pos1,mag);
-		signal2=Pan2.ar(IFFT(PV_PhaseShift(chainyy,0.degrad)),pos2,mag);
+		signal1=Pan2.ar(IFFT(chainxx),pos1,mag);
+		signal2=Pan2.ar(IFFT(chainyy),pos2,mag);
 b=b+1;
 pl=pl+1;
 		Out.ar(0,signal1);

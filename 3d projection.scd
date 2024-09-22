@@ -16,7 +16,7 @@ var phase,angle=0,phase1,angle1=90;
 
 )
 (
-var phase,angle=0,mag,phase1,angle1=90,mag1,m=3;
+var phase,angle=0,mag,phase1,angle1=0,mag1,m=5;
 
 ~magL = (360*64).collect{
 
