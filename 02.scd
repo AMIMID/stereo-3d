@@ -108,8 +108,8 @@ var chainx,chainy;
 		ph1=SinOsc.ar(mag,phase1);
 		ph2=SinOsc.ar(mag,phase2);
 
-		env1=EnvGen.ar(Env([1,1],[240]),doneAction:2,levelScale:m.reciprocal);
-		env2=EnvGen.ar(Env([1,1],[240]),doneAction:2,levelScale:m.reciprocal);
+		env1=EnvGen.ar(Env([1,1],[240]),doneAction:2,levelScale:0.1);
+		env2=EnvGen.ar(Env([1,1],[240]),doneAction:2,levelScale:0.1);
 
 		signal1=LPF.ar(Osc.ar(~b.bufnum,fund*m,ph1,m.reciprocal),3000,env1);
 		signal2=LPF.ar(Osc.ar(~b.bufnum,fund*m,ph2,m.reciprocal),3000,env2);
