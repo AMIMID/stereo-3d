@@ -32,7 +32,7 @@ sig.plot;
 ////////arrays
 (
 (
-var phase,angle=0,phase1,angle1=0;
+var phase,angle=0,phase1,angle1=90;
 
 ~phase1=720.collect{
 
@@ -77,7 +77,7 @@ var phase,angle=0,mag,phase1,angle1=0,mag1,m1=2,m2=2;
 	phase=exp(Complex(0,1)*angle.degrad).theta;
 	angle=(angle+(360-(360/1.6180339887499))).wrap(0,360);
 	//mag=(Complex(cos(phase.round(0.000000001)*3),0).rho*Complex(cos(phase.round(0.000000001)*0),0).rho).round(0.000000001);
-	mag=Complex(cos(phase.round(0.000000001)*m1),cos(phase.round(0.000000001)*m1)).rho.round(0.000000001)*Complex(sin(phase.round(0.000000001)*m1),sin(phase.round(0.000000001)*m1)).rho.round(0.000000001);
+	mag=Complex(cos(phase.round(0.000000001)*m1),cos(phase.round(0.000000001)*m1)).rho.round(0.000000001)*Complex(cos(phase.round(0.000000001)*m1),cos(phase.round(0.000000001)*m1)).rho.round(0.000000001);
 	};
 
 ~magR = 720.collect{
@@ -95,7 +95,6 @@ var phase,angle=0,mag,phase1,angle1=0,mag1,m1=2,m2=2;
 {
 var signal1,signal2,env1,env2,pl=89,m=1,fund=55;
 var pos1,pos2,phase1,phase2,ph1,ph2,mag;
-var chainx,chainy;
 
 90.do{
 
@@ -117,12 +116,8 @@ var chainx,chainy;
 	m=m+1;
 
 pl=pl+1;
-		chainx=FFT(LocalBuf(2048),signal1);
-		chainy=FFT(LocalBuf(2048),signal2);
-
-
-Out.ar(0,Pan2.ar(IFFT(chainx),pos1,mag));
-Out.ar(0,Pan2.ar(IFFT(chainy),pos2,mag));
+		Out.ar(0,Pan2.ar(LeakDC.ar(signal1),pos1,magg));
+		Out.ar(0,Pan2.ar(LeakDC.ar(signal2),pos2,magg));
 
 }
 }.play

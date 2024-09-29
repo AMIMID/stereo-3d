@@ -1,11 +1,11 @@
 (
-s.options.numWireBufs = 1024*32;
+s.options.numWireBufs = 1024*16;
 s.options.numOutputBusChannels=2;
 s.options.numInputBusChannels=0;
 TempoClock.default.tempo_(120/120);
-s.options.memSize = 8192*64;
+s.options.memSize = 8192*16;
 //s.options.blockSize = 64/4;
-s.options.maxNodes = 1024 * 64;
+s.options.maxNodes = 1024 * 16;
 s.waitForBoot
 )
 
@@ -13,8 +13,8 @@ s.waitForBoot
 Buffer.freeAll
 ////////////////////buffers
 (
-~l = Buffer.readChannel(s,"/Users/petrostatsiopoulos/Downloads/Q_5_W_h_e_n_t_he_M_i_r_r_or_C_r_a_ck_s_full_album_1986_[_YouConvert.net_].mp3",channels:0 );
-~r = Buffer.readChannel(s,"/Users/petrostatsiopoulos/Downloads/Q_5_W_h_e_n_t_he_M_i_r_r_or_C_r_a_ck_s_full_album_1986_[_YouConvert.net_].mp3",channels:1 );
+~l = Buffer.readChannel(s,"/Users/petrostatsiopoulos/Dokuments/EXTERNAL/music/band album library/n-carkade/2001 - O Vothros Anoikse/N-Carkade - O Vothros Anoikse.mp3",channels:0 );
+~r = Buffer.readChannel(s,"/Users/petrostatsiopoulos/Dokuments/EXTERNAL/music/band album library/n-carkade/2001 - O Vothros Anoikse/N-Carkade - O Vothros Anoikse.mp3",channels:1 );
 )
 /////////arrays
 (
@@ -37,7 +37,7 @@ var phase,angle=0,phase1,angle1=90;
 )
 
 (
-var phase1,phase2,angle1=0,angle2=0,m=5;
+var phase1,phase2,angle1=0,angle2=0,m=2;
 
 ~posL=1440.collect{
 
@@ -51,26 +51,26 @@ var phase1,phase2,angle1=0,angle2=0,m=5;
 
 	phase2=exp(Complex(0,1)*angle2.degrad).theta;
 	angle2=(angle2+(360-(360/1.6180339887499))).wrap(0,360);
-	phase2=(Complex(sin(phase2.round(0.0001)*m),sin(phase2.round(0.0001)*m)).rho.round(0.0001)*Complex(cos(phase2.round(0.0001)*m),cos(phase2.round(0.0001)*m)).rho).neg.round(0.0001);
+	phase2=(Complex(sin(phase2.round(0.0001)*m),sin(phase2.round(0.0001)*m)).rho.round(0.0001)*Complex(cos(phase2.round(0.0001)*m),cos(phase2.round(0.0001)*m)).rho).round(0.0001).neg;
 };
 
 )
 
 (
-var phase,angle=0,mag,phase1,angle1=0,mag1,m1=5,m2=5;
+var phase,angle=0,mag,phase1,angle1=0,mag1,m=2;
 
 ~magL = 1440.collect{
 
 	phase=exp(Complex(0,1)*angle.degrad).theta;
 	angle=(angle+(360-(360/1.6180339887499))).wrap(0,360);
-	mag=Complex(cos(phase.round(0.0001)*m1),cos(phase.round(0.0001)*m1)).rho.round(0.0001)*Complex(cos(phase.round(0.0001)*m1),cos(phase.round(0.0001)*m1)).rho.round(0.0001);
+	mag=Complex(cos(phase.round(0.0001)*m),cos(phase.round(0.0001)*m)).rho.round(0.0001)*Complex(cos(phase.round(0.0001)*m),cos(phase.round(0.0001)*m)).rho.round(0.0001);
 	};
 
 ~magR = 1440.collect{
 
 	phase1=exp(Complex(0,1)*angle1.degrad).theta;
 	angle1=(angle1+(360-(360/1.6180339887499))).wrap(0,360);
-	mag1=Complex(sin(phase1.round(0.0001)*m2),sin(phase1.round(0.0001)*m2)).rho.round(0.0001)*Complex(cos(phase1.round(0.0001)*m2),cos(phase1.round(0.0001)*m2)).rho.round(0.0001);
+	mag1=Complex(sin(phase1.round(0.0001)*m),sin(phase1.round(0.0001)*m)).rho.round(0.0001)*Complex(cos(phase1.round(0.0001)*m),cos(phase1.round(0.0001)*m)).rho.round(0.0001);
 	};
 )
 )
@@ -83,7 +83,9 @@ var signal1,signal2,env1,env2,pl=89;
 var pos1,pos2,phase1,phase2,ph1,ph2;
 var in1,in2, chainx,chainy,b=0;
 var chainxx,chainyy,mg,pie=2pi;
-var frames=(1024*2);
+var frames=(1024*1);
+var fund;
+	fund=48000/256;
 
 	 in1 = PlayBuf.ar(1, ~l.bufnum, BufRateScale.kr(~l), loop: 0, doneAction:2);
 	 in2 = PlayBuf.ar(1, ~r.bufnum, BufRateScale.kr(~r), loop: 0, doneAction:2);
@@ -102,8 +104,8 @@ var frames=(1024*2);
 		//env1=EnvGen.ar(Env([1,1],[360]),doneAction:2);
 		//env2=EnvGen.ar(Env([1,1],[360]),doneAction:2);
 
-chainxx = chainx.pvcollect(frames, {|mag, phase, index| [mag*mg, exp(Complex(0,1)*(phase+SinOsc.ar(mg,phase1))).theta]; }, frombin: b, tobin: b, zeroothers: 1);
-chainyy = chainy.pvcollect(frames, {|mag, phase, index| [mag*mg, exp(Complex(0,1)*(phase+SinOsc.ar(mg,phase2))).theta]; }, frombin: b, tobin: b, zeroothers: 1);
+chainxx = chainx.pvcollect(frames, {|mag, phase, index| [mag*mg, exp(Complex(0,1)*(phase+SinOsc.ar(mg.reciprocal*fund,phase1))).theta]; }, frombin: b, tobin: b, zeroothers: 1);
+chainyy = chainy.pvcollect(frames, {|mag, phase, index| [mag*mg, exp(Complex(0,1)*(phase+SinOsc.ar(mg.reciprocal*fund,phase2))).theta]; }, frombin: b, tobin: b, zeroothers: 1);
 
 
 		signal1=Pan2.ar(IFFT(chainxx),pos1);
@@ -115,6 +117,6 @@ pl=pl+1;
 
 }
 }.play;
-s.record;
+//s.record;
 )
 

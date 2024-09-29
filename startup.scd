@@ -10,7 +10,8 @@ s.options.numWireBufs = 1024*2;
 s.options.numOutputBusChannels=2;
 s.options.numInputBusChannels=1;
 s.options.memSize = 8192*4;
-s.options.maxNodes = 1024 * 1;
+s.options.maxNodes = 1024 * 2;
+s.options.sampleRate=48000;
 );
 
 s.waitForBoot{
@@ -19,9 +20,11 @@ s.waitForBoot{
 (
 {
 var signal1,signal2,env1,env2,pl=89,angle1=0,angle2=0,angle3=0,angle4=0,angle5=0,angle6=90;
-var pos1,pos2,phase1,phase2,phase3,phase4,phase5,phase6,maga,magb,m1=3,m2=3;
+var pos1,pos2,phase1,phase2,phase3,phase4,phase5,phase6,maga,magb,m1=2;
 var in1,in2, chainx,chainy,b=0,phasea,phaseb,p1,p2;
 var chainxx,chainyy,mag1,mag2,maag,ph1,ph2,ang1=0,ang2=90;
+var fund;
+			fund=6;
 
 	in1 = SoundIn.ar(0);
 	 in2 =  SoundIn.ar(0);
@@ -58,7 +61,7 @@ var chainxx,chainyy,mag1,mag2,maag,ph1,ph2,ang1=0,ang2=90;
 
 	phase2=exp(Complex(0,1)*angle2.degrad).theta;
 	angle2=(angle2+(360-(360/1.6180339887499))).wrap(0,360);
-	phase2=(Complex(sin(phase2.round(0.0001)*m2),sin(phase2.round(0.0001)*m2)).rho.round(0.0001)*Complex(cos(phase2.round(0.0001)*m2),cos(phase2.round(0.0001)*m2)).rho).neg.round(0.0001);
+	phase2=(Complex(sin(phase2.round(0.0001)*m1),sin(phase2.round(0.0001)*m1)).rho.round(0.0001)*Complex(cos(phase2.round(0.0001)*m1),cos(phase2.round(0.0001)*m1)).rho).round(0.0001).neg;
 };
 
 
@@ -73,7 +76,7 @@ var chainxx,chainyy,mag1,mag2,maag,ph1,ph2,ang1=0,ang2=90;
 
 	phase4=exp(Complex(0,1)*angle4.degrad).theta;
 	angle4=(angle4+(360-(360/1.6180339887499))).wrap(0,360);
-	magb=Complex(sin(phase4.round(0.0001)*m2),sin(phase4.round(0.0001)*m2)).rho.round(0.0001)*Complex(cos(phase4.round(0.0001)*m2),cos(phase4.round(0.0001)*m2)).rho.round(0.0001);
+	magb=Complex(sin(phase4.round(0.0001)*m1),sin(phase4.round(0.0001)*m1)).rho.round(0.0001)*Complex(cos(phase4.round(0.0001)*m1),cos(phase4.round(0.0001)*m1)).rho.round(0.0001);
 	};
 
 90.do{
@@ -85,12 +88,12 @@ var chainxx,chainyy,mag1,mag2,maag,ph1,ph2,ang1=0,ang2=90;
 		p1=~phase1.[pl];
 		p2=~phase2.[pl];
 
-		maag=Complex(mag1,mag2).rho/(2.sqrt);
+				maag=Complex(mag1,mag2).rho/(2.sqrt);
 
 
 
-chainxx = chainx.pvcollect(1024, {|mag, phase, index| [mag*maag, exp(Complex(0,1)*(phase+SinOsc.ar(maag,p1))).theta]; }, frombin: b, tobin: b, zeroothers: 1);
-chainyy = chainy.pvcollect(1024, {|mag, phase, index| [mag*maag, exp(Complex(0,1)*(phase+SinOsc.ar(maag,p2))).theta]; }, frombin: b, tobin: b, zeroothers: 1);
+chainxx = chainx.pvcollect(1024, {|mag, phase, index| [mag*maag.reciprocal, exp(Complex(0,1)*(phase+SinOsc.ar(maag.reciprocal*fund,p1))).theta]; }, frombin: b, tobin: b, zeroothers: 1);
+chainyy = chainy.pvcollect(1024, {|mag, phase, index| [mag*maag.reciprocal, exp(Complex(0,1)*(phase+SinOsc.ar(maag.reciprocal*fund,p2))).theta]; }, frombin: b, tobin: b, zeroothers: 1);
 
 
 

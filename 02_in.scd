@@ -46,7 +46,7 @@ var phase1,phase2,angle1=0,angle2=0,m1=4,m2=4;
 
 	phase2=exp(Complex(0,1)*angle2.degrad).theta;
 	angle2=(angle2+(360-(360/1.6180339887499))).wrap(0,360);
-	phase2=(Complex(sin(phase2.round(0.0001)*m2),sin(phase2.round(0.0001)*m2)).rho.round(0.0001)*Complex(cos(phase2.round(0.0001)*m2),cos(phase2.round(0.0001)*m2)).rho).neg.round(0.0001);
+	phase2=(Complex(sin(phase2.round(0.0001)*m2),sin(phase2.round(0.0001)*m2)).rho.round(0.0001)*Complex(cos(phase2.round(0.0001)*m2),cos(phase2.round(0.0001)*m2)).rho).round(0.0001).neg;
 };
 
 )
@@ -98,8 +98,8 @@ var frames= 2048;
 	//env1=EnvGen.ar(Env([1,1],[360]),doneAction:2);
 	//env2=EnvGen.ar(Env([1,1],[360]),doneAction:2);
 
-chainxx = chainx.pvcollect(frames, {|mag, phase, index| [mag*mg, exp(Complex(0,1)*(phase+SinOsc.ar(mg,phase1))).theta]; }, frombin: b, tobin: b, zeroothers: 1);
-//chainyy = chainy.pvcollect(frames, {|mag, phase, index| [mag*mg, exp(Complex(0,1)*(phase+SinOsc.ar(mg,phase2))).theta]; }, frombin: b, tobin: b, zeroothers: 1);
+chainxx = chainx.pvcollect(frames, {|mag, phase, index| [mag*mg, exp(Complex(0,1)*(phase+SinOsc.ar(mg.reciprocal,phase1))).theta]; }, frombin: b, tobin: b, zeroothers: 1);
+//chainyy = chainy.pvcollect(frames, {|mag, phase, index| [mag*mg, exp(Complex(0,1)*(phase+SinOsc.ar(mg.reciprocal,phase2))).theta]; }, frombin: b, tobin: b, zeroothers: 1);
 
 
 
