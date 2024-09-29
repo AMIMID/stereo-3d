@@ -13,10 +13,8 @@ s.waitForBoot
 Buffer.freeAll
 ////////////////////buffers
 (
-~l = Buffer.readChannel(s,"/Users/petrostatsiopoulos/Dokuments/EXTERNAL/music/piece of my heart Intermission.wav"
-	,channels:0 );
-~r = Buffer.readChannel(s,"/Users/petrostatsiopoulos/Dokuments/EXTERNAL/music/piece of my heart Intermission.wav"
-	,channels:1 );
+~l = Buffer.readChannel(s,"/Users/petrostatsiopoulos/Downloads/Q_5_W_h_e_n_t_he_M_i_r_r_or_C_r_a_ck_s_full_album_1986_[_YouConvert.net_].mp3",channels:0 );
+~r = Buffer.readChannel(s,"/Users/petrostatsiopoulos/Downloads/Q_5_W_h_e_n_t_he_M_i_r_r_or_C_r_a_ck_s_full_album_1986_[_YouConvert.net_].mp3",channels:1 );
 )
 /////////arrays
 (
@@ -39,7 +37,7 @@ var phase,angle=0,phase1,angle1=90;
 )
 
 (
-var phase1,phase2,angle1=0,angle2=0,m=2;
+var phase1,phase2,angle1=0,angle2=0,m=5;
 
 ~posL=1440.collect{
 
@@ -61,14 +59,14 @@ var phase1,phase2,angle1=0,angle2=0,m=2;
 (
 var phase,angle=0,mag,phase1,angle1=0,mag1,m1=5,m2=5;
 
-~magL = 720.collect{
+~magL = 1440.collect{
 
 	phase=exp(Complex(0,1)*angle.degrad).theta;
 	angle=(angle+(360-(360/1.6180339887499))).wrap(0,360);
 	mag=Complex(cos(phase.round(0.0001)*m1),cos(phase.round(0.0001)*m1)).rho.round(0.0001)*Complex(cos(phase.round(0.0001)*m1),cos(phase.round(0.0001)*m1)).rho.round(0.0001);
 	};
 
-~magR = 720.collect{
+~magR = 1440.collect{
 
 	phase1=exp(Complex(0,1)*angle1.degrad).theta;
 	angle1=(angle1+(360-(360/1.6180339887499))).wrap(0,360);
@@ -104,7 +102,7 @@ var frames=(1024*2);
 		//env1=EnvGen.ar(Env([1,1],[360]),doneAction:2);
 		//env2=EnvGen.ar(Env([1,1],[360]),doneAction:2);
 
-		chainxx = chainx.pvcollect(frames, {|mag, phase, index| [mag*mg, exp(Complex(0,1)*(phase+SinOsc.ar(mg,phase1))).theta]; }, frombin: b, tobin: b, zeroothers: 1);
+chainxx = chainx.pvcollect(frames, {|mag, phase, index| [mag*mg, exp(Complex(0,1)*(phase+SinOsc.ar(mg,phase1))).theta]; }, frombin: b, tobin: b, zeroothers: 1);
 chainyy = chainy.pvcollect(frames, {|mag, phase, index| [mag*mg, exp(Complex(0,1)*(phase+SinOsc.ar(mg,phase2))).theta]; }, frombin: b, tobin: b, zeroothers: 1);
 
 
@@ -116,6 +114,7 @@ pl=pl+1;
 		Out.ar(0,signal2);
 
 }
-}.play
+}.play;
+s.record;
 )
 

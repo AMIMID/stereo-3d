@@ -120,8 +120,9 @@ pl=pl+1;
 		chainx=FFT(LocalBuf(2048),signal1);
 		chainy=FFT(LocalBuf(2048),signal2);
 
-		Out.ar(0,Pan2.ar(IFFT(PV_PhaseShift(chainx,0.degrad)),pos1,mag));
-		Out.ar(0,Pan2.ar(IFFT(PV_PhaseShift(chainy,90.degrad)),pos2,mag));
+
+Out.ar(0,Pan2.ar(IFFT(chainx),pos1,mag));
+Out.ar(0,Pan2.ar(IFFT(chainy),pos2,mag));
 
 }
 }.play
