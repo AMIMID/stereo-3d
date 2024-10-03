@@ -20,7 +20,7 @@ var env,sig,wt,angle=0,level,levels;
 
 	level=exp(Complex(0,1)*angle).imag;
 		angle=angle+1.degrad;
-	levels=level.rrand(exp(Complex(0,1)*angle+(45-(45/1.6180339887499))).imag);
+	levels=level.rrand(exp(Complex(0,1)*angle+(45-(45/1.6180339887499)).degrad).imag);
 };
 env = Env(~levels,[1]);
 sig=env.asSignal(1024);
@@ -92,7 +92,7 @@ var phase,angle=0,mag,phase1,angle1=0,mag1,m1=5,m2=5;
 
 (
 {
-var signal1,signal2,env1,env2,pl=89,m=1,fund=55;
+var signal1,signal2,env1,env2,pl=89,m=1,fund=110;
 var pos1,pos2,phase1,phase2,ph1,ph2,mag;
 var chainx,chainy;
 
@@ -104,14 +104,14 @@ var chainx,chainy;
 		phase2=~phase2.[pl];
 			mag=Complex(~magL.[pl]/(2.sqrt),~magR.[pl]/(2.sqrt)).rho/(2.sqrt);
 
-		ph1=SinOsc.ar(mag,phase1);
-		ph2=SinOsc.ar(mag,phase2);
+		ph1=SinOsc.ar(mag.reciprocal,phase1,mag);
+		ph2=SinOsc.ar(mag.reciprocal,phase2,mag);
 
-env1=EnvGen.ar(Env.sine(45,0.01),doneAction:2);
-env2=EnvGen.ar(Env.sine(45,0.01),doneAction:2);
+env1=EnvGen.ar(Env.sine(45,0.1),doneAction:2);
+env2=EnvGen.ar(Env.sine(45,0.1),doneAction:2);
 
-		signal1=LPF.ar(Osc.ar(~b.bufnum,fund*m,ph1,m.reciprocal),3000,env1);
-		signal2=LPF.ar(Osc.ar(~b.bufnum,fund*m,ph2,m.reciprocal),3000,env2);
+		signal1=LPF.ar(Osc.ar(~b.bufnum,fund*m,ph1,m.reciprocal),mag.reciprocal*128,env1);
+		signal2=LPF.ar(Osc.ar(~b.bufnum,fund*m,ph2,m.reciprocal),mag.reciprocal*128,env2);
 
 	m=m+1;
 
@@ -121,6 +121,7 @@ pl=pl+1;
 		Out.ar(0,Pan2.ar(LeakDC.ar(signal2),pos2,mag));
 
 }
-}.play
+}.play;
+s.record(duration:45)
 )
 
