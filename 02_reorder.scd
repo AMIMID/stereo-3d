@@ -110,8 +110,8 @@ var chainx,chainy;
 env1=EnvGen.ar(Env.sine(45,0.1),doneAction:2);
 env2=EnvGen.ar(Env.sine(45,0.1),doneAction:2);
 
-		signal1=LPF.ar(Osc.ar(~b.bufnum,fund*m,ph1,m.reciprocal),mag.reciprocal*128,env1);
-		signal2=LPF.ar(Osc.ar(~b.bufnum,fund*m,ph2,m.reciprocal),mag.reciprocal*128,env2);
+		signal1=LPF.ar(Osc.ar(~b.bufnum,fund*m,ph1,m.reciprocal),mag.reciprocal*220,env1);
+		signal2=LPF.ar(Osc.ar(~b.bufnum,fund*m,ph2,m.reciprocal),mag.reciprocal*220,env2);
 
 	m=m+1;
 
@@ -122,6 +122,6 @@ pl=pl+1;
 
 }
 }.play;
-s.record(duration:45)
+s.record
 )
 
