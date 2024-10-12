@@ -151,11 +151,11 @@ var fund;
 		//env1=EnvGen.ar(Env([1,1],[360]),doneAction:2);
 		//env2=EnvGen.ar(Env([1,1],[360]),doneAction:2);
 
-ph1=exp(Complex(0,1)*mg.theta+90.degrad).theta;
+		ph1=exp(Complex(0,1)*(mg.theta+90.degrad));
 ph2=exp(Complex(0,1)*mg.theta).theta;
 
-chainxx = chainx.pvcollect(frames, {|mag, phase, index| [mag*mg, exp(Complex(0,1)*(phase+ph1)).theta]; }, frombin: b, tobin: b, zeroothers: 1);
-chainyy = chainy.pvcollect(frames, {|mag, phase, index| [mag*mg, exp(Complex(0,1)*(phase+ph2)).theta]; }, frombin: b, tobin: b, zeroothers: 1);
+chainxx = chainx.pvcollect(frames, {|mag, phase, index| [mag*mg, exp(Complex(0,1)*(phase+ph1.theta)).theta]; }, frombin: b, tobin: b, zeroothers: 1);
+chainyy = chainy.pvcollect(frames, {|mag, phase, index| [mag*mg, exp(Complex(0,1)*(phase+ph2.theta)).theta]; }, frombin: b, tobin: b, zeroothers: 1);
 
 
 		signal1=Pan2.ar(IFFT(chainxx),pos1);

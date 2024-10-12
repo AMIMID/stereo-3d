@@ -26,7 +26,7 @@ env = Env(~levels,[1]);
 sig=env.asSignal(1024);
 wt = sig.asWavetable;
 ~b.loadCollection(wt);
-sig.plot;
+//sig.plot;
 )
 
 ////////fractal
@@ -119,39 +119,41 @@ var phase,angle=0,mag,phase1,angle1=0,mag1,m=2,pl1=0,pl2=0;
 
 (
 {
-var signal1,signal2,env1,env2,pl=0,m=1,fund=55,freq;
+var signal1,signal2,env1,env2,pl=0,m=1,fund=55,freq1,freq2,amp1,amp2;
 var pos1,pos2,phase1,phase2,ph1,ph2,mag,octave=4;
 var chainx,chainy,amp,rq=1;
 
-360.do{
+180.do{
 
 		pos1=~posL.[pl]/(2.sqrt);
 		pos2=~posR.[pl]/(2.sqrt);
 		//phase1=~phase1.[pl];
 		//phase2=~phase2.[pl];
-			mag=Complex(~magL.[pl]/(2.sqrt),~magR.[pl]/(2.sqrt)).rho/(2.sqrt);
+			mag=Complex(~magL.[pl]/(2.sqrt),~magR.[pl]/(2.sqrt));
 
 		//ph1=SinOsc.ar(mag.reciprocal,phase1,mag);
 		//ph2=SinOsc.ar(mag.reciprocal,phase2,mag);
 		mag=mag.round(0.00001);
 
-		ph1=exp(Complex(0,1)*mag.theta+90.degrad).theta;
-		ph2=exp(Complex(0,1)*mag.theta).theta;
+		ph1=exp(Complex(0,1)*(mag.theta+90.degrad));
+		ph2=exp(Complex(0,1)*mag.theta);
 
-		amp=m.reciprocal;
-		freq=fund*amp.reciprocal;
+		amp1=m.reciprocal;
+		amp2=m.reciprocal;
+		freq1=fund*amp1.reciprocal;
+		freq2=fund*amp2.reciprocal;
 //env1=EnvGen.ar(Env.sine(45,0.1),doneAction:2);
 //env2=EnvGen.ar(Env.sine(45,0.1),doneAction:2);
 
-			signal1=BPF.ar(Osc.ar(~b.bufnum,freq,ph1,m.reciprocal),freq,rq);
-		signal2=BPF.ar(Osc.ar(~b.bufnum,freq,ph2,m.reciprocal),freq,rq);
+		signal1=BPF.ar(Osc.ar(~b.bufnum,freq1,ph1.theta,amp1),freq1,rq);
+		signal2=BPF.ar(Osc.ar(~b.bufnum,freq1,ph2.theta,amp2),freq2,rq);
 
 	m=m+1;
 
 pl=pl+1;
 
-		Out.ar(0,Pan2.ar(LeakDC.ar(signal1),pos1,mag));
-		Out.ar(0,Pan2.ar(LeakDC.ar(signal2),pos2,mag));
+		Out.ar(0,Pan2.ar(LeakDC.ar(signal1),pos1,mag.rho/(2.sqrt)));
+		Out.ar(0,Pan2.ar(LeakDC.ar(signal2),pos2,mag.rho/(2.sqrt)));
 
 }
 }.play;
