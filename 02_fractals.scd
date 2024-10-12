@@ -135,8 +135,8 @@ var chainx,chainy,amp,rq=1;
 		//ph2=SinOsc.ar(mag.reciprocal,phase2,mag);
 		mag=mag.round(0.00001);
 
-		ph1=exp(Complex(0,1)*mag.linlin(0,1,2pi.neg,2pi)*90.degrad).theta;
-		ph2=exp(Complex(0,1)*mag.linlin(0,1,2pi.neg,2pi)).theta;
+		ph1=exp(Complex(0,1)*mag.theta+90.degrad).theta;
+		ph2=exp(Complex(0,1)*mag.theta).theta;
 
 		amp=m.reciprocal;
 		freq=fund*amp.reciprocal;
