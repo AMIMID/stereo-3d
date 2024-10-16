@@ -10,25 +10,6 @@ s.waitForBoot
 )
 
 
-Buffer.freeAll
-~b= Buffer.alloc(s,2048);
-
-(
-var env,sig,wt,angle=0,level,levels;
-
-~levels=360.collect{
-
-	level=exp(Complex(0,1)*angle).imag;
-		angle=angle+1.degrad;
-	levels=level.rrand(exp(Complex(0,1)*angle+(45-(45/1.6180339887499)).degrad).imag);
-};
-env = Env(~levels,[1]);
-sig=env.asSignal(1024);
-wt = sig.asWavetable;
-~b.loadCollection(wt);
-//sig.plot;
-)
-
 ////////fractal
 (
 var c,angle=0,c_real,c_imag,z;
@@ -118,7 +99,7 @@ var phase,angle=0,mag,phase1,angle1=0,mag1,m=3,pl1=0,pl2=0;
 //////////////synth
 (
 {
-var signal1,signal2,env1,env2,pl=89;
+var signal1,signal2,env1,env2,pl=0;
 var pos1,pos2,phase1,phase2;
 var in1,in2, chainx,chainy,b=0;
 var chainxx,chainyy,mg,ph1,ph2;
