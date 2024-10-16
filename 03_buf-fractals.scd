@@ -134,8 +134,8 @@ var frames=(1024*2);
 		ph1=exp(Complex(0,1)*(mg.theta+90.degrad)).theta;
 ph2=exp(Complex(0,1)*mg.theta).theta;
 
-chainxx = chainx.pvcollect(frames, {|mag, phase, index| [mag*(mg.rho/(2.sqrt), exp(Complex(0,1)*(phase+ph1)).theta]; }, frombin: b, tobin: b, zeroothers: 1);
-chainyy = chainy.pvcollect(frames, {|mag, phase, index| [mag*(mg.rho/(2.sqrt), exp(Complex(0,1)*(phase+ph2)).theta]; }, frombin: b, tobin: b, zeroothers: 1);
+		chainxx = chainx.pvcollect(frames, {|mag, phase, index| [mag*(mg.rho/(2.sqrt)), exp(Complex(0,1)*(phase+ph1)).theta]; }, frombin: b, tobin: b, zeroothers: 1);
+		chainyy = chainy.pvcollect(frames, {|mag, phase, index| [mag*(mg.rho/(2.sqrt)), exp(Complex(0,1)*(phase+ph2)).theta]; }, frombin: b, tobin: b, zeroothers: 1);
 
 
 		signal1=Pan2.ar(IFFT(chainxx),pos1);
