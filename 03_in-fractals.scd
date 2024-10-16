@@ -122,7 +122,7 @@ var signal1,signal2,env1,env2,pl=89;
 var pos1,pos2,phase1,phase2;
 var in1,in2, chainx,chainy,b=0;
 var chainxx,chainyy,mg,ph1,ph2;
-var frames= 1024;
+var frames= 1024*2;
 
 	in1 = SoundIn.ar(0);
 	in2 =  SoundIn.ar(0);
@@ -136,16 +136,17 @@ var frames= 1024;
 		pos2=~posR.[pl]/(2.sqrt);
 		//phase1=~phase1.[pl];
 		//phase2=~phase2.[pl];
-		mg=Complex(~magL.[pl]/(2.sqrt),~magR.[pl]/(2.sqrt)).rho/(2.sqrt);
+		mg=Complex(~magL.[pl]/(2.sqrt),~magR.[pl]/(2.sqrt));
 
-ph1=exp(Complex(0,1)*mg.theta+90.degrad);
+		//env1=EnvGen.ar(Env([1,1],[360]),doneAction:2);
+		//env2=EnvGen.ar(Env([1,1],[360]),doneAction:2);
+
+		ph1=exp(Complex(0,1)*(mg.theta+90.degrad)).theta;
 ph2=exp(Complex(0,1)*mg.theta).theta;
 
-	//env1=EnvGen.ar(Env([1,1],[360]),doneAction:2);
-	//env2=EnvGen.ar(Env([1,1],[360]),doneAction:2);
+chainxx = chainx.pvcollect(frames, {|mag, phase, index| [mag*(mg.rho/(2.sqrt), exp(Complex(0,1)*(phase+ph1)).theta]; }, frombin: b, tobin: b, zeroothers: 1);
+chainyy = chainy.pvcollect(frames, {|mag, phase, index| [mag*(mg.rho/(2.sqrt), exp(Complex(0,1)*(phase+ph2)).theta]; }, frombin: b, tobin: b, zeroothers: 1);
 
-chainxx = chainx.pvcollect(frames, {|mag, phase, index| [mag*mg, exp(Complex(0,1)*(phase+ph1.theta)).theta]; }, frombin: b, tobin: b, zeroothers: 1);
-chainyy = chainy.pvcollect(frames, {|mag, phase, index| [mag*mg, exp(Complex(0,1)*(phase+ph2.theta)).theta]; }, frombin: b, tobin: b, zeroothers: 1);
 
 		signal1=Pan2.ar(IFFT(chainxx),pos1,mg);
 		signal2=Pan2.ar(IFFT(chainyy),pos2,mg);

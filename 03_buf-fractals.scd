@@ -13,28 +13,10 @@ s.waitForBoot
 Buffer.freeAll
 ////////////////////buffers
 (
-~l = Buffer.readChannel(s,"/Users/petrostatsiopoulos/Dokuments/PAST PROJECTS FILES/remasters/motorola.mp3",channels:0 );
-~r = Buffer.readChannel(s,"/Users/petrostatsiopoulos/Dokuments/PAST PROJECTS FILES/remasters/motorola.mp3",channels:1 );
+~l = Buffer.readChannel(s,"/Users/petrostatsiopoulos/Dokuments/EXTERNAL/music/band album library/Kylesa/Static Tensions (2022 Remaster)/01 Scapegoat (2022 Remaster).wav",channels:0 );
+~r = Buffer.readChannel(s,"/Users/petrostatsiopoulos/Dokuments/EXTERNAL/music/band album library/Kylesa/Static Tensions (2022 Remaster)/01 Scapegoat (2022 Remaster).wav",channels:1 );
 )
-/////////arrays
-Buffer.freeAll
-~b= Buffer.alloc(s,2048);
 
-(
-var env,sig,wt,angle=0,level,levels;
-
-~levels=360.collect{
-
-	level=exp(Complex(0,1)*angle).imag;
-		angle=angle+1.degrad;
-	levels=level.rrand(exp(Complex(0,1)*angle+(45-(45/1.6180339887499)).degrad).imag);
-};
-env = Env(~levels,[1]);
-sig=env.asSignal(1024);
-wt = sig.asWavetable;
-~b.loadCollection(wt);
-//sig.plot;
-)
 
 ////////fractal
 (
@@ -129,10 +111,8 @@ var phase,angle=0,mag,phase1,angle1=0,mag1,m=2,pl1=0,pl2=0;
 var signal1,signal2,env1,env2,pl=89;
 var pos1,pos2,phase1,phase2,ph1,ph2;
 var in1,in2, chainx,chainy,b=0;
-var chainxx,chainyy,mg,pie=2pi;
-var frames=(1024*1);
-var fund;
-	fund=48000/256;
+var chainxx,chainyy,mg;
+var frames=(1024*2);
 
 	 in1 = PlayBuf.ar(1, ~l.bufnum, BufRateScale.kr(~l), loop: 0, doneAction:2);
 	 in2 = PlayBuf.ar(1, ~r.bufnum, BufRateScale.kr(~r), loop: 0, doneAction:2);
@@ -146,16 +126,16 @@ var fund;
 		pos2=~posR.[pl]/(2.sqrt);
 		//phase1=~phase1.[pl];
 		//phase2=~phase2.[pl];
-		mg=Complex(~magL.[pl]/(2.sqrt),~magR.[pl]/(2.sqrt)).rho/(2.sqrt);
+		mg=Complex(~magL.[pl]/(2.sqrt),~magR.[pl]/(2.sqrt));
 
 		//env1=EnvGen.ar(Env([1,1],[360]),doneAction:2);
 		//env2=EnvGen.ar(Env([1,1],[360]),doneAction:2);
 
-		ph1=exp(Complex(0,1)*(mg.theta+90.degrad));
+		ph1=exp(Complex(0,1)*(mg.theta+90.degrad)).theta;
 ph2=exp(Complex(0,1)*mg.theta).theta;
 
-chainxx = chainx.pvcollect(frames, {|mag, phase, index| [mag*mg, exp(Complex(0,1)*(phase+ph1.theta)).theta]; }, frombin: b, tobin: b, zeroothers: 1);
-chainyy = chainy.pvcollect(frames, {|mag, phase, index| [mag*mg, exp(Complex(0,1)*(phase+ph2.theta)).theta]; }, frombin: b, tobin: b, zeroothers: 1);
+chainxx = chainx.pvcollect(frames, {|mag, phase, index| [mag*(mg.rho/(2.sqrt), exp(Complex(0,1)*(phase+ph1)).theta]; }, frombin: b, tobin: b, zeroothers: 1);
+chainyy = chainy.pvcollect(frames, {|mag, phase, index| [mag*(mg.rho/(2.sqrt), exp(Complex(0,1)*(phase+ph2)).theta]; }, frombin: b, tobin: b, zeroothers: 1);
 
 
 		signal1=Pan2.ar(IFFT(chainxx),pos1);

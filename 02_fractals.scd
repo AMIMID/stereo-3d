@@ -135,8 +135,8 @@ var chainx,chainy,amp,rq=1;
 		//ph2=SinOsc.ar(mag.reciprocal,phase2,mag);
 		mag=mag.round(0.00001);
 
-		ph1=exp(Complex(0,1)*(mag.theta+90.degrad));
-		ph2=exp(Complex(0,1)*mag.theta);
+		ph1=exp(Complex(0,1)*(mag.theta+90.degrad)).theta;
+		ph2=exp(Complex(0,1)*mag.theta).theta;
 
 		amp1=m.reciprocal;
 		amp2=m.reciprocal;
@@ -145,8 +145,8 @@ var chainx,chainy,amp,rq=1;
 //env1=EnvGen.ar(Env.sine(45,0.1),doneAction:2);
 //env2=EnvGen.ar(Env.sine(45,0.1),doneAction:2);
 
-		signal1=BPF.ar(Osc.ar(~b.bufnum,freq1,ph1.theta,amp1),freq1,rq);
-		signal2=BPF.ar(Osc.ar(~b.bufnum,freq1,ph2.theta,amp2),freq2,rq);
+		signal1=BPF.ar(Osc.ar(~b.bufnum,freq1,ph1,amp1),freq1,rq);
+		signal2=BPF.ar(Osc.ar(~b.bufnum,freq1,ph2,amp2),freq2,rq);
 
 	m=m+1;
 
