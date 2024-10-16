@@ -141,15 +141,15 @@ var frames= 1024*2;
 		//env1=EnvGen.ar(Env([1,1],[360]),doneAction:2);
 		//env2=EnvGen.ar(Env([1,1],[360]),doneAction:2);
 
-		ph1=exp(Complex(0,1)*(mg.theta+90.degrad)).theta;
+ph1=exp(Complex(0,1)*(exp(Complex(0,1)*(mg.theta+90.degrad)).theta)).theta;
 ph2=exp(Complex(0,1)*mg.theta).theta;
 
 		chainxx = chainx.pvcollect(frames, {|mag, phase, index| [mag*(mg.rho/(2.sqrt)), exp(Complex(0,1)*(phase+ph1)).theta]; }, frombin: b, tobin: b, zeroothers: 1);
 		chainyy = chainy.pvcollect(frames, {|mag, phase, index| [mag*(mg.rho/(2.sqrt)), exp(Complex(0,1)*(phase+ph2)).theta]; }, frombin: b, tobin: b, zeroothers: 1);
 
 
-		signal1=Pan2.ar(IFFT(chainxx),pos1,mg);
-		signal2=Pan2.ar(IFFT(chainyy),pos2,mg);
+		signal1=Pan2.ar(IFFT(chainxx),pos1);
+		signal2=Pan2.ar(IFFT(chainyy),pos2);
 b=b+1;
 pl=pl+1;
 		Out.ar(0,signal1);

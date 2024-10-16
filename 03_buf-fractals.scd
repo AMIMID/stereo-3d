@@ -1,11 +1,12 @@
 (
-s.options.numWireBufs = 1024*16;
+s.options.numWireBufs = 1024*4;
 s.options.numOutputBusChannels=2;
 s.options.numInputBusChannels=0;
-TempoClock.default.tempo_(120/120);
-s.options.memSize = 8192*16;
-//s.options.blockSize = 64/4;
+TempoClock.default.tempo_(0.5);
+s.options.memSize = 8192*64;
+s.options.blockSize = 64/1;
 s.options.maxNodes = 1024 * 16;
+s.options.sampleRate= 48000;
 s.waitForBoot
 )
 
@@ -131,7 +132,7 @@ var frames=(1024*2);
 		//env1=EnvGen.ar(Env([1,1],[360]),doneAction:2);
 		//env2=EnvGen.ar(Env([1,1],[360]),doneAction:2);
 
-		ph1=exp(Complex(0,1)*(mg.theta+90.degrad)).theta;
+ph1=exp(Complex(0,1)*(exp(Complex(0,1)*(mg.theta+90.degrad)).theta)).theta;
 ph2=exp(Complex(0,1)*mg.theta).theta;
 
 		chainxx = chainx.pvcollect(frames, {|mag, phase, index| [mag*(mg.rho/(2.sqrt)), exp(Complex(0,1)*(phase+ph1)).theta]; }, frombin: b, tobin: b, zeroothers: 1);
@@ -149,5 +150,3 @@ pl=pl+1;
 }.play;
 s.record;
 )
-
-(Complex(~magL.[0]/(2.sqrt),~magR.[0]/(2.sqrt)).rho/(2.sqrt)).postln;
