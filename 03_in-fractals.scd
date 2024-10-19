@@ -117,7 +117,7 @@ var frames= 1024*2;
 		pos2=~posR.[pl]/(2.sqrt);
 		//phase1=~phase1.[pl];
 		//phase2=~phase2.[pl];
-		mg=Complex(~magL.[pl]/(2.sqrt),~magR.[pl]/(2.sqrt));
+		mg=Complex(~magL.normalize(0,1).[pl],~magR.normalize(0,1).[pl]);
 
 		//env1=EnvGen.ar(Env([1,1],[360]),doneAction:2);
 		//env2=EnvGen.ar(Env([1,1],[360]),doneAction:2);
