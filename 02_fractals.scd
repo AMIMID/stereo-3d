@@ -20,13 +20,13 @@ var env,sig,wt,angle=0,level,levels;
 
 	level=exp(Complex(0,1)*angle).imag;
 		angle=angle+1.degrad;
-	levels=level.rrand(exp(Complex(0,1)*angle+(45-(45/1.6180339887499)).degrad).imag);
+	levels=level.rrand(exp(Complex(0,1)*angle+((360-(360/1.6180339887499))/10).degrad).imag);
 };
 env = Env(~levels,[1]);
 sig=env.asSignal(1024);
 wt = sig.asWavetable;
 ~b.loadCollection(wt);
-//sig.plot;
+sig.plot;
 )
 
 ////////fractal
@@ -121,32 +121,35 @@ var phase,angle=0,mag,phase1,angle1=0,mag1,m=2,pl1=0,pl2=0;
 {
 var signal1,signal2,env1,env2,pl=0,m=1,fund=55,freq1,freq2,amp1,amp2;
 var pos1,pos2,phase1,phase2,ph1,ph2,mag,octave=4;
-var chainx,chainy,amp,rq=1;
+var chainx,chainy,amp,rq=1,cutt;
 
-180.do{
+360.do{
 
 		pos1=~posL.[pl]/(2.sqrt);
 		pos2=~posR.[pl]/(2.sqrt);
 		//phase1=~phase1.[pl];
 		//phase2=~phase2.[pl];
-			mag=Complex(~magL.[pl]/(2.sqrt),~magR.[pl]/(2.sqrt));
+		mag=Complex(~magL.normalize(0,1).[pl],~magR.normalize(0,1).[pl]);
 
 		//ph1=SinOsc.ar(mag.reciprocal,phase1,mag);
 		//ph2=SinOsc.ar(mag.reciprocal,phase2,mag);
 		mag=mag.round(0.00001);
 
-		ph1=exp(Complex(0,1)*(mag.theta+90.degrad)).theta;
+
+		ph1=exp(Complex(0,1)*(exp(Complex(0,1)*(mag.theta+90.degrad)).theta)).theta;
 		ph2=exp(Complex(0,1)*mag.theta).theta;
 
 		amp1=m.reciprocal;
 		amp2=m.reciprocal;
 		freq1=fund*amp1.reciprocal;
 		freq2=fund*amp2.reciprocal;
+		cutt=mag.rho/(2.sqrt);
+		rq=cutt/1;
 //env1=EnvGen.ar(Env.sine(45,0.1),doneAction:2);
 //env2=EnvGen.ar(Env.sine(45,0.1),doneAction:2);
 
-		signal1=BPF.ar(Osc.ar(~b.bufnum,freq1,ph1,amp1),freq1,rq);
-		signal2=BPF.ar(Osc.ar(~b.bufnum,freq1,ph2,amp2),freq2,rq);
+		signal1=BPF.ar(Osc.ar(~b.bufnum,freq1,ph1,amp1),fund*cutt.reciprocal,rq);
+		signal2=BPF.ar(Osc.ar(~b.bufnum,freq1,ph2,amp2),fund*cutt.reciprocal,rq);
 
 	m=m+1;
 

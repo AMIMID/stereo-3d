@@ -14,8 +14,8 @@ s.waitForBoot
 Buffer.freeAll
 ////////////////////buffers
 (
-~l = Buffer.readChannel(s,"/Users/petrostatsiopoulos/Dokuments/EXTERNAL/music/band album library/Kylesa/Static Tensions (2022 Remaster)/01 Scapegoat (2022 Remaster).wav",channels:0 );
-~r = Buffer.readChannel(s,"/Users/petrostatsiopoulos/Dokuments/EXTERNAL/music/band album library/Kylesa/Static Tensions (2022 Remaster)/01 Scapegoat (2022 Remaster).wav",channels:1 );
+~l = Buffer.readChannel(s,"/Users/petrostatsiopoulos/Desktop/pie's recordings_1.wav",channels:0 );
+~r = Buffer.readChannel(s,"/Users/petrostatsiopoulos/Desktop/pie's recordings_1.wav",channels:0 );
 )
 
 
@@ -121,7 +121,7 @@ var frames=(1024*2);
 	chainx = FFT(LocalBuf(frames), in1);
 	chainy = FFT(LocalBuf(frames), in2);
 
-720.do{
+360.do{
 
 		pos1=~posL.[pl]/(2.sqrt);
 		pos2=~posR.[pl]/(2.sqrt);

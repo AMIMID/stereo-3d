@@ -129,8 +129,8 @@ ph2=exp(Complex(0,1)*mg.theta).theta;
 		chainyy = chainy.pvcollect(frames, {|mag, phase, index| [mag*(mg.rho/(2.sqrt)), exp(Complex(0,1)*(phase+ph2)).theta]; }, frombin: b, tobin: b, zeroothers: 1);
 
 
-		signal1=Pan2.ar(IFFT(chainxx),pos1);
-		signal2=Pan2.ar(IFFT(chainyy),pos2);
+		signal1=Pan2.ar(LeakDC.ar(IFFT(chainxx)),pos1);
+		signal2=Pan2.ar(LeakDC.ar(IFFT(chainyy)),pos2);
 b=b+1;
 pl=pl+1;
 		Out.ar(0,signal1);
