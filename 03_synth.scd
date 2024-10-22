@@ -123,7 +123,7 @@ var signal1,signal2,env1,env2,pl=0,m=1,fund=55,freq1,freq2,amp1,amp2;
 var pos1,pos2,phase1,phase2,ph1,ph2,mag,octave=4;
 var chainx,chainy,amp,rq=1,cutt;
 
-90.do{
+360.do{
 
 		pos1=~posL.[pl]/(2.sqrt);
 		pos2=~posR.[pl]/(2.sqrt);
@@ -136,8 +136,8 @@ var chainx,chainy,amp,rq=1,cutt;
 		mag=mag.round(0.00001);
 
 
-		ph1=exp(Complex(0,1)*(exp(Complex(0,1)*(mag.theta+90.degrad)).theta)).theta;
-		ph2=exp(Complex(0,1)*mag.theta).theta;
+		ph1=exp(Complex(0,1)*(2pi*mag.real).mod(2pi)).theta;
+		ph2=exp(Complex(0,1)*(2pi*mag.imag).mod(2pi)).theta;
 
 		amp1=m.reciprocal;
 		amp2=m.reciprocal;
@@ -148,9 +148,12 @@ var chainx,chainy,amp,rq=1,cutt;
 //env1=EnvGen.ar(Env.sine(45,0.1),doneAction:2);
 //env2=EnvGen.ar(Env.sine(45,0.1),doneAction:2);
 
-		signal1=BPF.ar(Osc.ar(~b.bufnum,freq1,ph1,amp1),fund*cutt.reciprocal,rq);
-		signal2=BPF.ar(Osc.ar(~b.bufnum,freq1,ph2,amp2),fund*cutt.reciprocal,rq);
+	//	signal1=BPF.ar(Osc.ar(~b.bufnum,freq1,ph1,amp1),fund*cutt.reciprocal,rq,1/rq.sqrt);
+	//	signal2=BPF.ar(Osc.ar(~b.bufnum,freq1,ph2,amp2),fund*cutt.reciprocal,rq,1/rq.sqrt);
 
+
+	signal1=Osc.ar(~b.bufnum,freq1,ph1,amp1);
+	signal2=Osc.ar(~b.bufnum,freq1,ph2,amp2);
 	m=m+1;
 
 pl=pl+1;
