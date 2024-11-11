@@ -291,7 +291,7 @@ MIDIdef.cc(\midi4,{ |val, num, chan, src|
 	//[val, num, chan, src].postln;
 		set=val.linlin(0,127,0,720*~time).round(1);
 		set.postln;
-		~synth1.set(\pl2,set);
+		~synth1.set(\pl1,set);
 },25);
 	);
 	);
