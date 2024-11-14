@@ -101,19 +101,27 @@ var phase,angle=0,mag,phase1,angle1=0,mag1,m=2,pl1=0,pl2=0;
 
 	);
 
+		({
+		var angle=0;
+		~angle=(720*~time).collect{
+		angle=(angle+(360-(360/1.6180339887499))).wrap(0,360);
+		}
+		}.value
+	);
+
 ////////////////////osc
 
 (
 SynthDef.new(\light,
 {
-arg decay=6,speed=1,octave=2,angle_r=1,gain=0.1;
+arg decay=6,speed=1,octave=2,angle_r=0,gain=0.1;
 var signal1,signal2,env,amp1,amp2,pl=0,nx,ny,mult=12,m=1,pl1=0;
 var pos1,pos2,phase1,phase2,mag,fundamental=55,freq,pitch1,pitch2;
 var amp,phase,c1,c2;
 
 fundamental=fundamental*speed.reciprocal;
 		freq=fundamental*octave;
-(720*~time).do{
+(720).do{
 
 		pos1=~posL.[pl1];
 		pos2=~posR.[pl1];
@@ -128,8 +136,8 @@ fundamental=fundamental*speed.reciprocal;
 				c1=Polar(mag.real,mag.theta);
 				c2=Polar(mag.imag,mag.theta);
 
-				nx=exp(Complex(0,1)*((angle_r.degrad*c1.theta)).wrap(2pi.neg,2pi)).real*mult;
-			    ny=exp(Complex(0,1)*((angle_r.degrad*c2.theta)).wrap(2pi.neg,2pi)).imag*mult;
+			    nx=(mag*Polar(mult,Select.kr(angle_r,~angle).degrad)).real;
+			    ny=(mag*Polar(mult,Select.kr(angle_r,~angle).degrad)).imag;
 				//nx=c1.x*mult;
 				//ny=c1.y*mult;
 
@@ -175,10 +183,10 @@ SerialPort.devices;
 
 (
 		//1.wait;
-~synth=Synth.new(\light, [\angle_r,1]);
+~synth=Synth.new(\light, [\angle_r,45]);
 (~control = Routine.new({
 	{
-	~synth.set(\angle_r,~val.linlin(100,1200,0,0,360));
+				~synth.set(\angle_r,~val.linlin(100,1200,0,(720*~time)));
 		0.01.wait;
 	}.loop;
 }).play;
