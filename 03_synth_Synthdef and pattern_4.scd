@@ -289,10 +289,10 @@ rythm=[1,1/1,1,1,1/1];
 (
 SynthDef.new(\ostereo1,
 {
-		arg decay=8,speed=1,octave=1,pl1=0,angle_r=0;
-var signal1,signal2,env,m=2,freq1,freq2,amp1,amp2,pl=0,nx,ny;
+		arg decay=8,speed=1,pl1=0,angle_r=0,gate=1;
+var signal1,signal2,env,m=2,freq1,freq2,amp1,amp2,pl=0,nx,ny,octave=1;
 var pos1,pos2,phase1,phase2,ph1,ph2,mag,fundamental=55,freq,pitch1,pitch2,mult=12;
-var chainx,chainy,amp,rq=1,cutt,f,pl2=0,bank1=1;
+var chainx,chainy,amp,rq=1,cutt,f,pl2=0,bank1=6;
 
 	var wrappedOut1 = { |busArray, signalArray|
 	[busArray, signalArray].flop.do { |pair|
@@ -334,7 +334,7 @@ bank1.do{
 		amp2=m.reciprocal*octave.reciprocal*speed*pitch2.reciprocal;
 		f=freq*m;
 
-env=EnvGen.ar(Env.perc(0.05,decay,1),doneAction:2);
+env=EnvGen.ar(Env.adsr(0.05,0.5,0.5,decay),gate:gate,doneAction:2);
 
 				signal1=(Osc.ar(~b.bufnum,f*pitch1,ph1,amp1));
 				//signal2=(Osc.ar(~t.bufnum,f*pitch2,ph2,amp2));
@@ -352,8 +352,8 @@ env=EnvGen.ar(Env.perc(0.05,decay,1),doneAction:2);
 (
 SynthDef.new(\ostereo2,
 {
-		arg decay=8,speed=1,octave=1,pl1=0,angle_r=0;
-var signal1,signal2,env,m=2,freq1,freq2,amp1,amp2,pl=0,nx,ny;
+		arg decay=8,speed=1,pl1=0,angle_r=0,gate=1;
+var signal1,signal2,env,m=2,freq1,freq2,amp1,amp2,pl=0,nx,ny,octave=1;
 var pos1,pos2,phase1,phase2,ph1,ph2,mag,fundamental=55,freq,pitch1,pitch2,mult=12;
 var chainx,chainy,amp,rq=1,cutt,f,pl2=0,bank1=6;
 
@@ -397,7 +397,7 @@ bank1.do{
 		amp2=m.reciprocal*octave.reciprocal*speed*pitch2.reciprocal;
 		f=freq*m;
 
-env=EnvGen.ar(Env.perc(0.05,decay,1),doneAction:2);
+env=EnvGen.ar(Env.adsr(0.05,0.5,0.5,decay),gate:gate,doneAction:2);
 
 				//signal1=(Osc.ar(~t.bufnum,f*pitch1,ph1,amp1));
 				signal2=(Osc.ar(~b.bufnum,f*pitch2,ph2,amp2));
@@ -434,20 +434,20 @@ env=EnvGen.ar(Env.perc(0.05,decay,1),doneAction:2);
 a=Pdef(\1, Pbind(\instrument, \ostereo1,
 	\dur,Pseq(~dur1,1),
 \angle_r,Pseq(~angle,inf),
+	\gate,Pseq([1,0,1,1,0,1,0,1,1,0,1,1,1,0],inf),
 	\pl1,Pseq(~list,inf),
 		\out1,Pn(Pshuf([0, 1], 1), inf).clump(2).collect([_]),
 	\out2,Pn(Pshuf([0, 1], 1), inf).clump(2).collect([_]),
-		//\octave,Prand([1,2,4],inf),
 	\decay,Pbrown(4,8,1,inf),
 	//\speed,Prand([1,3/4,2/3,1/2],inf);
 ));
 b=Pdef(\2, Pbind(\instrument, \ostereo2,
 	\dur,Pseq(~dur2,1),
 \angle_r,Pseq(~angle,inf),
+	\gate,Pseq([1,0,1,1,0,1,0,1,1,0,1,1,1,0],inf),
 	\pl1,Pseq(~list,inf),
 		\out1,Pn(Pshuf([0, 1], 1), inf).clump(2).collect([_]),
 	\out2,Pn(Pshuf([0, 1], 1), inf).clump(2).collect([_]),
-		//	\octave,Prand([1,2,4],inf),
 	\decay,Pbrown(4,8,1,inf),
 	//\speed,Prand([1,3/4,2/3,1/2],inf);
 ));
