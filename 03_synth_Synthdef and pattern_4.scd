@@ -33,7 +33,7 @@ sig.plot;
 
 
 (
-~time=4;
+~time=2;
 ////////fractal
 		{
 var signal,wt,m=0,amp;
@@ -260,8 +260,8 @@ var pl10=0,pl11=0,pl12=0,pl13=0,pl14=0,pl15=0;
 ///////////////////////L-system algae variable a,b rules:a=ab b=a , n3 for n0=a
 rythm=[1,1/1,1,1,1/1];
 
-~dur1 = (45*~time).collect{
-	ph1=(Complex(~magL.[pl1],~magR.[pl1]).rho/(2.sqrt)).real.round(0.0000000001);
+~dur1 = (90*~time).collect{
+	ph1=(Complex(~magL.[pl1],~magR.[pl1])).real.round(0.0000000001);
 	index1=rythm.wrapAt(pl7);
 	pl7=pl7+1;
 	pl1=pl1+1;
@@ -270,8 +270,8 @@ rythm=[1,1/1,1,1,1/1];
 
 	};
 
-~dur2 = (45*~time).collect{
-	ph2=(Complex(~magL.[pl2],~magR.[pl2]).rho/(2.sqrt)).imag.round(0.0000000001);
+~dur2 = (90*~time).collect{
+	ph2=(Complex(~magL.[pl2],~magR.[pl2])).imag.round(0.0000000001);
 	index2=rythm.wrapAt(pl8);
 	pl8=pl8+1;
 	pl2=pl2+1;
@@ -290,7 +290,7 @@ rythm=[1,1/1,1,1,1/1];
 SynthDef.new(\ostereo1,
 {
 		arg decay=8,speed=1,pl1=0,angle_r=0,gate=1;
-var signal1,signal2,env,m=2,freq1,freq2,amp1,amp2,pl=0,nx,ny,octave=1;
+var signal1,signal2,env,m=2,freq1,freq2,amp1,amp2,pl=0,nx,ny,octave=4;
 var pos1,pos2,phase1,phase2,ph1,ph2,mag,fundamental=55,freq,pitch1,pitch2,mult=12;
 var chainx,chainy,amp,rq=1,cutt,f,pl2=0,bank1=6;
 
@@ -353,7 +353,7 @@ env=EnvGen.ar(Env.adsr(0.05,0.5,0.5,decay),gate:gate,doneAction:2);
 SynthDef.new(\ostereo2,
 {
 		arg decay=8,speed=1,pl1=0,angle_r=0,gate=1;
-var signal1,signal2,env,m=2,freq1,freq2,amp1,amp2,pl=0,nx,ny,octave=1;
+var signal1,signal2,env,m=2,freq1,freq2,amp1,amp2,pl=0,nx,ny,octave=4;
 var pos1,pos2,phase1,phase2,ph1,ph2,mag,fundamental=55,freq,pitch1,pitch2,mult=12;
 var chainx,chainy,amp,rq=1,cutt,f,pl2=0,bank1=6;
 
@@ -424,7 +424,7 @@ env=EnvGen.ar(Env.adsr(0.05,0.5,0.5,decay),gate:gate,doneAction:2);
 
 	({
 		var angle=0;
-		~angle=(45*~time).collect{
+		~angle=(90*~time).collect{
 		angle=(angle+(360-(360/1.6180339887499))).wrap(0,360);
 		}
 		}.value
@@ -453,7 +453,7 @@ b=Pdef(\2, Pbind(\instrument, \ostereo2,
 ));
 
 	);
-TempoClock.default.tempo_(4);
+TempoClock.default.tempo_(2);
 /////with tempo 1 and ~time 1 overall duration of a is 2.08 min
 
 	/////////////////////scales
