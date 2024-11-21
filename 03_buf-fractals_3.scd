@@ -228,7 +228,7 @@ var phase,angle=0,mag,phase1,angle1=0,mag1,m=6,pl1=0,pl2=0;
 );
 
 //////////////synth
-(
+/*(
 SynthDef.new(\ostereobuf,
 	{
 arg pl1=0;
@@ -276,7 +276,54 @@ pl=pl+1;
 		}
 }).add
 
-);
+)*/
+
+(
+SynthDef.new(\ostereobuf,
+	{
+arg pl1=0;
+var signal1,signal2,env1,env2,pl=1,bank2=360,pl2=0,bank1=90;
+var pos1,pos2,phase1,phase2,ph1,ph2;
+var in1,in2, chainx,chainy,b=0;
+var chainxx,chainyy,mg;
+var frames=(1024*1);
+
+	 in1 = PlayBuf.ar(1, ~l.bufnum, BufRateScale.kr(~l.bufnum,), loop: 0, doneAction:2);
+	 in2 = PlayBuf.ar(1, ~r.bufnum, BufRateScale.kr(~r.bufnum,), loop: 0, doneAction:2);
+
+	chainx = FFT(LocalBuf(frames), in1);
+	chainy = FFT(LocalBuf(frames), in2);
+
+bank2.do{
+
+		pos1=~posL.[pl]/(2.sqrt);
+		pos2=~posR.[pl]/(2.sqrt);
+		//phase1=~phase1.[pl];
+		//phase2=~phase2.[pl];
+		mg=Complex(~magL.[pl],~magR.[pl]);
+	//mg=Complex(Select.kr(pl,Select.kr(pl2,~magx)),Select.kr(pl,Select.kr(pl2,~magy)));
+		//	mg=Complex(~magx.[pl2].[pl],~magy.[pl2].[pl]);
+
+/*ph1=exp(Complex(0,1)*(Complex(mg.real,0).theta)).theta;
+ph2=exp(Complex(0,1)*(Complex(0,mg.imag).theta)).theta;*/
+
+		ph1=exp(Complex(0,1)*(Complex(mg.real,0).theta)).theta;
+		ph2=exp(Complex(0,1)*(Complex(0,mg.imag).theta)).theta;
+
+chainxx = chainx.pvcollect(frames, {|mag, phase, index| [mag*(mg.rho/(2.sqrt)), exp(Complex(0,1)*(phase+ph1)).theta]; }, frombin: b, tobin: b, zeroothers: 1);
+chainyy = chainy.pvcollect(frames, {|mag, phase, index| [mag*(mg.rho/(2.sqrt)), exp(Complex(0,1)*(phase+ph2)).theta]; }, frombin: b, tobin: b, zeroothers: 1);
+
+
+		signal1=Pan2.ar(IFFT(chainxx),pos1);
+		signal2=Pan2.ar(IFFT(chainyy),pos2);
+b=b+1;
+pl=pl+1;
+		Out.ar(0,signal1);
+		Out.ar(0,signal2);
+		};
+}).add
+
+)
 
 ~synth1=Synth(\ostereobuf);
 (
