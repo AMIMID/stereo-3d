@@ -468,7 +468,7 @@ bank1.do{
 phase=if(pl2%2==0,0.degrad,90.degrad);
 env=EnvGen.ar(Env.adsr(0.05,0.5,0.5,decay),gate:gate,doneAction:2);
 
-				signal1=(Osc.ar(~b.bufnum,f*pitch1,phase+ph1,amp1));
+				signal1=(Osc.ar(~b.bufnum,f*pitch1,ph1,amp1));
 				//signal2=(Osc.ar(~t.bufnum,f*pitch2,ph2,amp2));
 	//m=m+1;
 
@@ -532,7 +532,7 @@ phase=if(pl2%2==0,0.degrad,90.degrad);
 env=EnvGen.ar(Env.adsr(0.05,0.5,0.5,decay),gate:gate,doneAction:2);
 
 				//signal1=(Osc.ar(~t.bufnum,f*pitch1,ph1,amp1));
-				signal2=(Osc.ar(~b.bufnum,f*pitch2,phase+ph2,amp2));
+				signal2=(Osc.ar(~b.bufnum,f*pitch2,ph2,amp2));
 	//m=m+1;
 
 		//wrappedOut1.value(out1,Pan2.ar(LeakDC.ar(signal1),pos1,env));
