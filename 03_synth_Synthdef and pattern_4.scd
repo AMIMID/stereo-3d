@@ -67,7 +67,7 @@ z=Complex(0,0);
 
 }.value;
 {
-var phase1,phase2,angle1=0,angle2=0,m=2,pl1=0,pl2=0;
+var phase1,phase2,angle1=0,angle2=0,m=4,pl1=0,pl2=0;
 
 ~posL=(720*~time).collect{
 
@@ -89,7 +89,7 @@ var phase1,phase2,angle1=0,angle2=0,m=2,pl1=0,pl2=0;
 }.value;
 
 {
-var phase,angle=0,mag,phase1,angle1=0,mag1,m=2,pl1=0,pl2=0;
+var phase,angle=0,mag,phase1,angle1=0,mag1,m=4,pl1=0,pl2=0;
 
 ~magL = (720*~time).collect{
 
@@ -420,9 +420,9 @@ rythm=[1,1/1,1,1,1/1];
 SynthDef.new(\ostereo1,
 {
 		arg decay=8,speed=1,pl1=0,angle_r=0,gate=1;
-var signal1,signal2,env,m=2,freq1,freq2,amp1,amp2,pl=0,nx,ny,octave=8,phase;
+var signal1,signal2,env,m=2,freq1,freq2,amp1,amp2,pl=1,nx,ny,octave=8,phase;
 var pos1,pos2,phase1,phase2,ph1,ph2,mag,fundamental=110,freq,pitch1,pitch2,mult=20;
-var chainx,chainy,amp,rq=1,cutt,f,pl2=0,bank1=180;
+var chainx,chainy,amp,rq=1,cutt,f,pl2=0,bank1=360;
 
 	var wrappedOut1 = { |busArray, signalArray|
 	[busArray, signalArray].flop.do { |pair|
@@ -462,13 +462,13 @@ bank1.do{
 		ph1=exp(Complex(0,1)*(Complex(mag.real,0).theta)).theta;
 		ph2=exp(Complex(0,1)*(Complex(0,mag.imag).theta)).theta;
 
-		amp1=m.reciprocal*octave.reciprocal*speed*pitch1.reciprocal;
-		amp2=m.reciprocal*octave.reciprocal*speed*pitch2.reciprocal;
+		amp1=m.reciprocal*octave.reciprocal*speed*pitch1.reciprocal*mag.real;
+		amp2=m.reciprocal*octave.reciprocal*speed*pitch2.reciprocal*mag.imag;
 		f=freq*m;
 phase=if(pl2%2==0,0.degrad,90.degrad);
 env=EnvGen.ar(Env.adsr(0.05,0.5,0.5,decay),gate:gate,doneAction:2);
 
-				signal1=(SinOsc.ar(f*pitch1,ph1,amp1));
+				signal1=SinOsc.ar(f*pitch1,ph1,amp1);
 				//signal2=(Osc.ar(~t.bufnum,f*pitch2,ph2,amp2));
 	//m=m+1;
 
@@ -484,9 +484,9 @@ env=EnvGen.ar(Env.adsr(0.05,0.5,0.5,decay),gate:gate,doneAction:2);
 SynthDef.new(\ostereo2,
 {
 		arg decay=8,speed=1,pl1=0,angle_r=0,gate=1;
-var signal1,signal2,env,m=2,freq1,freq2,amp1,amp2,pl=0,nx,ny,octave=8;
+var signal1,signal2,env,m=2,freq1,freq2,amp1,amp2,pl=1,nx,ny,octave=8;
 var pos1,pos2,phase1,phase2,ph1,ph2,mag,fundamental=110,freq,pitch1,pitch2,mult=20;
-var chainx,chainy,amp,rq=1,cutt,f,pl2=0,bank1=180,phase;
+var chainx,chainy,amp,rq=1,cutt,f,pl2=0,bank1=360,phase;
 
 	var wrappedOut1 = { |busArray, signalArray|
 	[busArray, signalArray].flop.do { |pair|
@@ -525,14 +525,14 @@ bank1.do{
 		ph1=exp(Complex(0,1)*(Complex(mag.real,0).theta)).theta;
 		ph2=exp(Complex(0,1)*(Complex(0,mag.imag).theta)).theta;
 
-		amp1=m.reciprocal*octave.reciprocal*speed*pitch1.reciprocal;
-		amp2=m.reciprocal*octave.reciprocal*speed*pitch2.reciprocal;
+		amp1=m.reciprocal*octave.reciprocal*speed*pitch1.reciprocal*mag.real;
+		amp2=m.reciprocal*octave.reciprocal*speed*pitch2.reciprocal*mag.imag;
 		f=freq*m;
 phase=if(pl2%2==0,0.degrad,90.degrad);
 env=EnvGen.ar(Env.adsr(0.05,0.5,0.5,decay),gate:gate,doneAction:2);
 
 				//signal1=(Osc.ar(~t.bufnum,f*pitch1,ph1,amp1));
-				signal2=(SinOsc.ar(f*pitch2,ph2,amp2));
+				signal2=SinOsc.ar(f*pitch2,ph2,amp2);
 	//m=m+1;
 
 		//wrappedOut1.value(out1,Pan2.ar(LeakDC.ar(signal1),pos1,env));
