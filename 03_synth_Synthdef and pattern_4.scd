@@ -285,12 +285,142 @@ rythm=[1,1/1,1,1,1/1];
 
 
 ////////////////////osc
+// (
+// (
+// SynthDef.new(\ostereo1,
+// 	{
+// 		arg decay=8,speed=1,pl1=0,angle_r=0,gate=1;
+// 		var signal1,signal2,env,m=2,freq1,freq2,amp1,amp2,pl=0,nx,ny,octave=4,phase;
+// 		var pos1,pos2,phase1,phase2,ph1,ph2,mag,fundamental=55,freq,pitch1,pitch2,mult=12;
+// 		var chainx,chainy,amp,rq=1,cutt,f,pl2=0,bank1=6;
+//
+// 		var wrappedOut1 = { |busArray, signalArray|
+// 			[busArray, signalArray].flop.do { |pair|
+// 		Out.ar(pair[0], pair[1])}};
+// 		var wrappedOut2 = { |busArray, signalArray|
+// 			[busArray, signalArray].flop.do { |pair|
+// 		Out.ar(pair[0], pair[1])}};
+//
+// 		var out1 = NamedControl.kr(\out1, [0, 1]);  // multiple buses!
+// 		var out2 = NamedControl.kr(\out2, [0, 1]);  // multiple buses!
+//
+// 		fundamental=fundamental*speed.reciprocal;
+// 		freq=fundamental*octave;
+//
+// 		bank1.do{
+//
+// 			pos1=Select.kr(pl1,~posR);
+// 			pos2=Select.kr(pl1,~posL);
+// 			//phase1=~phase1.[pl];
+// 			//phase2=~phase2.[pl];
+// 			//mag=Complex(Select.kr(pl1,~magR),Select.kr(pl1,~magL));
+// 			mag=Complex(Select.kr(pl1,~magx.[pl2]),Select.kr(pl1,~magy.[pl2]));
+//
+// 			//ph1=SinOsc.ar(mag.reciprocal,phase1,mag);
+// 			//ph2=SinOsc.ar(mag.reciprocal,phase2,mag);
+// 			mag=mag.round(0.0000000001);
+//
+// 			nx=exp(Complex(0,1)*((angle_r*Complex(mag.real,mag.imag).theta)).wrap(2pi.neg,2pi)).real*mult;
+// 			ny=exp(Complex(0,1)*((angle_r*Complex(mag.real,mag.imag).theta)).wrap(2pi.neg,2pi)).imag*mult;
+//
+// 			pitch1=2.pow(nx/12);
+// 			pitch2=2.pow(ny/12);
+// 			//pitch1=pitch1.round(1);
+// 			//	pitch2=pitch2.round(1);
+//
+//
+// 			ph1=exp(Complex(0,1)*(Complex(mag.real,0).theta)).theta;
+// 			ph2=exp(Complex(0,1)*(Complex(0,mag.imag).theta)).theta;
+//
+// 			amp1=m.reciprocal*octave.reciprocal*speed*pitch1.reciprocal;
+// 			amp2=m.reciprocal*octave.reciprocal*speed*pitch2.reciprocal;
+// 			f=freq*m;
+// 			phase=if(pl2%2==0,0.degrad,90.degrad);
+// 			env=EnvGen.ar(Env.adsr(0.05,0.5,0.5,decay),gate:gate,doneAction:2);
+//
+// 			signal1=(Osc.ar(~b.bufnum,f*pitch1,phase+ph1,amp1));
+// 			//signal2=(Osc.ar(~t.bufnum,f*pitch2,ph2,amp2));
+// 			m=m+1;
+//
+// 			wrappedOut1.value(out1,Pan2.ar(LeakDC.ar(signal1),pos1,env));
+// 			//wrappedOut2.value(out2,Pan2.ar(LeakDC.ar(signal2),pos2,env));
+//
+// 			pl2=pl2+1;
+// 			m=m+1;
+// 		}
+// }).add;
+// );
+//
+// (
+// SynthDef.new(\ostereo2,
+// 	{
+// 		arg decay=8,speed=1,pl1=0,angle_r=0,gate=1;
+// 		var signal1,signal2,env,m=2,freq1,freq2,amp1,amp2,pl=0,nx,ny,octave=4;
+// 		var pos1,pos2,phase1,phase2,ph1,ph2,mag,fundamental=55,freq,pitch1,pitch2,mult=12;
+// 		var chainx,chainy,amp,rq=1,cutt,f,pl2=0,bank1=6,phase;
+//
+// 		var wrappedOut1 = { |busArray, signalArray|
+// 			[busArray, signalArray].flop.do { |pair|
+// 		Out.ar(pair[0], pair[1])}};
+// 		var wrappedOut2 = { |busArray, signalArray|
+// 			[busArray, signalArray].flop.do { |pair|
+// 		Out.ar(pair[0], pair[1])}};
+//
+// 		var out1 = NamedControl.kr(\out1, [0, 1]);  // multiple buses!
+// 		var out2 = NamedControl.kr(\out2, [0, 1]);  // multiple buses!
+//
+// 		fundamental=fundamental*speed.reciprocal;
+// 		freq=fundamental*octave;
+//
+// 		bank1.do{
+//
+// 			pos1=Select.kr(pl1,~posR);
+// 			pos2=Select.kr(pl1,~posL);
+// 			//phase1=~phase1.[pl];
+// 			//phase2=~phase2.[pl];
+// 			mag=Complex(Select.kr(pl1,~magx.[pl2]),Select.kr(pl1,~magy.[pl2]));
+// 			//mag=Complex(Select.kr(pl1,~magR),Select.kr(pl1,~magL));
+//
+// 			//ph1=SinOsc.ar(mag.reciprocal,phase1,mag);
+// 			//ph2=SinOsc.ar(mag.reciprocal,phase2,mag);
+// 			mag=mag.round(0.0000000001);
+//
+// 			nx=exp(Complex(0,1)*((angle_r*Complex(mag.real,mag.imag).theta)).wrap(2pi.neg,2pi)).real*mult;
+// 			ny=exp(Complex(0,1)*((angle_r*Complex(mag.real,mag.imag).theta)).wrap(2pi.neg,2pi)).imag*mult;
+//
+// 			pitch1=2.pow(nx/12);
+// 			pitch2=2.pow(ny/12);
+// 			//pitch1=pitch1.round(1);
+// 			//pitch2=pitch2.round(1);
+//
+// 			ph1=exp(Complex(0,1)*(Complex(mag.real,0).theta)).theta;
+// 			ph2=exp(Complex(0,1)*(Complex(0,mag.imag).theta)).theta;
+//
+// 			amp1=m.reciprocal*octave.reciprocal*speed*pitch1.reciprocal;
+// 			amp2=m.reciprocal*octave.reciprocal*speed*pitch2.reciprocal;
+// 			f=freq*m;
+// 			phase=if(pl2%2==0,0.degrad,90.degrad);
+// 			env=EnvGen.ar(Env.adsr(0.05,0.5,0.5,decay),gate:gate,doneAction:2);
+//
+// 			//signal1=(Osc.ar(~t.bufnum,f*pitch1,ph1,amp1));
+// 			signal2=(Osc.ar(~b.bufnum,f*pitch2,phase+ph2,amp2));
+// 			m=m+1;
+//
+// 			//wrappedOut1.value(out1,Pan2.ar(LeakDC.ar(signal1),pos1,env));
+// 			wrappedOut2.value(out2,Pan2.ar(LeakDC.ar(signal2),pos2,env));
+//
+// 			pl2=pl2+1;
+// 			m=m+1;
+// 		}
+// }).add;
+// )
+// )
 (
 (
 SynthDef.new(\ostereo1,
 {
 		arg decay=8,speed=1,pl1=0,angle_r=0,gate=1;
-var signal1,signal2,env,m=2,freq1,freq2,amp1,amp2,pl=0,nx,ny,octave=4;
+var signal1,signal2,env,m=2,freq1,freq2,amp1,amp2,pl=0,nx,ny,octave=4,phase;
 var pos1,pos2,phase1,phase2,ph1,ph2,mag,fundamental=55,freq,pitch1,pitch2,mult=12;
 var chainx,chainy,amp,rq=1,cutt,f,pl2=0,bank1=6;
 
@@ -309,12 +439,12 @@ fundamental=fundamental*speed.reciprocal;
 
 bank1.do{
 
-		pos1=Select.kr(pl1,~posR);
-		pos2=Select.kr(pl1,~posL);
+		pos1=~posR.[pl2];
+		pos1=~posL.[pl2];
 		//phase1=~phase1.[pl];
 		//phase2=~phase2.[pl];
 				//mag=Complex(Select.kr(pl1,~magR),Select.kr(pl1,~magL));
-			mag=Complex(Select.kr(pl1,~magx.[pl2]),Select.kr(pl1,~magy.[pl2]));
+			mag=Complex(~magL.[pl2],~magR.[pl2]);
 
 		//ph1=SinOsc.ar(mag.reciprocal,phase1,mag);
 		//ph2=SinOsc.ar(mag.reciprocal,phase2,mag);
@@ -325,6 +455,8 @@ bank1.do{
 
 		pitch1=2.pow(nx/12);
 		pitch2=2.pow(ny/12);
+			//pitch1=pitch1.round(1);
+		//	pitch2=pitch2.round(1);
 
 
 		ph1=exp(Complex(0,1)*(Complex(mag.real,0).theta)).theta;
@@ -333,18 +465,17 @@ bank1.do{
 		amp1=m.reciprocal*octave.reciprocal*speed*pitch1.reciprocal;
 		amp2=m.reciprocal*octave.reciprocal*speed*pitch2.reciprocal;
 		f=freq*m;
-
+phase=if(pl2%2==0,0.degrad,90.degrad);
 env=EnvGen.ar(Env.adsr(0.05,0.5,0.5,decay),gate:gate,doneAction:2);
 
-				signal1=(Osc.ar(~b.bufnum,f*pitch1,ph1,amp1));
+				signal1=(Osc.ar(~b.bufnum,f*pitch1,phase+ph1,amp1));
 				//signal2=(Osc.ar(~t.bufnum,f*pitch2,ph2,amp2));
-	m=m+1;
+	//m=m+1;
 
 		wrappedOut1.value(out1,Pan2.ar(LeakDC.ar(signal1),pos1,env));
 		//wrappedOut2.value(out2,Pan2.ar(LeakDC.ar(signal2),pos2,env));
 
 					pl2=pl2+1;
-		m=m+1;
 }
 }).add;
 );
@@ -355,7 +486,7 @@ SynthDef.new(\ostereo2,
 		arg decay=8,speed=1,pl1=0,angle_r=0,gate=1;
 var signal1,signal2,env,m=2,freq1,freq2,amp1,amp2,pl=0,nx,ny,octave=4;
 var pos1,pos2,phase1,phase2,ph1,ph2,mag,fundamental=55,freq,pitch1,pitch2,mult=12;
-var chainx,chainy,amp,rq=1,cutt,f,pl2=0,bank1=6;
+var chainx,chainy,amp,rq=1,cutt,f,pl2=0,bank1=6,phase;
 
 	var wrappedOut1 = { |busArray, signalArray|
 	[busArray, signalArray].flop.do { |pair|
@@ -372,11 +503,11 @@ fundamental=fundamental*speed.reciprocal;
 
 bank1.do{
 
-		pos1=Select.kr(pl1,~posR);
-		pos2=Select.kr(pl1,~posL);
+		pos1=~posR.[pl2];
+		pos1=~posL.[pl2];
 		//phase1=~phase1.[pl];
 		//phase2=~phase2.[pl];
-				mag=Complex(Select.kr(pl1,~magx.[pl2]),Select.kr(pl1,~magy.[pl2]));
+				mag=Complex(~magL.[pl2],~magR.[pl2]);
 			//mag=Complex(Select.kr(pl1,~magR),Select.kr(pl1,~magL));
 
 		//ph1=SinOsc.ar(mag.reciprocal,phase1,mag);
@@ -388,7 +519,8 @@ bank1.do{
 
 		pitch1=2.pow(nx/12);
 		pitch2=2.pow(ny/12);
-
+//pitch1=pitch1.round(1);
+			//pitch2=pitch2.round(1);
 
 		ph1=exp(Complex(0,1)*(Complex(mag.real,0).theta)).theta;
 		ph2=exp(Complex(0,1)*(Complex(0,mag.imag).theta)).theta;
@@ -396,18 +528,17 @@ bank1.do{
 		amp1=m.reciprocal*octave.reciprocal*speed*pitch1.reciprocal;
 		amp2=m.reciprocal*octave.reciprocal*speed*pitch2.reciprocal;
 		f=freq*m;
-
+phase=if(pl2%2==0,0.degrad,90.degrad);
 env=EnvGen.ar(Env.adsr(0.05,0.5,0.5,decay),gate:gate,doneAction:2);
 
 				//signal1=(Osc.ar(~t.bufnum,f*pitch1,ph1,amp1));
-				signal2=(Osc.ar(~b.bufnum,f*pitch2,ph2,amp2));
-	m=m+1;
+				signal2=(Osc.ar(~b.bufnum,f*pitch2,phase+ph2,amp2));
+	//m=m+1;
 
 		//wrappedOut1.value(out1,Pan2.ar(LeakDC.ar(signal1),pos1,env));
 		wrappedOut2.value(out2,Pan2.ar(LeakDC.ar(signal2),pos2,env));
 
 					pl2=pl2+1;
-		m=m+1;
 }
 }).add;
 )
