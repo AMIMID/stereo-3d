@@ -67,7 +67,7 @@ z=Complex(0,0);
 
 }.value;
 {
-var phase1,phase2,angle1=0,angle2=0,m=4,pl1=0,pl2=0;
+var phase1,phase2,angle1=0,angle2=0,m=3,pl1=0,pl2=0;
 
 ~posL=(720*~time).collect{
 
@@ -89,7 +89,7 @@ var phase1,phase2,angle1=0,angle2=0,m=4,pl1=0,pl2=0;
 }.value;
 
 {
-var phase,angle=0,mag,phase1,angle1=0,mag1,m=4,pl1=0,pl2=0;
+var phase,angle=0,mag,phase1,angle1=0,mag1,m=3,pl1=0,pl2=0;
 
 ~magL = (720*~time).collect{
 
@@ -462,9 +462,9 @@ bank1.do{
 		ph1=exp(Complex(0,1)*(Complex(mag.real,0).theta)).theta;
 		ph2=exp(Complex(0,1)*(Complex(0,mag.imag).theta)).theta;
 
-		amp1=m.reciprocal*octave.reciprocal*speed*pitch1.reciprocal*mag.real;
-		amp2=m.reciprocal*octave.reciprocal*speed*pitch2.reciprocal*mag.imag;
-		f=freq*m;
+		amp1=octave.reciprocal*speed*pitch1.reciprocal*mag.real;
+		amp2=octave.reciprocal*speed*pitch2.reciprocal*mag.imag;
+		f=freq;
 phase=if(pl2%2==0,0.degrad,90.degrad);
 env=EnvGen.ar(Env.adsr(0.05,0.5,0.5,decay),gate:gate,doneAction:2);
 
@@ -525,9 +525,9 @@ bank1.do{
 		ph1=exp(Complex(0,1)*(Complex(mag.real,0).theta)).theta;
 		ph2=exp(Complex(0,1)*(Complex(0,mag.imag).theta)).theta;
 
-		amp1=m.reciprocal*octave.reciprocal*speed*pitch1.reciprocal*mag.real;
-		amp2=m.reciprocal*octave.reciprocal*speed*pitch2.reciprocal*mag.imag;
-		f=freq*m;
+		amp1=octave.reciprocal*speed*pitch1.reciprocal*mag.real;
+		amp2=octave.reciprocal*speed*pitch2.reciprocal*mag.imag;
+		f=freq;
 phase=if(pl2%2==0,0.degrad,90.degrad);
 env=EnvGen.ar(Env.adsr(0.05,0.5,0.5,decay),gate:gate,doneAction:2);
 
@@ -584,7 +584,7 @@ b=Pdef(\2, Pbind(\instrument, \ostereo2,
 ));
 
 	);
-TempoClock.default.tempo_(1);
+TempoClock.default.tempo_(1/2);
 /////with tempo 1 and ~time 1 overall duration of a is 2.08 min
 
 	/////////////////////scales
