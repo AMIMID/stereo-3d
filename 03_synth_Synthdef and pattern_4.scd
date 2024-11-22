@@ -292,7 +292,7 @@ rythm=[1,1/1,1,1,1/1];
 // 		arg decay=8,speed=1,pl1=0,angle_r=0,gate=1;
 // 		var signal1,signal2,env,m=2,freq1,freq2,amp1,amp2,pl=0,nx,ny,octave=4,phase;
 // 		var pos1,pos2,phase1,phase2,ph1,ph2,mag,fundamental=55,freq,pitch1,pitch2,mult=12;
-// 		var chainx,chainy,amp,rq=1,cutt,f,pl2=0,bank1=6;
+// 		var chainx,chainy,amp,rq=1,cutt,f,pl2=0,bank1=180;
 //
 // 		var wrappedOut1 = { |busArray, signalArray|
 // 			[busArray, signalArray].flop.do { |pair|
@@ -357,7 +357,7 @@ rythm=[1,1/1,1,1,1/1];
 // 		arg decay=8,speed=1,pl1=0,angle_r=0,gate=1;
 // 		var signal1,signal2,env,m=2,freq1,freq2,amp1,amp2,pl=0,nx,ny,octave=4;
 // 		var pos1,pos2,phase1,phase2,ph1,ph2,mag,fundamental=55,freq,pitch1,pitch2,mult=12;
-// 		var chainx,chainy,amp,rq=1,cutt,f,pl2=0,bank1=6,phase;
+// 		var chainx,chainy,amp,rq=1,cutt,f,pl2=0,bank1=180,phase;
 //
 // 		var wrappedOut1 = { |busArray, signalArray|
 // 			[busArray, signalArray].flop.do { |pair|
@@ -420,9 +420,9 @@ rythm=[1,1/1,1,1,1/1];
 SynthDef.new(\ostereo1,
 {
 		arg decay=8,speed=1,pl1=0,angle_r=0,gate=1;
-var signal1,signal2,env,m=2,freq1,freq2,amp1,amp2,pl=0,nx,ny,octave=4,phase;
-var pos1,pos2,phase1,phase2,ph1,ph2,mag,fundamental=55,freq,pitch1,pitch2,mult=12;
-var chainx,chainy,amp,rq=1,cutt,f,pl2=0,bank1=6;
+var signal1,signal2,env,m=2,freq1,freq2,amp1,amp2,pl=0,nx,ny,octave=8,phase;
+var pos1,pos2,phase1,phase2,ph1,ph2,mag,fundamental=110,freq,pitch1,pitch2,mult=20;
+var chainx,chainy,amp,rq=1,cutt,f,pl2=0,bank1=180;
 
 	var wrappedOut1 = { |busArray, signalArray|
 	[busArray, signalArray].flop.do { |pair|
@@ -439,12 +439,12 @@ fundamental=fundamental*speed.reciprocal;
 
 bank1.do{
 
-		pos1=~posR.[pl2];
-		pos1=~posL.[pl2];
+		pos1=~posR.[pl];
+		pos2=~posL.[pl];
 		//phase1=~phase1.[pl];
 		//phase2=~phase2.[pl];
 				//mag=Complex(Select.kr(pl1,~magR),Select.kr(pl1,~magL));
-			mag=Complex(~magL.[pl2],~magR.[pl2]);
+			mag=Complex(~magL.[pl],~magR.[pl]);
 
 		//ph1=SinOsc.ar(mag.reciprocal,phase1,mag);
 		//ph2=SinOsc.ar(mag.reciprocal,phase2,mag);
@@ -468,14 +468,14 @@ bank1.do{
 phase=if(pl2%2==0,0.degrad,90.degrad);
 env=EnvGen.ar(Env.adsr(0.05,0.5,0.5,decay),gate:gate,doneAction:2);
 
-				signal1=(Osc.ar(~b.bufnum,f*pitch1,ph1,amp1));
+				signal1=(SinOsc.ar(f*pitch1,ph1,amp1));
 				//signal2=(Osc.ar(~t.bufnum,f*pitch2,ph2,amp2));
 	//m=m+1;
 
 		wrappedOut1.value(out1,Pan2.ar(LeakDC.ar(signal1),pos1,env));
 		//wrappedOut2.value(out2,Pan2.ar(LeakDC.ar(signal2),pos2,env));
 
-					pl2=pl2+1;
+					pl=pl+1;
 }
 }).add;
 );
@@ -484,9 +484,9 @@ env=EnvGen.ar(Env.adsr(0.05,0.5,0.5,decay),gate:gate,doneAction:2);
 SynthDef.new(\ostereo2,
 {
 		arg decay=8,speed=1,pl1=0,angle_r=0,gate=1;
-var signal1,signal2,env,m=2,freq1,freq2,amp1,amp2,pl=0,nx,ny,octave=4;
-var pos1,pos2,phase1,phase2,ph1,ph2,mag,fundamental=55,freq,pitch1,pitch2,mult=12;
-var chainx,chainy,amp,rq=1,cutt,f,pl2=0,bank1=6,phase;
+var signal1,signal2,env,m=2,freq1,freq2,amp1,amp2,pl=0,nx,ny,octave=8;
+var pos1,pos2,phase1,phase2,ph1,ph2,mag,fundamental=110,freq,pitch1,pitch2,mult=20;
+var chainx,chainy,amp,rq=1,cutt,f,pl2=0,bank1=180,phase;
 
 	var wrappedOut1 = { |busArray, signalArray|
 	[busArray, signalArray].flop.do { |pair|
@@ -503,11 +503,11 @@ fundamental=fundamental*speed.reciprocal;
 
 bank1.do{
 
-		pos1=~posR.[pl2];
-		pos1=~posL.[pl2];
+		pos1=~posR.[pl];
+		pos2=~posL.[pl];
 		//phase1=~phase1.[pl];
 		//phase2=~phase2.[pl];
-				mag=Complex(~magL.[pl2],~magR.[pl2]);
+				mag=Complex(~magL.[pl],~magR.[pl]);
 			//mag=Complex(Select.kr(pl1,~magR),Select.kr(pl1,~magL));
 
 		//ph1=SinOsc.ar(mag.reciprocal,phase1,mag);
@@ -532,13 +532,13 @@ phase=if(pl2%2==0,0.degrad,90.degrad);
 env=EnvGen.ar(Env.adsr(0.05,0.5,0.5,decay),gate:gate,doneAction:2);
 
 				//signal1=(Osc.ar(~t.bufnum,f*pitch1,ph1,amp1));
-				signal2=(Osc.ar(~b.bufnum,f*pitch2,ph2,amp2));
+				signal2=(SinOsc.ar(f*pitch2,ph2,amp2));
 	//m=m+1;
 
 		//wrappedOut1.value(out1,Pan2.ar(LeakDC.ar(signal1),pos1,env));
 		wrappedOut2.value(out2,Pan2.ar(LeakDC.ar(signal2),pos2,env));
 
-					pl2=pl2+1;
+					pl=pl+1;
 }
 }).add;
 )
@@ -566,25 +566,25 @@ a=Pdef(\1, Pbind(\instrument, \ostereo1,
 	\dur,Pseq(~dur1,1),
 \angle_r,Pseq(~angle,inf),
 	\gate,Pseq([1,0,1,1,0,1,0,1,1,0,1,1,1,0],inf),
-	\pl1,Pseq(~list,inf),
+	//\pl1,Pseq(~list,inf),
 		\out1,Pn(Pshuf([0, 1], 1), inf).clump(2).collect([_]),
-	\out2,Pn(Pshuf([0, 1], 1), inf).clump(2).collect([_]),
-	\decay,Pbrown(4,8,1,inf),
+	//\out2,Pn(Pshuf([0, 1], 1), inf).clump(2).collect([_]),
+	\decay,Pbrown(4,6,1,inf),
 	//\speed,Prand([1,3/4,2/3,1/2],inf);
 ));
 b=Pdef(\2, Pbind(\instrument, \ostereo2,
 	\dur,Pseq(~dur2,1),
 \angle_r,Pseq(~angle,inf),
 	\gate,Pseq([1,0,1,1,0,1,0,1,1,0,1,1,1,0],inf),
-	\pl1,Pseq(~list,inf),
-		\out1,Pn(Pshuf([0, 1], 1), inf).clump(2).collect([_]),
+	//\pl1,Pseq(~list,inf),
+	//	\out1,Pn(Pshuf([0, 1], 1), inf).clump(2).collect([_]),
 	\out2,Pn(Pshuf([0, 1], 1), inf).clump(2).collect([_]),
-	\decay,Pbrown(4,8,1,inf),
+	\decay,Pbrown(4,6,1,inf),
 	//\speed,Prand([1,3/4,2/3,1/2],inf);
 ));
 
 	);
-TempoClock.default.tempo_(2);
+TempoClock.default.tempo_(1);
 /////with tempo 1 and ~time 1 overall duration of a is 2.08 min
 
 	/////////////////////scales
