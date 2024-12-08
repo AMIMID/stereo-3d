@@ -43,7 +43,7 @@ var c,angle=0,c_real,c_imag,z;
  };
 z=Complex(0,0);
 
-~j = (1440*2).collect{
+~j = (1440*32).collect{
 	c=~c.[4];
 	z=z.pow(2)+c;
 	z.theta.round(0.000001);
@@ -78,7 +78,7 @@ var phase1,phase2,angle1=0,angle2=0,m=2,pl1=0,pl2=0;
 ~posL=1440.collect{
 
 	phase1=exp(Complex(0,1)*(angle1.degrad*~j.[pl1])).theta;
-	pl1=pl1=1;
+	pl1=pl1+1;
 	angle1=(angle1+(360-(360/1.6180339887499))).wrap(0,360);
 
 	phase1=(Complex(exp(Complex(0,1)*(phase1.round(0.0001)*m)).imag,exp(Complex(0,1)*(phase1.round(0.0001)*m)).imag).rho.round(0.0001)
@@ -89,7 +89,7 @@ var phase1,phase2,angle1=0,angle2=0,m=2,pl1=0,pl2=0;
 ~posR=1440.collect{
 
 	phase2=exp(Complex(0,1)*(angle2.degrad*~j.[pl2])).theta;
-	pl2=pl2=1;
+	pl2=pl2+1;
 	angle2=(angle2+(360-(360/1.6180339887499))).wrap(0,360);
 
 	phase2=(Complex(exp(Complex(0,1)*(phase2.round(0.0001)*m)).imag,exp(Complex(0,1)*(phase2.round(0.0001)*m)).imag).rho.round(0.0001)
@@ -104,7 +104,7 @@ var phase,angle=0,mag,phase1,angle1=0,mag1,m=2,pl1=0,pl2=0;
 ~magL = (360*64).collect{
 
 	phase=exp(Complex(0,1)*(angle.degrad*~j.[pl1])).theta;
-	pl1=pl1=1;
+	pl1=pl1+1;
 	angle=(angle+(360-(360/1.6180339887499))).wrap(0,360);
 	phase.round((0.0001));
 
@@ -116,7 +116,7 @@ var phase,angle=0,mag,phase1,angle1=0,mag1,m=2,pl1=0,pl2=0;
 ~magR = (360*64).collect{
 
 	phase1=exp(Complex(0,1)*(angle1.degrad*~j.[pl2])).theta;
-	pl2=pl2=1;
+	pl2=pl2+1;
 	angle1=(angle1+(360-(360/1.6180339887499))).wrap(0,360);
 	phase1.round(0.0001);
 
