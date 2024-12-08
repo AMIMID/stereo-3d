@@ -109,7 +109,7 @@ var phase1,phase2,pl1=1.neg,pl2=1.neg;
 
 }.value
 {
-var phase,angle=0,mag,phase1,angle1=0,mag1,m=3,pl1=0,pl2=0;
+var phase,angle=0,mag,phase1,angle1=0,mag1,m=8,pl1=0,pl2=0;
 
 ~magL = (720*~time).collect{
 
@@ -220,8 +220,8 @@ ph2=exp(Complex(0,1)*(Complex(0,mg.imag).theta)).theta;*/
 		ph1=Complex(exp(Complex(0,1)*(~az.[pl])).real.round(0.000001),exp(Complex(0,1)*(~el.[pl])).imag.round(0.000001)).theta;
 		ph2=Complex(exp(Complex(0,1)*(~az.[pl])).real.round(0.000001),exp(Complex(0,1)*(~el.[pl])).imag.round(0.000001)).theta;
 
-chainxx = chainx.pvcollect(frames, {|mag, phase, index| [mag*(mg.rho/(2.sqrt)), exp(Complex(0,1)*(phase+ph1)).theta]; }, frombin: b, tobin: b, zeroothers: 1);
-chainyy = chainy.pvcollect(frames, {|mag, phase, index| [mag*(mg.rho/(2.sqrt)), exp(Complex(0,1)*(phase+ph2)).theta]; }, frombin: b, tobin: b, zeroothers: 1);
+chainxx = chainx.pvcollect(frames, {|mag, phase, index| [mag*(mg.real), exp(Complex(0,1)*(phase+ph1)).theta]; }, frombin: b, tobin: b, zeroothers: 1);
+chainyy = chainy.pvcollect(frames, {|mag, phase, index| [mag*(mg.imag), exp(Complex(0,1)*(phase+ph2)).theta]; }, frombin: b, tobin: b, zeroothers: 1);
 
 
 		signal1=Pan2.ar(IFFT(chainxx),pos);

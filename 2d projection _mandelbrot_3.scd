@@ -64,27 +64,6 @@ var az4=0,el4=0,az5=0,el5=0,pl1=0,pl2=0,pl3=0,pl4=0,pl5=0;
 	};
 }.value;
 
-{
-var phase1,phase2,angle1=0,angle2=0,m=3,pl1=0,pl2=0;
-
-~posL=(720*~time).collect{
-
-	phase1=exp(Complex(0,1)*(angle1.degrad*~j.[pl1])).theta;
-	pl1=pl1+1;
-	angle1=(angle1+(360-(360/1.6180339887499))).wrap(0,360);
-	phase1=(Complex(sin(phase1.round(0.0001)*m),sin(phase1.round(0.0001)*m)).rho.round(0.0001)*Complex(cos(phase1.round(0.0001)*m),cos(phase1.round(0.0001)*m)).rho).round(0.0001);
-
-};
-
-	~posR=(720*~time).collect{
-
-	phase2=exp(Complex(0,1)*(angle2.degrad*~j.[pl2])).theta;
-	pl2=pl2+1;
-	angle2=(angle2+(360-(360/1.6180339887499))).wrap(0,360);
-	phase2=(Complex(sin(phase2.round(0.0001)*m),sin(phase2.round(0.0001)*m)).rho.round(0.0001)*Complex(cos(phase2.round(0.0001)*m),cos(phase2.round(0.0001)*m)).rho).round(0.0001).neg;
-};
-
-}.value;
 )
 
 
@@ -164,18 +143,17 @@ var phase,angle=0,mag,phase1,angle1=0,mag1,m=2,pl1=0,pl2=0;
 
 (
 var data;
-var az=0,el=0,aa,bb,p;
+var az=0,el=0,aa,bb,p,pos;
 var m=600,sph,az1,el1,pl=0,daz,del,harm,mag,r;
 var r1,harm1,r2,harm2,rad,sph1;
 
-data = (720).collect{
+data = (720*16).collect{
 
 
 	aa=~posL.[pl];
 	bb=~posR.[pl];
-	az=~az.[pl];
+	p=Point(pos,pos).theta;
 	p=Point(aa,bb).theta;
-	//el=~el.[pl];
 	mag=Complex(~magL.[pl]/(2.sqrt),~magR.[pl]/(2.sqrt)).rho/(2.sqrt);
 	pl=pl+1;
 
