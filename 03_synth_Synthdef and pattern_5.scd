@@ -187,7 +187,7 @@ SynthDef.new(\ostereo1,
 		arg decay=8,speed=1,pl1=0,angle_r=0,gate=1;
 var signal1,signal2,env,m=2,freq1,freq2,amp1,amp2,pl=1,nx,ny,octave=8,phase;
 var pos1,pos2,phase1,phase2,ph,mag,fundamental=440,freq,pitch1,pitch2,mult=20;
-var chainx,chainy,amp,rq=1,cutt,f,pl2=0,bank1=90;
+var chainx,chainy,amp,rq=1,cutt,f,pl2=0,bank1=90,pos;
 
 	var wrappedOut1 = { |busArray, signalArray|
 	[busArray, signalArray].flop.do { |pair|
@@ -206,6 +206,7 @@ bank1.do{
 
 		pos1=~posR.[pl];
 		pos2=~posL.[pl];
+			pos=Complex(pos1,pos2).rho;
 		//phase1=~phase1.[pl];
 		//phase2=~phase2.[pl];
 				//mag=Complex(Select.kr(pl1,~magR),Select.kr(pl1,~magL));
@@ -240,8 +241,8 @@ env=EnvGen.ar(Env.adsr(0.01,0.5,0.5,decay),gate:gate,doneAction:2,levelScale:0.0
 				signal2=SinOsc.ar(f*pitch2,ph,amp2);
 	//m=m+1;
 
-		wrappedOut1.value(out1,Pan2.ar(LeakDC.ar(signal1),pos1,env));
-		wrappedOut2.value(out2,Pan2.ar(LeakDC.ar(signal2),pos2,env));
+		wrappedOut1.value(out1,Pan2.ar(LeakDC.ar(signal1),pos,env));
+		wrappedOut2.value(out2,Pan2.ar(LeakDC.ar(signal2),pos.neg,env));
 
 					pl=pl+1;
 }

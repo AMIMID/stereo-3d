@@ -20,7 +20,7 @@ var env,sig,wt,angle=0,level,levels;
 
 	level=exp(Complex(0,1)*angle).imag;
 		angle=angle+1.degrad;
-	levels=level.rrand(exp(Complex(0,1)*angle+((360-(360/1.6180339887499))/10).degrad).imag);
+	levels=level.rrand(exp(Complex(0,1)*angle+((360-(360/1.6180339887499))/100).degrad).imag);
 };
 env = Env(~levels,[1]);
 sig=env.asSignal(1024);
@@ -31,7 +31,7 @@ sig.plot;
 
 ////////fractal
 (
-~time=8;
+~time=32;
 ////////fractal
 		{
 var signal,wt,m=0,amp;
@@ -164,12 +164,13 @@ var phase,angle=0,mag,phase1,angle1=0,mag1,m=3,pl1=0,pl2=0;
 {
 var signal1,signal2,env1,env2,pl=0,m=1,fund=55,freq1,freq2,amp1,amp2;
 var pos1,pos2,phase1,phase2,ph1,ph2,mag,octave=4;
-var chainx,chainy,amp,rq=1,cutt;
+var chainx,chainy,amp,rq=1,cutt,pos;
 
 360.do{
 
 		pos1=~posL.[pl]/(2.sqrt);
 		pos2=~posR.[pl]/(2.sqrt);
+		pos=Complex(pos1,pos2).rho;
 		//phase1=~phase1.[pl];
 		//phase2=~phase2.[pl];
 		mag=Complex(~magL.normalize(0,1).[pl],~magR.normalize(0,1).[pl]);
@@ -201,8 +202,8 @@ var chainx,chainy,amp,rq=1,cutt;
 
 pl=pl+1;
 
-		Out.ar(0,Pan2.ar(LeakDC.ar(signal1),pos1,mag.rho/(2.sqrt)));
-		Out.ar(0,Pan2.ar(LeakDC.ar(signal2),pos2,mag.rho/(2.sqrt)));
+		Out.ar(0,Pan2.ar(LeakDC.ar(signal1),pos,mag.rho/(2.sqrt)));
+		Out.ar(0,Pan2.ar(LeakDC.ar(signal2),pos.neg,mag.rho/(2.sqrt)));
 
 }
 }.play;

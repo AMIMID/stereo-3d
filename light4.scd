@@ -177,7 +177,7 @@ SynthDef.new(\light,
 arg octave=2,angle_r=0,gain=0.1;
 var signal1,signal2,env,amp1,amp2,pl=0,nx,ny,mult=12,m=1,pl1=0;
 var pos1,pos2,phase1,phase2,mag,fundamental=110,freq,pitch1,pitch2;
-var amp,phase,c1,c2;
+var amp,phase,c1,c2,pos;
 
 fundamental=fundamental*speed.reciprocal;
 		freq=fundamental*octave;
@@ -185,6 +185,7 @@ fundamental=fundamental*speed.reciprocal;
 
 		pos1=~posL.[pl1];
 		pos2=~posR.[pl1];
+					pos=Complex(pos1,pos2).rho;
 		//phase1=~phase1.[pl];
 		//phase2=~phase2.[pl];
 		mag=Complex(~magL.[pl1],~magR.[pl1]);
@@ -213,8 +214,8 @@ fundamental=fundamental*speed.reciprocal;
 				signal1=(Osc.ar(~b.bufnum,freq*pitch1*m,phase,amp1));
 				signal2=(Osc.ar(~b.bufnum,freq*pitch2*m,phase,amp2));
 
-				Out.ar(0,Pan2.ar(LeakDC.ar(signal1),pos1,gain));
-				Out.ar(0,Pan2.ar(LeakDC.ar(signal2),pos2,gain));
+				Out.ar(0,Pan2.ar(LeakDC.ar(signal1),pos,gain));
+				Out.ar(0,Pan2.ar(LeakDC.ar(signal2),pos.neg,gain));
 
 						pl1+pl1=1;
 						m=m+1;

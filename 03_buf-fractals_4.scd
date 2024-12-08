@@ -70,7 +70,7 @@ var az4=0,el4=0,az5=0,el5=0,pl1=0,pl2=0,pl3=0,pl4=0,pl5=0;
 
 	};
 }.value;
-{
+/*{
 var phase1,phase2,angle1=0,angle2=0,m=3,pl1=0,pl2=0;
 
 ~posL=(720*~time).collect{
@@ -90,8 +90,8 @@ var phase1,phase2,angle1=0,angle2=0,m=3,pl1=0,pl2=0;
 	phase2=(Complex(sin(phase2.round(0.0001)*m),sin(phase2.round(0.0001)*m)).rho.round(0.0001)*Complex(cos(phase2.round(0.0001)*m),cos(phase2.round(0.0001)*m)).rho).round(0.0001).neg;
 };
 
-}.value;
-/*{
+}.value;*/
+{
 var phase1,phase2,pl1=1.neg,pl2=1.neg;
 
 ~posL=(720*~time).collect{
@@ -107,7 +107,7 @@ var phase1,phase2,pl1=1.neg,pl2=1.neg;
 	phase2=exp(Complex(0,1)*(~el.[pl1])).imag.round(0.000001);
 };
 
-}.value*/
+}.value
 {
 var phase,angle=0,mag,phase1,angle1=0,mag1,m=3,pl1=0,pl2=0;
 
@@ -193,7 +193,7 @@ SynthDef.new(\ostereobuf,
 arg pl1=0;
 var signal1,signal2,env1,env2,pl=1,bank2=360,pl2=0,bank1=90;
 var pos1,pos2,phase1,phase2,ph1,ph2;
-var in1,in2, chainx,chainy,b=0;
+var in1,in2, chainx,chainy,b=0,pos;
 var chainxx,chainyy,mg;
 var frames=(1024*1);
 
@@ -207,6 +207,7 @@ bank2.do{
 
 		pos1=~posL.[pl]/(2.sqrt);
 		pos2=~posR.[pl]/(2.sqrt);
+			pos=Complex(pos1,pos2).rho;
 		//phase1=~phase1.[pl];
 		//phase2=~phase2.[pl];
 		mg=Complex(~magL.[pl],~magR.[pl]);
@@ -223,8 +224,8 @@ chainxx = chainx.pvcollect(frames, {|mag, phase, index| [mag*(mg.rho/(2.sqrt)), 
 chainyy = chainy.pvcollect(frames, {|mag, phase, index| [mag*(mg.rho/(2.sqrt)), exp(Complex(0,1)*(phase+ph2)).theta]; }, frombin: b, tobin: b, zeroothers: 1);
 
 
-		signal1=Pan2.ar(IFFT(chainxx),pos1);
-		signal2=Pan2.ar(IFFT(chainyy),pos2);
+		signal1=Pan2.ar(IFFT(chainxx),pos);
+		signal2=Pan2.ar(IFFT(chainyy),pos.neg);
 b=b+1;
 pl=pl+1;
 		Out.ar(0,signal1);
