@@ -23,25 +23,40 @@ Buffer.freeAll
 ~time=32;
 ////////fractal
 {
-var c,angle=0,c_real,c_imag,z;
-
-
+var c,cc,angle=0,c_real,c_imag,z;
+var c1,cc1,angle1=0,c_real1,c_imag1,z1;
 
 ~c = 5.collect{
  	c_real=exp(Complex(0,1)*angle.degrad).real;
 	c_imag=exp(Complex(0,1)*angle.degrad).imag;
  	angle=(angle+(360-(360/1.6180339887499))).wrap(0,360);
- 	c=Complex(c_real,c_imag);
+ 	c=Complex(c_real.round(0.000001),c_imag.round(0.000001));
  };
 z=Complex(0,0);
 
 ~j = (2*720*~time).collect{
-	c=~c.[4];
-	z=z.pow(2)+c;
-	z.theta.round(0.000001);
+	cc=~c.[4];
+	z=z.pow(2)+cc;
+	z.theta.round(0.0000000000001);
+
+};
+
+~k = 5.collect{
+ 	c_real1=exp(Complex(0,1)*angle1.degrad).real;
+	c_imag1=exp(Complex(0,1)*angle1.degrad).imag;
+ 	angle1=(angle1+45).wrap(0,360);
+ 	c1=Complex(c_real1.round(0.000001),c_imag1.round(0.000001));
+ };
+z1=Complex(0,0);
+
+~h = (2*720*~time).collect{
+	cc1=~k.[4].round(0.0000000000001);
+	z1=z1.pow(2)+cc1;
+	z1.theta.round(0.0000000000001);
+
 }
 
-}.value;
+		}.value;
 
 {
 var  sph1,sph2,sph3,sph4,sph5,m_x=3,m_y=2,m_z=3;
@@ -193,7 +208,7 @@ SynthDef.new(\ostereobuf,
 arg pl1=0;
 var signal1,signal2,env1,env2,pl=1,bank2=360,pl2=0,bank1=90;
 var pos1,pos2,phase1,phase2,ph1,ph2;
-var in1,in2, chainx,chainy,b=0,pos;
+var in1,in2, chainx,chainy,b=0,pos,p;
 var chainxx,chainyy,mg;
 var frames=(1024*1);
 
@@ -207,12 +222,13 @@ bank2.do{
 
 		pos1=~posL.[pl]/(2.sqrt);
 		pos2=~posR.[pl]/(2.sqrt);
-			pos=Complex(pos1,pos2).rho;
+			p=Point(pos1,pos2).theta;
 		//phase1=~phase1.[pl];
 		//phase2=~phase2.[pl];
 		mg=Complex(~magL.[pl],~magR.[pl]);
 	//mg=Complex(Select.kr(pl,Select.kr(pl2,~magx)),Select.kr(pl,Select.kr(pl2,~magy)));
 		//	mg=Complex(~magx.[pl2].[pl],~magy.[pl2].[pl]);
+			pos=Polar(mg.rho/(2.sqrt),p);
 
 /*ph1=exp(Complex(0,1)*(Complex(mg.real,0).theta)).theta;
 ph2=exp(Complex(0,1)*(Complex(0,mg.imag).theta)).theta;*/
@@ -224,8 +240,8 @@ chainxx = chainx.pvcollect(frames, {|mag, phase, index| [mag*(mg.real), exp(Comp
 chainyy = chainy.pvcollect(frames, {|mag, phase, index| [mag*(mg.imag), exp(Complex(0,1)*(phase+ph2)).theta]; }, frombin: b, tobin: b, zeroothers: 1);
 
 
-		signal1=Pan2.ar(IFFT(chainxx),pos);
-		signal2=Pan2.ar(IFFT(chainyy),pos.neg);
+		signal1=Pan2.ar(IFFT(chainxx),pos.x);
+		signal2=Pan2.ar(IFFT(chainyy),pos.y);
 b=b+1;
 pl=pl+1;
 		Out.ar(0,signal1);

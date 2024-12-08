@@ -152,7 +152,7 @@ data = (720*16).collect{
 
 	aa=~posL.[pl];
 	bb=~posR.[pl];
-	p=Point(pos,pos).theta;
+
 	p=Point(aa,bb).theta;
 	mag=Complex(~magL.[pl]/(2.sqrt),~magR.[pl]/(2.sqrt)).rho/(2.sqrt);
 	pl=pl+1;

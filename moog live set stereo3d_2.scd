@@ -12,29 +12,43 @@ s.waitForBoot
 
 
 (
-~time=32;
-////////fractal
+		~time=32;
 {
-var c,angle=0,c_real,c_imag,z;
-
-
+var c,cc,angle=0,c_real,c_imag,z;
+var c1,cc1,angle1=0,c_real1,c_imag1,z1;
 
 ~c = 5.collect{
  	c_real=exp(Complex(0,1)*angle.degrad).real;
 	c_imag=exp(Complex(0,1)*angle.degrad).imag;
  	angle=(angle+(360-(360/1.6180339887499))).wrap(0,360);
- 	c=Complex(c_real,c_imag);
+ 	c=Complex(c_real.round(0.000001),c_imag.round(0.000001));
  };
 z=Complex(0,0);
 
 ~j = (2*720*~time).collect{
-	c=~c.[4];
-	z=z.pow(2)+c;
-	z.theta.round(0.000001);
+	cc=~c.[4];
+	z=z.pow(2)+cc;
+	z.theta.round(0.0000000000001);
+
+};
+
+~k = 5.collect{
+ 	c_real1=exp(Complex(0,1)*angle1.degrad).real;
+	c_imag1=exp(Complex(0,1)*angle1.degrad).imag;
+ 	angle1=(angle1+45).wrap(0,360);
+ 	c1=Complex(c_real1.round(0.000001),c_imag1.round(0.000001));
+ };
+z1=Complex(0,0);
+
+~h = (2*720*~time).collect{
+	cc1=~k.[4].round(0.0000000000001);
+	z1=z1.pow(2)+cc1;
+	z1.theta.round(0.0000000000001);
+
 }
 
-}.value;
-
+		}.value;
+//////////////////////////////////////////////////basis
 {
 var  sph1,sph2,sph3,sph4,sph5,m_x=3,m_y=2,m_z=3;
 var az1=0,el1=0,az2=0,el2=0,az3=0,el3=0,mag,mag_x,mag_y,mag_z;
@@ -62,69 +76,6 @@ var az4=0,el4=0,az5=0,el5=0,pl1=0,pl2=0,pl3=0,pl4=0,pl5=0;
 
 	};
 }.value;
-/*{
-var phase1,phase2,angle1=0,angle2=0,m=3,pl1=0,pl2=0;
-
-~posL=(720*~time).collect{
-
-	phase1=exp(Complex(0,1)*(angle1.degrad*~j.[pl1])).theta;
-	pl1=pl1+1;
-	angle1=(angle1+(360-(360/1.6180339887499))).wrap(0,360);
-	phase1=(Complex(sin(phase1.round(0.0001)*m),sin(phase1.round(0.0001)*m)).rho.round(0.0001)*Complex(cos(phase1.round(0.0001)*m),cos(phase1.round(0.0001)*m)).rho).round(0.0001);
-
-};
-
-	~posR=(720*~time).collect{
-
-	phase2=exp(Complex(0,1)*(angle2.degrad*~j.[pl2])).theta;
-	pl2=pl2+1;
-	angle2=(angle2+(360-(360/1.6180339887499))).wrap(0,360);
-	phase2=(Complex(sin(phase2.round(0.0001)*m),sin(phase2.round(0.0001)*m)).rho.round(0.0001)*Complex(cos(phase2.round(0.0001)*m),cos(phase2.round(0.0001)*m)).rho).round(0.0001).neg;
-};
-
-}.value;*/
-{
-var phase1,phase2,pl1=1.neg,pl2=1.neg;
-
-~posL=(720*~time).collect{
-
-	pl1=pl1+1;
-	phase1=exp(Complex(0,1)*(~az.[pl1])).real.round(0.000001);
-
-};
-
-~posR=(720*~time).collect{
-
-	pl2=pl2+1;
-	phase2=exp(Complex(0,1)*(~el.[pl1])).imag.round(0.000001);
-};
-
-}.value
-{
-var phase,angle=0,mag,phase1,angle1=0,mag1,m=8,pl1=0,pl2=0;
-
-~magL = (720*~time).collect{
-
-	phase=Complex(exp(Complex(0,1)*(~az.[pl1])).real.round(0.000001),exp(Complex(0,1)*(~el.[pl1])).imag.round(0.000001)).theta;
-
-	pl1=pl1+1;
-
-	mag=(Complex(exp(Complex(0,1)*(phase.round(0.0001)*m)).real,exp(Complex(0,1)*(phase.round(0.0001)*m)).real).rho.round(0.0001)
-		*Complex(exp(Complex(0,1)*(phase.round(0.0001)*m)).real,exp(Complex(0,1)*(phase.round(0.0001)*m)).real).rho).round(0.0001);
-
-	};
-
-~magR = (720*~time).collect{
-
-	phase1=Complex(exp(Complex(0,1)*(~az.[pl2])).real.round(0.000001),exp(Complex(0,1)*(~el.[pl2])).imag.round(0.000001)).theta;
-	pl2=pl2+1;
-
-		mag1=(Complex(exp(Complex(0,1)*(phase1.round(0.0001)*m)).imag,exp(Complex(0,1)*(phase1.round(0.0001)*m)).imag).rho.round(0.0001)
-		*Complex(exp(Complex(0,1)*(phase1.round(0.0001)*m)).real,exp(Complex(0,1)*(phase1.round(0.0001)*m)).real).rho).round(0.0001);
-
-	};
-}.value;
-
 
 )
 
@@ -160,7 +111,7 @@ var amp,bank=360,frames=1024,pos;
 		mg=mg.round(0.0000000001);
 
 
-		ph1=Complex(exp(Complex(0,1)*(~az.[pl])).real.round(0.000001),exp(Complex(0,1)*(~el.[pl])).imag.round(0.000001)).theta;
+		ph1=Complex(exp(Complex(0,1)*(~az.[pl])).real.round(0.000001),exp(Complex(0,1)*(~el.[pl])).imag.round(0.000001)).theta+90.degrad;
 		ph2=Complex(exp(Complex(0,1)*(~az.[pl])).real.round(0.000001),exp(Complex(0,1)*(~el.[pl])).imag.round(0.000001)).theta;
 
 

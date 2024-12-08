@@ -36,37 +36,41 @@ wt = sig.asWavetable;
 (
 ~time=8;
 ////////fractal
-		{
-var signal,wt,m=0,amp;
-
-~level=90.round(1).collect{m=m+1;amp=m.reciprocal};
-~phase=90.collect{pi};
-signal=Signal.sineFill(1024,~level,~phase);
-
-wt = signal.asWavetable;
-~t.loadCollection(wt);
-signal.plot;
-		}.value;
-{
-var c,angle=0,c_real,c_imag,z;
-
-
+	{
+var c,cc,angle=0,c_real,c_imag,z;
+var c1,cc1,angle1=0,c_real1,c_imag1,z1;
 
 ~c = 5.collect{
  	c_real=exp(Complex(0,1)*angle.degrad).real;
 	c_imag=exp(Complex(0,1)*angle.degrad).imag;
  	angle=(angle+(360-(360/1.6180339887499))).wrap(0,360);
- 	c=Complex(c_real,c_imag);
+ 	c=Complex(c_real.round(0.000001),c_imag.round(0.000001));
  };
 z=Complex(0,0);
 
 ~j = (2*720*~time).collect{
-	c=~c.[4];
-	z=z.pow(2)+c;
-	z.theta.round(0.000001);
+	cc=~c.[4];
+	z=z.pow(2)+cc;
+	z.theta.round(0.0000000000001);
+
+};
+
+~k = 5.collect{
+ 	c_real1=exp(Complex(0,1)*angle1.degrad).real;
+	c_imag1=exp(Complex(0,1)*angle1.degrad).imag;
+ 	angle1=(angle1+45).wrap(0,360);
+ 	c1=Complex(c_real1.round(0.000001),c_imag1.round(0.000001));
+ };
+z1=Complex(0,0);
+
+~h = (2*720*~time).collect{
+	cc1=~k.[4].round(0.0000000000001);
+	z1=z1.pow(2)+cc1;
+	z1.theta.round(0.0000000000001);
+
 }
 
-}.value;
+		}.value;
 
 {
 var  sph1,sph2,sph3,sph4,sph5,m_x=3,m_y=2,m_z=3;
