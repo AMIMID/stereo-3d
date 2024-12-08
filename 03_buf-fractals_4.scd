@@ -124,7 +124,7 @@ var phase1,phase2,pl1=1.neg,pl2=1.neg;
 
 }.value
 {
-var phase,angle=0,mag,phase1,angle1=0,mag1,m=8,pl1=0,pl2=0;
+var phase,angle=0,mag,phase1,angle1=0,mag1,m=2,pl1=0,pl2=0;
 
 ~magL = (720*~time).collect{
 
@@ -222,26 +222,25 @@ bank2.do{
 
 		pos1=~posL.[pl]/(2.sqrt);
 		pos2=~posR.[pl]/(2.sqrt);
-			p=Point(pos1,pos2).theta;
-		//phase1=~phase1.[pl];
-		//phase2=~phase2.[pl];
+		//	p=Point(pos1,pos2).theta;
+			pos=Point(pos1,pos2).rho;
 		mg=Complex(~magL.[pl],~magR.[pl]);
 	//mg=Complex(Select.kr(pl,Select.kr(pl2,~magx)),Select.kr(pl,Select.kr(pl2,~magy)));
 		//	mg=Complex(~magx.[pl2].[pl],~magy.[pl2].[pl]);
-			pos=Polar(mg.rho/(2.sqrt),p);
+			///pos=Polar(mg.rho/(2.sqrt),p);
 
 /*ph1=exp(Complex(0,1)*(Complex(mg.real,0).theta)).theta;
 ph2=exp(Complex(0,1)*(Complex(0,mg.imag).theta)).theta;*/
 
 		ph1=Complex(exp(Complex(0,1)*(~az.[pl])).real.round(0.000001),exp(Complex(0,1)*(~el.[pl])).imag.round(0.000001)).theta;
-		ph2=Complex(exp(Complex(0,1)*(~az.[pl])).real.round(0.000001),exp(Complex(0,1)*(~el.[pl])).imag.round(0.000001)).theta;
+		ph2=Complex(exp(Complex(0,1)*(~el.[pl])).imag.round(0.000001),exp(Complex(0,1)*(~az.[pl])).real.round(0.000001)).theta;
 
-chainxx = chainx.pvcollect(frames, {|mag, phase, index| [mag*(mg.real), exp(Complex(0,1)*(phase+ph1)).theta]; }, frombin: b, tobin: b, zeroothers: 1);
-chainyy = chainy.pvcollect(frames, {|mag, phase, index| [mag*(mg.imag), exp(Complex(0,1)*(phase+ph2)).theta]; }, frombin: b, tobin: b, zeroothers: 1);
+chainxx = chainx.pvcollect(frames, {|mag, phase, index| [mag*(mg.rho), exp(Complex(0,1)*(phase+ph1)).theta]; }, frombin: b, tobin: b, zeroothers: 1);
+chainyy = chainy.pvcollect(frames, {|mag, phase, index| [mag*(mg.rho), exp(Complex(0,1)*(phase+ph2)).theta]; }, frombin: b, tobin: b, zeroothers: 1);
 
 
-		signal1=Pan2.ar(IFFT(chainxx),pos.x);
-		signal2=Pan2.ar(IFFT(chainyy),pos.y);
+		signal1=Pan2.ar(IFFT(chainxx),pos);
+		signal2=Pan2.ar(IFFT(chainyy),pos.neg);
 b=b+1;
 pl=pl+1;
 		Out.ar(0,signal1);
